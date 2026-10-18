@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>陈羯喵Client | 🍍Stars</title>
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-image: url('bg/星空.jpg'); background-size: cover; background-position: center; background-attachment: fixed;
+            background-color: #0d1117; color: #c9d1d9; font-family: 'Courier New', Courier, monospace;
+            height: 100vh; margin: 0; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            position: relative; overflow: hidden;
+        }
+        .overlay { position: fixed; inset: 0; background-color: rgba(0, 0, 0, 0.7); z-index: -1; }
+        .title-container { min-height: 120px; display: flex; align-items: center; justify-content: center; margin-bottom: 30px; padding: 0 20px; }
+        #typewriter { font-family: 'Ma Shan Zheng', cursive; font-size: 2.2em; color: #58a6ff; letter-spacing: 2px; text-align: center; line-height: 1.5; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); white-space: pre-wrap; }
+        .cursor { display: inline-block; width: 3px; background-color: #58a6ff; animation: blink 0.8s infinite; margin-left: 5px; vertical-align: bottom; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        .action-container { display: flex; justify-content: center; opacity: 0; transition: opacity 1s ease; }
+        .enter-btn { display: inline-block; text-decoration: none; color: #ffd700; font-size: 1.5em; padding: 15px 40px; border: 2px solid #ffd700; border-radius: 5px; background: rgba(255, 215, 0, 0.05); box-shadow: 0 0 10px rgba(255, 215, 0, 0.2); transition: all 0.3s ease; letter-spacing: 4px; animation: pulse 2s infinite; cursor: pointer; }
+        .enter-btn:hover { background: #ffd700; color: #000; box-shadow: 0 0 30px rgba(255, 215, 0, 0.8); transform: scale(1.05); animation: none; }
+        @keyframes pulse { 0% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.2); } 50% { box-shadow: 0 0 25px rgba(255, 215, 0, 0.6); } 100% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.2); } }
+        .center-logo { width: 100px; height: 100px; object-fit: contain; margin-bottom: 20px; opacity: 0; transition: opacity 1s ease; }
+        .bottom-bar { position: absolute; bottom: 30px; width: 100%; display: flex; justify-content: center; gap: 30px; box-sizing: border-box; color: #8b949e; font-size: 0.9em; }
+        .settings { display: flex; align-items: center; gap: 8px; }
+        .settings input[type="checkbox"] { cursor: pointer; accent-color: #ffd700; }
+        .settings label { cursor: pointer; user-select: none; }
+    </style>
+</head>
+<body>
+    <div class="overlay"></div>
+    <img src="logo/菠萝stars.png" alt="Logo" class="center-logo" id="mainLogo">
+    <div class="title-container"><div id="typewriter"></div></div>
+    <div class="action-container" id="actionBox"><a href="app.html" class="enter-btn" id="enterBtn">[点击]进入</a></div>
+    <div class="bottom-bar">
+        <div class="settings"><input type="checkbox" id="skipCheckbox"><label for="skipCheckbox">跳过开场动画</label></div>
+        <div class="settings"><input type="checkbox" id="muteCheckbox"><label for="muteCheckbox">禁止播放音乐</label></div>
+    </div>
+    <audio id="bgMusic" loop><source src="bgm/bgm.mp3" type="audio/mpeg"></audio>
+
+    <script>
+        const textToType = "System Initialized.\nWelcome to 🍍Stars.";
+        const typewriterElement = document.getElementById('typewriter');
+        const actionBox = document.getElementById('actionBox');
+        const mainLogo = document.getElementById('mainLogo');
+        const skipCheckbox = document.getElementById('skipCheckbox');
+        const muteCheckbox = document.getElementById('muteCheckbox');
+        const bgMusic = document.getElementById('bgMusic');
+        const enterBtn = document.getElementById('enterBtn');
+
+        const isSkipped = localStorage.getItem('skipAnimation') === 'true';
+        const isMuted = localStorage.getItem('muteMusic') === 'true';
+        skipCheckbox.checked = isSkipped;
+        muteCheckbox.checked = isMuted;
+
+        skipCheckbox.addEventListener('change', function() { localStorage.setItem('skipAnimation', this.checked); });
+        muteCheckbox.addEventListener('change', function() {
+            localStorage.setItem('muteMusic', this.checked);
+            if (this.checked) bgMusic.pause(); 
+        });
+
+        function showActionButtons() { actionBox.style.opacity = '1'; mainLogo.style.opacity = '1'; typewriterElement.innerHTML = textToType; }
+        function startTyping() {
+            if (isSkipped) { showActionButtons(); return; }
+            let i = 0; const speed = 50; typewriterElement.innerHTML = '<span class="cursor"></span>';
+            function type() {
+                if (i < textToType.length) { typewriterElement.innerHTML = textToType.substring(0, i + 1) + '<span class="cursor"></span>'; i++; setTimeout(type, speed); }
+                else { typewriterElement.innerHTML = textToType; showActionButtons(); }
+            }
+            setTimeout(type, 300);
+        }
+        window.onload = () => { setTimeout(startTyping, 100); };
+
+        enterBtn.addEventListener('click', function(e) {
+            if (muteCheckbox.checked) { sessionStorage.removeItem('musicPlayingState'); return; }
+            bgMusic.play();
+            sessionStorage.setItem('musicPlayingState', 'true');
+        });
+    </script>
+</body>
+</html>
