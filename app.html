@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.3, maximum-scale=1.0, user-scalable=no">
     <title>🍍Stars_Station | 菠萝星空间站</title>
     
     <style>
@@ -21,12 +21,24 @@
             --phasma-bright: #B2EBF2; --phasma-dim: rgba(0, 229, 255, 0.15);
             --phasma-border: rgba(0, 229, 255, 0.4); --nv-green: #39FF14; --panel-bg: rgba(5, 10, 20, 0.75);
         }
+        
         body {
             margin: 0; overflow: hidden;
-            background-image: url('bg/Stars-bg.jpg'); background-size: cover; background-position: center; background-attachment: fixed;
+            /* 底层保留背景图防黑屏 */
+            background-image: url('bg/Stars-bg.jpg'); background-size: cover; background-position: center;
             background-color: var(--bg-deep); color: var(--phasma-bright); user-select: none;
             -webkit-overflow-scrolling: touch;
         }
+
+        /* 视频背景层 */
+        #bg-video {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            z-index: -2;
+        }
+
         a { text-decoration: none; color: inherit; }
         
         #signal-bg { position: fixed; inset: 0; z-index: 0; background: radial-gradient(circle at 30% 20%, rgba(0, 229, 255, 0.05), transparent 50%), radial-gradient(circle at 70% 80%, rgba(255, 215, 0, 0.03), transparent 60%), rgba(3, 5, 10, 0.65); animation: signal-pulse 15s infinite alternate ease-in-out; }
@@ -195,7 +207,6 @@
             clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
         }
 
-        /* 新增：留言板提示语 */
         .comment-tip {
             background: rgba(0, 229, 255, 0.1);
             border: 1px dashed var(--phasma-cyan);
@@ -261,6 +272,11 @@
 </head>
 <body>
 
+    <!-- 视频背景 -->
+    <video id="bg-video" autoplay muted loop playsinline>
+        <source src="bg/bg.mp4" type="video/mp4">
+    </video>
+
     <div id="signal-bg"></div>
     <div class="scanlines"></div>
 
@@ -324,7 +340,7 @@
         <div class="hud-left">
             <div class="sys-logo" onclick="switchPage('home')">
                 <img src="logo/菠萝Stars.png" alt="Logo" onerror="this.style.display='none'"> 
-                🍍Stars_Station <span>v1.0</span>
+                🍍Stars_Station <span>v1.3</span>
             </div>
             <nav class="sys-nav">
                 <a onclick="switchPage('home')" id="nav-home" class="nav-link active">首页</a>
@@ -498,32 +514,24 @@
                 <button class="filter-btn" data-filter="原创音乐">[ 原创音乐 ]</button>
             </div>
 
-            <!-- ========================================== -->
-            <!-- 日志列表：按 LOG 编号从小到大排列 -->
-            <!-- 注意：只有最上面的一篇（最新的）才有 id="latest-blog" -->
-            <!-- ========================================== -->
-
-            <!-- LOG_000 (最新) -->
-            <div class="post" id="latest-blog" data-category="系统">
+            <!-- LOG_005 (最新) -->
+            <div class="post" id="latest-blog" data-category="日常">
                 <div class="post-meta">
-                    <span class="post-date">2026-10-18 / LOG_000</span>
-                    <span class="post-tag">系统 / 初始化</span>
+                    <span class="post-date">2026-10-19 / LOG_005</span>
+                    <span class="post-tag">日常 / 碎碎念</span>
                 </div>
-                <h2 class="post-title">终端正在初始化...</h2>
+                <h2 class="post-title">网站正式开放！</h2>
                 <div class="post-content">
-                    <p>这是一条测试日志。如果你看到了这条信息，说明网络连接正常，数据流运转良好。</p>
-                    <p>接下来这里会更新更多关于硬件折腾、游戏日常和 3D 建模的内容。</p>
-                    <p>感谢你的接入。</p>
+                    <p>经过几个小时的努力我终于tm把这个网站完工了，10/19就是这个网站的纪念日好吧</p>
                 </div>
             </div>
 
-            <!-- LOG_001 -->
             <div class="post" data-category="日常">
                 <div class="post-meta">
                     <span class="post-date">2026-10-18 / LOG_001</span>
                     <span class="post-tag">日常 / 碎碎念</span>
                 </div>
-                <h2 class="post-title">空间站建立的第一天</h2>
+                <h2>空间站建立的第一天</h2>
                 <div class="post-content">
                     <p>这里是陈羯喵，欢迎来到我的空间站。</p>
                     <p>折腾了很久的 HTML 和 CSS，终于把这个站搭起来了。今天先放了一个开机动画，后面打算把搞机的设备评测、MC服务器的搭建过程，还有我写的梦核音乐都慢慢搬上来。</p>
@@ -531,7 +539,6 @@
                 </div>
             </div>
 
-            <!-- LOG_002 -->
             <div class="post" data-category="搞机">
                 <div class="post-meta">
                     <span class="post-date">2026-10-18 / LOG_002</span>
@@ -544,7 +551,6 @@
                 </div>
             </div>
 
-            <!-- LOG_003 -->
             <div class="post" data-category="原创音乐">
                 <div class="post-meta">
                     <span class="post-date">2026-10-18 / LOG_003</span>
@@ -556,7 +562,19 @@
                     <p>以后要是网站换背景音乐了，估计就会用这首。</p>
                 </div>
             </div>
-            
+
+            <div class="post" data-category="系统">
+                <div class="post-meta">
+                    <span class="post-date">2026-10-18 / LOG_000</span>
+                    <span class="post-tag">系统 / 初始化</span>
+                </div>
+                <h2>终端正在初始化...</h2>
+                <div class="post-content">
+                    <p>这是一条测试日志。如果你看到了这条信息，说明网络连接正常，数据流运转良好。</p>
+                    <p>接下来这里会更新更多关于硬件折腾、游戏日常和 3D 建模的内容。</p>
+                    <p>感谢你的接入。</p>
+                </div>
+            </div>
         </div>
 
         <!-- 日志页的留言板 -->
@@ -677,10 +695,10 @@
         }
 
         // ==========================================
-        // 模块 4：自动抓取最新博客到主页 (终极修复版)
+        // 模块 4：自动抓取最新博客到主页 (修复版)
         // ==========================================
         function loadLatestBlog() {
-            // 使用 setTimeout 延迟 200 毫秒，确保浏览器已经完全解析了底部的 HTML
+            // 延迟 100 毫秒，确保浏览器已经渲染完了整个 HTML 结构
             setTimeout(() => {
                 const latestPost = document.getElementById('latest-blog');
                 if (latestPost) {
@@ -700,12 +718,13 @@
                         </a>
                     `;
                 }
-            }, 200); 
+            }, 100);
         }
 
+        // 初始化
         window.onload = () => {
+            loadTwikoo('home');
             loadLatestBlog(); 
-            loadTwikoo('home'); 
         };
 
         // ==========================================
