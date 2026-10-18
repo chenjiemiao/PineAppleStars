@@ -12,7 +12,8 @@
 
         .sys-logo, .nav-link, .status-text, .audio-toggle, .module-text h3, 
         .log-header, .post-meta, .filter-btn, .sponsor-title, .sponsor-footer,
-        #clock, .profile-alias, .data-list span, .timeline-date, .archive-btn, .social-name {
+        #clock, .profile-alias, .data-list span, .timeline-date, .archive-btn, .social-name,
+        .comment-tip {
             font-family: 'Share Tech Mono', 'Courier New', Courier, monospace !important;
         }
 
@@ -194,6 +195,26 @@
             padding: 30px 40px; backdrop-filter: blur(10px); box-shadow: 0 10px 30px rgba(0,0,0,0.6);
             clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
         }
+        
+        /* 新增的极客提示条 */
+        .comment-tip {
+            background: rgba(255, 215, 0, 0.1);
+            border-left: 4px solid var(--pineapple-yellow);
+            color: var(--pineapple-yellow);
+            padding: 12px 20px;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            border-radius: 4px;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.1);
+        }
+        .comment-tip::before {
+            content: '💡';
+            font-size: 1.5rem;
+        }
 
         @media screen and (max-width: 768px) {
             .hud-header { height: auto; padding: 15px 20px; flex-direction: column; align-items: stretch; gap: 15px; }
@@ -240,6 +261,7 @@
             
             .global-comment-section { padding: 0 15px; margin-bottom: 20px;}
             .comment-box { padding: 20px; }
+            .comment-tip { font-size: 0.95rem; padding: 10px 15px; }
         }
     </style>
 </head>
@@ -363,6 +385,7 @@
         <!-- 首页的留言板 -->
         <div class="global-comment-section">
             <div class="comment-box">
+                <div class="comment-tip">如果想发评论，请在邮箱一栏填写 <strong>123@123.com</strong></div>
                 <div id="tcomment-home" class="twikoo-container"></div>
             </div>
         </div>
@@ -404,6 +427,7 @@
         <!-- Stars页的留言板 -->
         <div class="global-comment-section">
             <div class="comment-box">
+                <div class="comment-tip">如果想发评论，请在邮箱一栏填写 <strong>123@123.com</strong></div>
                 <div id="tcomment-stars" class="twikoo-container"></div>
             </div>
         </div>
@@ -463,6 +487,7 @@
         <!-- Client页的留言板 -->
         <div class="global-comment-section">
             <div class="comment-box">
+                <div class="comment-tip">如果想发评论，请在邮箱一栏填写 <strong>123@123.com</strong></div>
                 <div id="tcomment-client" class="twikoo-container"></div>
             </div>
         </div>
@@ -533,6 +558,7 @@
         <!-- 日志页的留言板 -->
         <div class="global-comment-section">
             <div class="comment-box">
+                <div class="comment-tip">如果想发评论，请在邮箱一栏填写 <strong>123@123.com</strong></div>
                 <div id="tcomment-blog" class="twikoo-container"></div>
             </div>
         </div>
@@ -556,6 +582,7 @@
         <!-- 赞助页的留言板 -->
         <div class="global-comment-section">
             <div class="comment-box">
+                <div class="comment-tip">如果想发评论，请在邮箱一栏填写 <strong>123@123.com</strong></div>
                 <div id="tcomment-sponsor" class="twikoo-container"></div>
             </div>
         </div>
