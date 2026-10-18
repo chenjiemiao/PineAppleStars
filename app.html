@@ -23,7 +23,8 @@
         }
         body {
             margin: 0; overflow: hidden;
-            background-image: url('bg/星空.jpg'); background-size: cover; background-position: center; background-attachment: fixed;
+            /* 背景图改成英文名 */
+            background-image: url('bg/stars-bg.jpg'); background-size: cover; background-position: center; background-attachment: fixed;
             background-color: var(--bg-deep); color: var(--phasma-bright); user-select: none;
             -webkit-overflow-scrolling: touch;
         }
@@ -53,61 +54,22 @@
         .audio-toggle.off:hover { background: rgba(255, 51, 51, 0.1); border-color: #ff3333; }
 
         /* 页面切换控制 */
-        .page-section { display: none; height: 100vh; overflow-y: auto; position: relative; z-index: 20; box-sizing: border-box; padding-top: 110px; padding-bottom: 120px; /* 留出底部大按钮空间 */ }
+        .page-section { display: none; height: 100vh; overflow-y: auto; position: relative; z-index: 20; box-sizing: border-box; padding-top: 110px; padding-bottom: 120px; }
         .page-section.active { display: block; }
 
         /* --- 底部社交超大按钮 --- */
-        .bottom-social-panel {
-            position: fixed; bottom: 0; left: 0; width: 100%; padding: 0 20px 20px; box-sizing: border-box;
-            z-index: 100; display: flex; justify-content: center;
-        }
-        .social-grid {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;
-            width: 100%; max-width: 800px;
-        }
-        
-        .social-btn {
-            display: flex; align-items: center; justify-content: center; gap: 15px;
-            background: var(--panel-bg); border: 1px solid var(--phasma-border);
-            padding: 15px 20px; border-radius: 6px; color: #ccc;
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            position: relative; overflow: hidden;
-            clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-            backdrop-filter: blur(10px);
-        }
-
-        .social-btn::before {
-            content: ''; position: absolute; inset: 0;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.05), transparent);
-            z-index: 0; transition: 0.5s;
-        }
+        .bottom-social-panel { position: fixed; bottom: 0; left: 0; width: 100%; padding: 0 20px 20px; box-sizing: border-box; z-index: 100; display: flex; justify-content: center; }
+        .social-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; width: 100%; max-width: 800px; }
+        .social-btn { display: flex; align-items: center; justify-content: center; gap: 15px; background: var(--panel-bg); border: 1px solid var(--phasma-border); padding: 15px 20px; border-radius: 6px; color: #ccc; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); position: relative; overflow: hidden; clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px); box-shadow: 0 5px 15px rgba(0,0,0,0.5); backdrop-filter: blur(10px); }
+        .social-btn::before { content: ''; position: absolute; inset: 0; background: linear-gradient(45deg, transparent, rgba(255,255,255,0.05), transparent); z-index: 0; transition: 0.5s; }
         .social-btn:hover::before { transform: translateX(100%); }
-
-        /* 官方 Logo 图标样式 */
-        .social-icon-img {
-            width: 32px; height: 32px; object-fit: contain;
-            z-index: 1; transition: 0.3s; filter: drop-shadow(0 0 5px rgba(0,0,0,0.5));
-        }
+        .social-icon-img { width: 32px; height: 32px; object-fit: contain; z-index: 1; transition: 0.3s; filter: drop-shadow(0 0 5px rgba(0,0,0,0.5)); }
         .social-name { font-size: 1.1rem; font-weight: bold; letter-spacing: 1px; z-index: 1; }
-
-        /* 鼠标悬停专属颜色特效 */
-        .social-btn.bili:hover { 
-            border-color: #FB7299; color: #FB7299; 
-            box-shadow: 0 0 20px rgba(251, 114, 153, 0.3); transform: translateY(-5px); 
-        }
+        .social-btn.bili:hover { border-color: #FB7299; color: #FB7299; box-shadow: 0 0 20px rgba(251, 114, 153, 0.3); transform: translateY(-5px); }
         .social-btn.bili:hover .social-icon-img { filter: drop-shadow(0 0 10px #FB7299); }
-
-        .social-btn.xhs:hover { 
-            border-color: #FF2442; color: #FF2442; 
-            box-shadow: 0 0 20px rgba(255, 36, 66, 0.3); transform: translateY(-5px); 
-        }
+        .social-btn.xhs:hover { border-color: #FF2442; color: #FF2442; box-shadow: 0 0 20px rgba(255, 36, 66, 0.3); transform: translateY(-5px); }
         .social-btn.xhs:hover .social-icon-img { filter: drop-shadow(0 0 10px #FF2442); }
-
-        .social-btn.netease:hover { 
-            border-color: #C20C0C; color: #C20C0C; 
-            box-shadow: 0 0 20px rgba(194, 12, 12, 0.3); transform: translateY(-5px); 
-        }
+        .social-btn.netease:hover { border-color: #C20C0C; color: #C20C0C; box-shadow: 0 0 20px rgba(194, 12, 12, 0.3); transform: translateY(-5px); }
         .social-btn.netease:hover .social-icon-img { filter: drop-shadow(0 0 10px #C20C0C); }
 
         /* --- 主页样式 --- */
@@ -279,13 +241,11 @@
             .data-list { font-size: 1.2rem; }
             .data-list span { font-size: 0.9rem; }
 
-            /* 移动端时间轴 */
             .archive-box { padding: 20px; }
             .timeline-item { flex-direction: column; gap: 10px; }
             .timeline-img { width: 100%; height: 150px; object-fit: contain; }
             .timeline-text { font-size: 1.1rem; }
 
-            /* 移动端底部社交面板适配 */
             .bottom-social-panel { padding: 0 10px 15px; }
             .social-grid { gap: 10px; }
             .social-btn { flex-direction: column; gap: 5px; padding: 12px 5px; }
@@ -369,7 +329,8 @@
     <div class="hud-header">
         <div class="hud-left">
             <div class="sys-logo" onclick="switchPage('home')">
-                <img src="logo/菠萝stars.png" alt="Logo" onerror="this.style.display='none'"> 
+                <!-- 统一使用英文名 -->
+                <img src="logo/PineAppleStars.png" alt="Logo" onerror="this.style.display='none'"> 
                 🍍Stars_Station <span>v1.0</span>
             </div>
             <nav class="sys-nav">
@@ -402,7 +363,7 @@
 
             <div class="modules-grid">
                 <a onclick="switchPage('stars')" class="module-btn">
-                    <img src="logo/菠萝stars.png" alt="🍍Stars">
+                    <img src="logo/PineAppleStars.png" alt="🍍Stars">
                     <div class="module-text"><h3>🍍Stars</h3><span>频道与神话宇宙</span></div>
                 </a>
                 
@@ -427,7 +388,7 @@
     <div id="page-stars" class="page-section">
         <div class="profile-container">
             <div class="profile-sidebar">
-                <img src="logo/菠萝stars.png" alt="Stars Avatar" class="profile-avatar" onerror="this.src='https://placehold.co/120x120/03050A/FFD700?text=🍍'">
+                <img src="logo/PineAppleStars.png" alt="Stars Avatar" class="profile-avatar" onerror="this.src='https://placehold.co/120x120/03050A/FFD700?text=🍍'">
                 <div class="profile-name">🍍Stars</div>
                 <div class="profile-alias">[ 硬核创作区 ]</div>
                 
@@ -465,10 +426,8 @@
                 <div class="profile-name">陈羯喵Client</div>
                 <div class="profile-alias">[ 🍍Stars大菠萝神 ]</div>
                 
-                <!-- 按钮移到了这里，最显眼的位置 -->
                 <button class="archive-btn" onclick="openArchive()">[ 查阅头像进化史 ]</button>
 
-                <!-- 纯文本联系方式 -->
                 <div class="profile-info">
                     <div><span>></span> 真名: 姓陈</div>
                     <div><span>></span> 星座♑: 摩羯座 (羯)</div>
@@ -593,21 +552,15 @@
     <!-- ==================== 底部社交超大按钮 ==================== -->
     <div class="bottom-social-panel">
         <div class="social-grid">
-            <!-- B站 -->
             <a href="https://space.bilibili.com/3493294059292826" target="_blank" class="social-btn bili">
-                <!-- 替换为官方 Logo 链接 -->
                 <img src="https://s1.hdslb.com/bfs/static/jinkela/long/images/favicon.ico" alt="Bilibili" class="social-icon-img">
                 <span class="social-name">BILIBILI</span>
             </a>
-            <!-- 小红书 -->
             <a href="https://www.xiaohongshu.com/user/profile/68a6f9c80000000019020886?m_source=pwa" target="_blank" class="social-btn xhs">
-                <!-- 替换为官方 Logo 链接 -->
                 <img src="https://www.xiaohongshu.com/favicon.ico" alt="小红书" class="social-icon-img">
                 <span class="social-name">小红书</span>
             </a>
-            <!-- 网易云 -->
             <a href="https://music.163.com/#/artist?id=129286029" target="_blank" class="social-btn netease">
-                <!-- 替换为官方 Logo 链接 -->
                 <img src="https://s1.music.126.net/style/favicon.ico" alt="网易云音乐" class="social-icon-img">
                 <span class="social-name">网易云音乐</span>
             </a>
