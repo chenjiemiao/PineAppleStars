@@ -498,7 +498,27 @@
                 <button class="filter-btn" data-filter="原创音乐">[ 原创音乐 ]</button>
             </div>
 
-            <div class="post" id="latest-blog" data-category="日常">
+            <!-- ========================================== -->
+            <!-- 日志列表：按 LOG 编号从小到大排列 -->
+            <!-- 注意：只有最上面的一篇（最新的）才有 id="latest-blog" -->
+            <!-- ========================================== -->
+
+            <!-- LOG_000 (最新) -->
+            <div class="post" id="latest-blog" data-category="系统">
+                <div class="post-meta">
+                    <span class="post-date">2026-10-18 / LOG_000</span>
+                    <span class="post-tag">系统 / 初始化</span>
+                </div>
+                <h2 class="post-title">终端正在初始化...</h2>
+                <div class="post-content">
+                    <p>这是一条测试日志。如果你看到了这条信息，说明网络连接正常，数据流运转良好。</p>
+                    <p>接下来这里会更新更多关于硬件折腾、游戏日常和 3D 建模的内容。</p>
+                    <p>感谢你的接入。</p>
+                </div>
+            </div>
+
+            <!-- LOG_001 -->
+            <div class="post" data-category="日常">
                 <div class="post-meta">
                     <span class="post-date">2026-10-18 / LOG_001</span>
                     <span class="post-tag">日常 / 碎碎念</span>
@@ -511,6 +531,7 @@
                 </div>
             </div>
 
+            <!-- LOG_002 -->
             <div class="post" data-category="搞机">
                 <div class="post-meta">
                     <span class="post-date">2026-10-18 / LOG_002</span>
@@ -523,6 +544,7 @@
                 </div>
             </div>
 
+            <!-- LOG_003 -->
             <div class="post" data-category="原创音乐">
                 <div class="post-meta">
                     <span class="post-date">2026-10-18 / LOG_003</span>
@@ -534,19 +556,7 @@
                     <p>以后要是网站换背景音乐了，估计就会用这首。</p>
                 </div>
             </div>
-
-            <div class="post" data-category="系统">
-                <div class="post-meta">
-                    <span class="post-date">2026-10-18 / LOG_000</span>
-                    <span class="post-tag">系统 / 初始化</span>
-                </div>
-                <h2>终端正在初始化...</h2>
-                <div class="post-content">
-                    <p>这是一条测试日志。如果你看到了这条信息，说明网络连接正常，数据流运转良好。</p>
-                    <p>接下来这里会更新更多关于硬件折腾、游戏日常和 3D 建模的内容。</p>
-                    <p>感谢你的接入。</p>
-                </div>
-            </div>
+            
         </div>
 
         <!-- 日志页的留言板 -->
@@ -667,35 +677,35 @@
         }
 
         // ==========================================
-        // 模块 4：自动抓取最新博客到主页 (修复版)
+        // 模块 4：自动抓取最新博客到主页 (终极修复版)
         // ==========================================
         function loadLatestBlog() {
-            const latestPost = document.getElementById('latest-blog');
-            if (latestPost) {
-                // 直接读取同一页面里的 DOM 元素，速度极快，不会被拦截
-                const title = latestPost.querySelector('.post-title').innerText;
-                const date = latestPost.querySelector('.post-date').innerText;
-                const firstParagraph = latestPost.querySelector('.post-content p');
-                
-                let excerpt = firstParagraph ? firstParagraph.innerText : "点击查看全文...";
-                // 截取前 60 个字符作为摘要
-                if (excerpt.length > 60) excerpt = excerpt.substring(0, 60) + "...";
+            // 使用 setTimeout 延迟 200 毫秒，确保浏览器已经完全解析了底部的 HTML
+            setTimeout(() => {
+                const latestPost = document.getElementById('latest-blog');
+                if (latestPost) {
+                    const title = latestPost.querySelector('.post-title').innerText;
+                    const date = latestPost.querySelector('.post-date').innerText;
+                    const firstParagraph = latestPost.querySelector('.post-content p');
+                    
+                    let excerpt = firstParagraph ? firstParagraph.innerText : "点击查看全文...";
+                    if (excerpt.length > 60) excerpt = excerpt.substring(0, 60) + "...";
 
-                document.getElementById('latest-blog-container').innerHTML = `
-                    <a onclick="switchPage('blog')" class="blog-preview">
-                        <div class="blog-preview-date">${date}</div>
-                        <div class="blog-preview-title">${title}</div>
-                        <div class="blog-preview-excerpt">${excerpt}</div>
-                        <div class="blog-preview-read">阅读全文</div>
-                    </a>
-                `;
-            }
+                    document.getElementById('latest-blog-container').innerHTML = `
+                        <a onclick="switchPage('blog')" class="blog-preview">
+                            <div class="blog-preview-date">${date}</div>
+                            <div class="blog-preview-title">${title}</div>
+                            <div class="blog-preview-excerpt">${excerpt}</div>
+                            <div class="blog-preview-read">阅读全文</div>
+                        </a>
+                    `;
+                }
+            }, 200); 
         }
 
-        // 确保页面完全加载后再执行所有初始化
         window.onload = () => {
-            loadLatestBlog(); // 加载最新博客到主页
-            loadTwikoo('home'); // 加载主页的留言板
+            loadLatestBlog(); 
+            loadTwikoo('home'); 
         };
 
         // ==========================================
