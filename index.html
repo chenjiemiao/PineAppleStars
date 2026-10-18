@@ -7,7 +7,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
     <style>
         body {
-            background-image: url('https://raw.githubusercontent.com/chenjiemiao/PineAppleStars/refs/heads/main/bg/Stars-bg.jpg'); background-size: cover; background-position: center; background-attachment: fixed;
+            /* 相对路径 */
+            background-image: url('bg/Stars-bg.jpg'); background-size: cover; background-position: center; background-attachment: fixed;
             background-color: #0d1117; color: #c9d1d9; font-family: 'Courier New', Courier, monospace;
             height: 100vh; margin: 0; display: flex; flex-direction: column; justify-content: center; align-items: center;
             position: relative; overflow: hidden;
@@ -32,8 +33,8 @@
 </head>
 <body>
     <div class="overlay"></div>
-    <!-- 路径直接指向根目录图片 -->
-    <img src="PineAppleStars.png" alt="Logo" class="center-logo" id="mainLogo" onerror="this.style.display='none'">
+    <!-- 相对路径 -->
+    <img src="logo/菠萝Stars.png" alt="Logo" class="center-logo" id="mainLogo" onerror="this.style.display='none'">
     <div class="title-container"><div id="typewriter"></div></div>
     <div class="action-container" id="actionBox"><a href="app.html" class="enter-btn" id="enterBtn">[ 点击 ] 进入</a></div>
     
@@ -42,8 +43,7 @@
         <div class="settings"><input type="checkbox" id="muteCheckbox"><label for="muteCheckbox">禁止播放音乐</label></div>
         <button class="reset-btn" onclick="resetMemory()">[ 重置记忆 ]</button>
     </div>
-    <!-- 背景音乐路径 -->
-    <audio id="bgMusic" loop><source src="bgm.mp3" type="audio/mpeg"></audio>
+    <audio id="bgMusic" loop><source src="bgm/bgm.mp3" type="audio/mpeg"></audio>
 
     <script>
         const textToType = "System Initialized.\nWelcome to 🍍Stars.";
