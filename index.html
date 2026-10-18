@@ -3,683 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>🍍Stars_Station | 菠萝星空间站</title>
-    
+    <title>陈羯喵Client | 🍍Stars</title>
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
     <style>
-        @font-face { font-family: 'Share Tech Mono'; src: url('fonts/ShareTechMono.ttf') format('truetype'); }
-        
-        body { font-family: 'Segoe Script', 'Snell Roundhand', 'KaiTi', '楷体', cursive, sans-serif; }
-
-        .sys-logo, .nav-link, .status-text, .audio-toggle, .module-text h3, 
-        .log-header, .post-meta, .filter-btn, .sponsor-title, .sponsor-footer,
-        #clock, .profile-alias, .data-list span, .timeline-date, .archive-btn, .social-name {
-            font-family: 'Share Tech Mono', 'Courier New', Courier, monospace !important;
-        }
-
-        :root {
-            --bg-deep: #03050a; --pineapple-yellow: #FFD700; --phasma-cyan: #00E5FF;
-            --phasma-bright: #B2EBF2; --phasma-dim: rgba(0, 229, 255, 0.15);
-            --phasma-border: rgba(0, 229, 255, 0.4); --nv-green: #39FF14; --panel-bg: rgba(5, 10, 20, 0.75);
-        }
         body {
-            margin: 0; overflow: hidden;
-            /* 建议你重命名背景图，如果是 stars-bg.jpg 就改下面这行 */
+            /* 如果你改了背景图名字，记得改下面这行 */
             background-image: url('bg/stars-bg.jpg'); background-size: cover; background-position: center; background-attachment: fixed;
-            background-color: var(--bg-deep); color: var(--phasma-bright); user-select: none;
-            -webkit-overflow-scrolling: touch;
+            background-color: #0d1117; color: #c9d1d9; font-family: 'Courier New', Courier, monospace;
+            height: 100vh; margin: 0; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            position: relative; overflow: hidden;
         }
-        a { text-decoration: none; color: inherit; }
+        .overlay { position: fixed; inset: 0; background-color: rgba(0, 0, 0, 0.7); z-index: -1; }
+        .title-container { min-height: 120px; display: flex; align-items: center; justify-content: center; margin-bottom: 30px; padding: 0 20px; }
+        #typewriter { font-family: 'Ma Shan Zheng', cursive; font-size: 2.2em; color: #58a6ff; letter-spacing: 2px; text-align: center; line-height: 1.5; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); white-space: pre-wrap; }
+        .cursor { display: inline-block; width: 3px; background-color: #58a6ff; animation: blink 0.8s infinite; margin-left: 5px; vertical-align: bottom; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        .action-container { display: flex; justify-content: center; opacity: 0; transition: opacity 1s ease; }
+        .enter-btn { display: inline-block; text-decoration: none; color: #ffd700; font-size: 1.5em; padding: 15px 40px; border: 2px solid #ffd700; border-radius: 5px; background: rgba(255, 215, 0, 0.05); box-shadow: 0 0 10px rgba(255, 215, 0, 0.2); transition: all 0.3s ease; letter-spacing: 4px; animation: pulse 2s infinite; cursor: pointer; }
+        .enter-btn:hover { background: #ffd700; color: #000; box-shadow: 0 0 30px rgba(255, 215, 0, 0.8); transform: scale(1.05); animation: none; }
+        @keyframes pulse { 0% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.2); } 50% { box-shadow: 0 0 25px rgba(255, 215, 0, 0.6); } 100% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.2); } }
+        .center-logo { width: 100px; height: 100px; object-fit: contain; margin-bottom: 20px; opacity: 0; transition: opacity 1s ease; }
+        .bottom-bar { position: absolute; bottom: 30px; width: 100%; display: flex; justify-content: center; gap: 20px; box-sizing: border-box; color: #8b949e; font-size: 0.9em; }
+        .settings { display: flex; align-items: center; gap: 8px; }
+        .settings input[type="checkbox"] { cursor: pointer; accent-color: #ffd700; }
+        .settings label { cursor: pointer; user-select: none; }
         
-        #signal-bg { position: fixed; inset: 0; z-index: 0; background: radial-gradient(circle at 30% 20%, rgba(0, 229, 255, 0.05), transparent 50%), radial-gradient(circle at 70% 80%, rgba(255, 215, 0, 0.03), transparent 60%), rgba(3, 5, 10, 0.65); animation: signal-pulse 15s infinite alternate ease-in-out; }
-        @keyframes signal-pulse { 0% { opacity: 0.7; transform: scale(1); } 100% { opacity: 1; transform: scale(1.1); } }
-        .scanlines { position: fixed; inset: 0; z-index: 10; pointer-events: none; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.35) 50%), linear-gradient(90deg, rgba(0, 229, 255, 0.02), rgba(0, 0, 0, 0.01), rgba(255, 0, 0, 0.02)); background-size: 100% 4px, 4px 100%; opacity: 0.7; }
-
-        /* 顶部导航 */
-        .hud-header { position: fixed; top: 0; left: 0; width: 100%; height: 85px; padding: 0 50px; box-sizing: border-box; display: flex; justify-content: space-between; align-items: center; z-index: 50; background: linear-gradient(to bottom, rgba(5,10,20,0.9), rgba(0,0,0,0)); backdrop-filter: blur(8px); border-bottom: 1px solid var(--phasma-border); box-shadow: 0 10px 30px rgba(0,0,0,0.6); }
-        .hud-left { display: flex; align-items: center; gap: 40px; }
-        .sys-logo { font-size: 1.6rem; letter-spacing: 2px; color: #fff; text-shadow: 0 0 15px var(--pineapple-yellow); border-right: 2px solid var(--phasma-border); padding-right: 30px; font-weight: bold; display: flex; align-items: center; gap: 12px; cursor: pointer; }
-        .sys-logo img { width: 35px; height: 35px; object-fit: contain; }
-        .sys-logo span { background: var(--pineapple-yellow); color: #000; padding: 3px 8px; font-size: 0.5em; border-radius: 3px; font-weight: 900; box-shadow: 0 0 15px var(--pineapple-yellow); }
-        .sys-nav { display: flex; gap: 5px; }
-        .nav-link { padding: 10px 18px; font-size: 1.1rem; color: rgba(178, 235, 242, 0.6); transition: all 0.3s; position: relative; letter-spacing: 1px; cursor: pointer; }
-        .nav-link::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 0; height: 2px; background: var(--pineapple-yellow); transition: width 0.3s; box-shadow: 0 0 10px var(--pineapple-yellow); }
-        .nav-link:hover::after, .nav-link.active::after { width: 80%; }
-        .nav-link:hover, .nav-link.active { color: #fff; text-shadow: 0 0 8px var(--pineapple-yellow); background: linear-gradient(to top, rgba(255, 215, 0, 0.15), transparent); }
-        .hud-right { display: flex; align-items: center; gap: 20px; }
-        .status-text { color: var(--pineapple-yellow); font-weight: bold; letter-spacing: 2px; font-size: 0.9rem; display: flex; align-items: center; gap: 8px; }
-        .status-text::before { content: ''; display: inline-block; width: 8px; height: 8px; background: var(--nv-green); border-radius: 50%; animation: blink 1.5s infinite; box-shadow: 0 0 8px var(--nv-green); }
-        .audio-toggle { background: transparent; border: 1px solid var(--phasma-border); color: var(--phasma-cyan); padding: 4px 10px; border-radius: 3px; font-size: 0.85rem; cursor: pointer; transition: 0.3s; letter-spacing: 1px; }
-        .audio-toggle:hover { background: rgba(0, 229, 255, 0.1); border-color: var(--phasma-cyan); }
-        .audio-toggle.off { color: #ff3333; border-color: rgba(255, 51, 51, 0.5); }
-        .audio-toggle.off:hover { background: rgba(255, 51, 51, 0.1); border-color: #ff3333; }
-
-        /* 页面切换控制 */
-        .page-section { display: none; height: 100vh; overflow-y: auto; position: relative; z-index: 20; box-sizing: border-box; padding-top: 110px; padding-bottom: 120px; }
-        .page-section.active { display: block; }
-
-        /* --- 底部社交超大按钮 --- */
-        .bottom-social-panel { position: fixed; bottom: 0; left: 0; width: 100%; padding: 0 20px 20px; box-sizing: border-box; z-index: 100; display: flex; justify-content: center; }
-        .social-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; width: 100%; max-width: 800px; }
-        .social-btn { display: flex; align-items: center; justify-content: center; gap: 15px; background: var(--panel-bg); border: 1px solid var(--phasma-border); padding: 15px 20px; border-radius: 6px; color: #ccc; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); position: relative; overflow: hidden; clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px); box-shadow: 0 5px 15px rgba(0,0,0,0.5); backdrop-filter: blur(10px); }
-        .social-btn::before { content: ''; position: absolute; inset: 0; background: linear-gradient(45deg, transparent, rgba(255,255,255,0.05), transparent); z-index: 0; transition: 0.5s; }
-        .social-btn:hover::before { transform: translateX(100%); }
-        .social-icon-img { width: 32px; height: 32px; object-fit: contain; z-index: 1; transition: 0.3s; filter: drop-shadow(0 0 5px rgba(0,0,0,0.5)); }
-        .social-name { font-size: 1.1rem; font-weight: bold; letter-spacing: 1px; z-index: 1; }
-        .social-btn.bili:hover { border-color: #FB7299; color: #FB7299; box-shadow: 0 0 20px rgba(251, 114, 153, 0.3); transform: translateY(-5px); }
-        .social-btn.bili:hover .social-icon-img { filter: drop-shadow(0 0 10px #FB7299); }
-        .social-btn.xhs:hover { border-color: #FF2442; color: #FF2442; box-shadow: 0 0 20px rgba(255, 36, 66, 0.3); transform: translateY(-5px); }
-        .social-btn.xhs:hover .social-icon-img { filter: drop-shadow(0 0 10px #FF2442); }
-        .social-btn.netease:hover { border-color: #C20C0C; color: #C20C0C; box-shadow: 0 0 20px rgba(194, 12, 12, 0.3); transform: translateY(-5px); }
-        .social-btn.netease:hover .social-icon-img { filter: drop-shadow(0 0 10px #C20C0C); }
-
-        /* --- 主页样式 --- */
-        .main-container { max-width: 1200px; margin: 0 auto; width: 94%; display: flex; flex-direction: column; gap: 30px; }
-        .log-wrapper { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 20px; min-height: 200px; }
-        .log-box { background: var(--panel-bg); border: 1px solid var(--phasma-border); border-radius: 4px; padding: 20px 30px; position: relative; overflow: hidden; backdrop-filter: blur(10px); box-shadow: inset 0 0 20px rgba(0,0,0,0.8), 0 10px 30px rgba(0,0,0,0.5); display: flex; flex-direction: column; }
-        .log-header { font-size: 1rem; color: var(--pineapple-yellow); border-bottom: 1px solid var(--phasma-dim); padding-bottom: 12px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; letter-spacing: 2px; flex-shrink: 0; }
-        .log-content { font-size: 1.6rem; line-height: 1.4; color: #ddd; flex: 1; overflow-y: auto; text-shadow: 0 0 2px rgba(0,0,0,0.8); }
-        .log-content::-webkit-scrollbar { width: 4px; }
-        .log-content::-webkit-scrollbar-thumb { background: var(--phasma-dim); border-radius: 2px; }
-        .cursor { display: inline-block; width: 8px; height: 16px; background: var(--pineapple-yellow); animation: blink 1s infinite; vertical-align: middle; margin-left: 4px; }
-        .blog-preview { text-decoration: none; display: flex; flex-direction: column; height: 100%; transition: 0.3s; padding: 5px; cursor: pointer; }
-        .blog-preview:hover { background: rgba(255, 215, 0, 0.05); border-radius: 4px; }
-        .blog-preview-title { font-size: 2.2rem; color: #fff; margin-bottom: 8px; text-shadow: 0 0 8px rgba(255,215,0,0.3); transition: 0.3s; line-height: 1.2;}
-        .blog-preview:hover .blog-preview-title { color: var(--pineapple-yellow); }
-        .blog-preview-date { font-size: 0.9rem; color: var(--phasma-cyan); margin-bottom: 10px; }
-        .blog-preview-excerpt { font-size: 1.4rem; color: #aaa; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; flex: 1; }
-        .blog-preview-read { font-size: 0.9rem; color: var(--pineapple-yellow); margin-top: 10px; display: flex; align-items: center; gap: 5px; opacity: 0.8; transition: 0.3s; }
-        .blog-preview:hover .blog-preview-read { opacity: 1; }
-        .blog-preview-read::after { content: '->'; transition: 0.3s; }
-        .blog-preview:hover .blog-preview-read::after { transform: translateX(5px); }
-
-        .modules-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
-        .module-btn { background: rgba(3, 10, 20, 0.6); border: 1px solid var(--phasma-dim); backdrop-filter: blur(5px); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); position: relative; padding: 20px 10px; gap: 15px; clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px); }
-        .module-btn::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, transparent, rgba(255, 215, 0, 0.05)); z-index: 0; }
-        .module-btn:hover { background: rgba(255, 215, 0, 0.1); border-color: var(--pineapple-yellow); transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.6); }
-        .module-btn img { width: 80px; height: 80px; object-fit: contain; z-index: 2; transition: transform 0.3s ease; filter: drop-shadow(0 0 10px rgba(0,0,0,0.5)); }
-        .module-btn:hover img { transform: scale(1.1); }
-        .module-btn img.rounded { border-radius: 12px; }
-        .module-btn .emoji-icon { font-size: 4rem; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; z-index: 2; transition: transform 0.3s ease; filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.3)); }
-        .module-btn:hover .emoji-icon { transform: scale(1.1); }
-        .module-text { z-index: 2; display: flex; flex-direction: column; text-align: center; }
-        .module-text h3 { margin: 0; font-size: 1.3rem; color: #fff; transition: 0.3s; letter-spacing: 1px; }
-        .module-text span { font-size: 1.1rem; color: #999; margin-top: 6px; transition: 0.3s; }
-        .module-btn:hover .module-text h3 { color: var(--pineapple-yellow); text-shadow: 0 0 10px var(--pineapple-yellow); }
-        .module-btn:hover .module-text span { color: #fff; }
-        .module-btn.disabled { cursor: not-allowed; opacity: 0.6; filter: grayscale(0.8); }
-        .module-btn.disabled:hover { background: rgba(3, 10, 20, 0.6); border-color: var(--phasma-dim); transform: none; box-shadow: none; }
-        .module-btn.disabled:hover img, .module-btn.disabled:hover .emoji-icon { transform: none; }
-        .module-btn.disabled:hover .module-text h3 { color: #fff; text-shadow: none; }
-        .module-btn.disabled .module-text span { color: #ff3333; font-weight: bold; text-shadow: 0 0 5px rgba(255, 51, 51, 0.5); }
-
-        /* --- 博客页样式 --- */
-        .blog-container { max-width: 900px; margin: 0 auto; padding: 0 20px; }
-        .filter-bar { display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 30px; background: var(--panel-bg); padding: 15px 20px; border-radius: 4px; border: 1px solid var(--phasma-border); backdrop-filter: blur(10px); }
-        .filter-btn { background: transparent; border: 1px solid var(--phasma-dim); color: #999; padding: 6px 15px; border-radius: 3px; cursor: pointer; font-size: 1rem; transition: 0.3s; letter-spacing: 1px; }
-        .filter-btn:hover { border-color: var(--phasma-cyan); color: var(--phasma-cyan); }
-        .filter-btn.active { background: rgba(255, 215, 0, 0.15); border-color: var(--pineapple-yellow); color: var(--pineapple-yellow); text-shadow: 0 0 8px rgba(255,215,0,0.5); font-weight: bold; }
-        .post { background: var(--panel-bg); border: 1px solid var(--phasma-border); padding: 30px 40px; margin-bottom: 30px; border-radius: 4px; backdrop-filter: blur(10px); box-shadow: 0 10px 30px rgba(0,0,0,0.6); position: relative; transition: all 0.3s; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%); animation: fade-in 0.5s ease; }
-        @keyframes fade-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .post:hover { border-color: var(--pineapple-yellow); box-shadow: 0 15px 40px rgba(255, 215, 0, 0.1); }
-        .post::before { content: ''; position: absolute; top: 0; left: 0; width: 40px; height: 3px; background: var(--pineapple-yellow); box-shadow: 0 0 10px var(--pineapple-yellow); }
-        .post-meta { display: flex; justify-content: space-between; align-items: center; color: var(--phasma-cyan); font-size: 0.9rem; margin-bottom: 15px; letter-spacing: 1px; }
-        .post-date { color: var(--phasma-cyan); }
-        .post-tag { background: rgba(0, 229, 255, 0.1); padding: 2px 8px; border-radius: 3px; border: 1px solid var(--phasma-dim); }
-        .post h2 { margin: 0 0 20px 0; font-size: 2.5rem; color: #fff; text-shadow: 0 0 10px rgba(255,215,0,0.3); line-height: 1.2; }
-        .post-content { color: #ccc; line-height: 1.5; font-size: 1.6rem; }
-        .post-content p { margin-bottom: 15px; }
-
-        /* --- 赞助页样式 --- */
-        .sponsor-container { max-width: 800px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: center; align-items: center; min-height: 50vh; }
-        .sponsor-terminal { background: var(--panel-bg); border: 1px solid var(--pineapple-yellow); padding: 40px; border-radius: 8px; text-align: center; position: relative; box-shadow: 0 0 50px rgba(255, 215, 0, 0.1); backdrop-filter: blur(15px); clip-path: polygon(30px 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%, 0 30px); max-width: 500px; width: 100%; }
-        .sponsor-terminal::before { content: ''; position: absolute; top: 0; left: 0; width: 60px; height: 4px; background: var(--pineapple-yellow); box-shadow: 0 0 15px var(--pineapple-yellow); }
-        .sponsor-title { font-size: 2rem; color: var(--pineapple-yellow); margin-bottom: 10px; font-weight: bold; letter-spacing: 3px; text-shadow: 0 0 10px rgba(255,215,0,0.5); }
-        .sponsor-desc { font-size: 1.5rem; color: #aaa; margin-bottom: 30px; line-height: 1.5; }
-        .sponsor-img-box { position: relative; display: inline-block; padding: 15px; background: rgba(255,255,255,0.9); border-radius: 8px; box-shadow: 0 0 20px rgba(0, 229, 255, 0.3); }
-        .sponsor-img { width: 250px; max-width: 100%; display: block; }
-        .sponsor-footer { margin-top: 25px; font-size: 1rem; color: #666; letter-spacing: 1px; }
-
-        /* --- 个人档案页样式 --- */
-        .profile-container { max-width: 900px; margin: 0 auto; padding: 0 20px; display: grid; grid-template-columns: 1fr 1.5fr; gap: 30px; }
-        
-        .profile-sidebar { background: var(--panel-bg); border: 1px solid var(--phasma-border); padding: 30px 20px; border-radius: 4px; backdrop-filter: blur(10px); text-align: center; clip-path: polygon(20px 0, 100% 0, 100% 100%, 0 100%, 0 20px); display: flex; flex-direction: column;}
-        .profile-avatar { width: 120px; height: 120px; object-fit: contain; border-radius: 12px; border: 2px solid var(--pineapple-yellow); margin: 0 auto 15px; box-shadow: 0 0 20px rgba(255,215,0,0.3); }
-        .profile-name { font-size: 2.5rem; color: #fff; margin-bottom: 5px; font-weight: bold; line-height: 1.2; }
-        .profile-alias { font-size: 1rem; color: var(--phasma-cyan); margin-bottom: 20px; }
-        
-        .archive-btn {
-            display: block; width: 100%; background: rgba(255, 215, 0, 0.1); border: 1px solid var(--pineapple-yellow);
-            color: var(--pineapple-yellow); padding: 10px; margin-bottom: 20px; border-radius: 4px; cursor: pointer;
-            font-size: 1rem; font-weight: bold; transition: 0.3s; text-align: center;
-        }
-        .archive-btn:hover { background: var(--pineapple-yellow); color: #000; box-shadow: 0 0 15px var(--pineapple-yellow); }
-
-        .profile-info { text-align: left; font-size: 1.1rem; color: #aaa; line-height: 1.8; border-top: 1px dashed var(--phasma-dim); padding-top: 15px; flex: 1; word-break: break-all;}
-        .profile-info span { color: var(--pineapple-yellow); }
-
-        .profile-main { display: flex; flex-direction: column; gap: 20px; }
-        .profile-card { background: var(--panel-bg); border: 1px solid var(--phasma-border); padding: 25px 30px; border-radius: 4px; backdrop-filter: blur(10px); clip-path: polygon(0 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%); }
-        .profile-card h3 { margin: 0 0 15px 0; font-size: 1.6rem; color: var(--pineapple-yellow); border-bottom: 1px solid var(--phasma-dim); padding-bottom: 10px; letter-spacing: 1px; display: flex; align-items: center; gap: 10px; }
-        .profile-card p { color: #ccc; line-height: 1.5; font-size: 1.5rem; margin-bottom: 10px; }
-        
-        .data-list { list-style: none; padding: 0; margin: 0; font-size: 1.4rem; }
-        .data-list li { margin-bottom: 10px; color: #ccc; display: flex; justify-content: space-between; border-bottom: 1px dashed rgba(255,255,255,0.05); padding-bottom: 5px; }
-        .data-list span { color: var(--phasma-cyan); font-size: 1rem; }
-
-        /* --- 头像档案馆 (模态框 & 时间轴) --- */
-        #archive-modal { position: fixed; inset: 0; z-index: 10000; background: rgba(0, 0, 0, 0.85); display: none; justify-content: center; align-items: center; backdrop-filter: blur(10px); padding: 20px; box-sizing: border-box; }
-        #archive-modal.active { display: flex; }
-        .archive-box { background: var(--panel-bg); border: 1px solid var(--phasma-cyan); width: 100%; max-width: 800px; max-height: 85vh; border-radius: 8px; overflow-y: auto; padding: 30px 40px; position: relative; box-shadow: 0 0 50px rgba(0, 229, 255, 0.2); clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px); animation: modal-in 0.3s ease; }
-        @keyframes modal-in { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-        .archive-box::-webkit-scrollbar { width: 6px; }
-        .archive-box::-webkit-scrollbar-thumb { background: var(--phasma-cyan); border-radius: 3px; }
-        .archive-title { font-size: 1.8rem; color: var(--phasma-cyan); border-bottom: 1px solid var(--phasma-dim); padding-bottom: 15px; margin-bottom: 25px; text-shadow: 0 0 10px rgba(0,229,255,0.5); display: flex; justify-content: space-between; align-items: center;}
-        .close-btn { cursor: pointer; color: #ff3333; font-size: 1.2rem; transition: 0.3s; }
-        .close-btn:hover { text-shadow: 0 0 10px #ff3333; }
-        .timeline { position: relative; margin-top: 10px; padding-left: 20px; border-left: 2px dashed var(--phasma-border); }
-        .timeline-item { position: relative; margin-bottom: 25px; display: flex; gap: 20px; align-items: flex-start; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.05); }
-        .timeline-item::before { content: ''; position: absolute; left: -27px; top: 25px; width: 10px; height: 10px; background: var(--pineapple-yellow); border-radius: 50%; box-shadow: 0 0 10px var(--pineapple-yellow); border: 2px solid var(--bg-deep); }
-        .timeline-img { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; border: 1px solid var(--phasma-cyan); background: rgba(0,0,0,0.5); flex-shrink: 0; transition: 0.3s; }
-        .timeline-img:hover { transform: scale(1.1); box-shadow: 0 0 15px var(--phasma-cyan); }
-        .timeline-content { flex: 1; }
-        .timeline-date { color: var(--pineapple-yellow); font-size: 0.9rem; margin-bottom: 5px; font-weight: bold; }
-        .timeline-text { color: #ddd; font-size: 1.3rem; line-height: 1.3; }
-        .timeline-text .retire { color: #ff3333; font-size: 1rem; display: block; margin-top: 5px; }
-
-        @media screen and (max-width: 768px) {
-            .hud-header { height: auto; padding: 15px 20px; flex-direction: column; align-items: stretch; gap: 15px; }
-            .hud-left { flex-direction: column; width: 100%; gap: 15px; align-items: stretch; }
-            .sys-logo { border-right: none; padding-right: 0; font-size: 1.5rem; justify-content: space-between; border-bottom: 1px solid var(--phasma-dim); padding-bottom: 10px; }
-            .sys-nav { overflow-x: auto; white-space: nowrap; padding-bottom: 5px; gap: 8px; scrollbar-width: none; }
-            .sys-nav::-webkit-scrollbar { display: none; }
-            .nav-link { flex-shrink: 0; font-size: 1rem; padding: 8px 15px; border: 1px solid var(--phasma-dim); background: rgba(0,0,0,0.5); }
-            .nav-link::after { display: none; }
-            .hud-right { display: none; }
-            .page-section { padding-top: 160px; padding-bottom: 100px; }
-            .log-wrapper { grid-template-columns: 1fr; gap: 15px; }
-            .log-box { min-height: 160px; padding: 15px 20px; }
-            .modules-grid { grid-template-columns: 1fr; gap: 15px; }
-            .module-btn { flex-direction: row; justify-content: flex-start; padding: 15px 20px; height: 80px; }
-            .module-btn img, .module-btn .emoji-icon { width: 50px; height: 50px; font-size: 2.5rem; }
-            .module-text { text-align: left; }
-            .module-text h3 { font-size: 1.2rem; }
-            .blog-container { margin-top: 0; padding: 0 15px; }
-            .post { padding: 20px; margin-bottom: 20px; }
-            .post h2 { font-size: 2rem; }
-            .post-meta { flex-direction: column; align-items: flex-start; gap: 8px; }
-            .filter-bar { gap: 10px; padding: 10px; margin-bottom: 20px; }
-            .filter-btn { font-size: 0.9rem; padding: 6px 12px; }
-            .sponsor-terminal { padding: 25px 20px; }
-            .sponsor-title { font-size: 1.5rem; }
-            .sponsor-desc { font-size: 1.2rem; margin-bottom: 20px; }
-            .sponsor-img { width: 200px; }
-            .profile-container { grid-template-columns: 1fr; gap: 20px; padding: 0 15px; }
-            .profile-sidebar { padding: 20px; }
-            .profile-card { padding: 20px; }
-            .log-content, .post-content, .profile-card p { font-size: 1.4rem; }
-            .data-list { font-size: 1.2rem; }
-            .data-list span { font-size: 0.9rem; }
-            .archive-box { padding: 20px; }
-            .timeline-item { flex-direction: column; gap: 10px; }
-            .timeline-img { width: 100%; height: 150px; object-fit: contain; }
-            .timeline-text { font-size: 1.1rem; }
-            .bottom-social-panel { padding: 0 10px 15px; }
-            .social-grid { gap: 10px; }
-            .social-btn { flex-direction: column; gap: 5px; padding: 12px 5px; }
-            .social-icon-img { width: 28px; height: 28px; }
-            .social-name { font-size: 0.8rem; }
-        }
+        /* 新增的极客重置按钮 */
+        .reset-btn { background: transparent; border: 1px solid #8b949e; color: #8b949e; padding: 2px 8px; border-radius: 3px; cursor: pointer; font-size: 0.9em; transition: 0.3s; }
+        .reset-btn:hover { border-color: #ff3333; color: #ff3333; box-shadow: 0 0 10px rgba(255, 51, 51, 0.3); }
     </style>
 </head>
 <body>
-
-    <div id="signal-bg"></div>
-    <div class="scanlines"></div>
-
-    <iframe id="music-frame" src="music.html" style="display:none;"></iframe>
-
-    <!-- 头像档案馆模态框 -->
-    <div id="archive-modal" onclick="closeArchive(event)">
-        <div class="archive-box">
-            <div class="archive-title">
-                <span>🧬 AVATAR_ARCHIVE // 头像进化史</span>
-                <span class="close-btn" onclick="closeArchive(event)">[ X 关闭 ]</span>
-            </div>
-            <div class="timeline">
-                <!-- 2019 -->
-                <div class="timeline-item">
-                    <img src="headpic/2019.png" alt="2019" class="timeline-img" onerror="this.style.display='none'">
-                    <div class="timeline-content">
-                        <div class="timeline-date">2019 / 史前时代</div>
-                        <div class="timeline-text">我印象里我从未使用过此图片作为logo，何时绘制的此图已无从考证。</div>
-                    </div>
-                </div>
-
-                <!-- 2020 -->
-                <div class="timeline-item">
-                    <img src="headpic/2020.png" alt="2020" class="timeline-img" onerror="this.style.display='none'">
-                    <div class="timeline-content">
-                        <div class="timeline-date">2019 - 2023 / 陈陈喵时代</div>
-                        <div class="timeline-text">陈陈喵创立时的头像。当时还没创立任何一个社交平台的账号，但是先接触了编程猫，为了给自己的作品搞点什么开场工作室声明就随便绘制了这个图片。<span class="retire">> 退役原因：自然退役</span></div>
-                    </div>
-                </div>
-
-                <!-- 2021 -->
-                <div class="timeline-item">
-                    <img src="headpic/2021.png" alt="2021" class="timeline-img" onerror="this.style.display='none'">
-                    <div class="timeline-content">
-                        <div class="timeline-date">2022 / 废弃的试验品</div>
-                        <div class="timeline-text">陈陈喵替换为陈羯喵的一年！与下图同一时间绘制，最后遭废弃。<span class="retire">> 退役原因：直接废弃</span></div>
-                    </div>
-                </div>
-
-                <!-- 2023-1 -->
-                <div class="timeline-item">
-                    <img src="headpic/2023-1.jpg" alt="2023-1" class="timeline-img" onerror="this.style.display='none'">
-                    <div class="timeline-content">
-                        <div class="timeline-date">2023 / 社交元年</div>
-                        <div class="timeline-text">我创立自己的社交帐号的一年！此图只存在了三个月便被替代。<span class="retire">> 退役原因：自然退役</span></div>
-                    </div>
-                </div>
-
-                <!-- 2023-2 -->
-                <div class="timeline-item">
-                    <img src="headpic/2023-2.png" alt="2023-2" class="timeline-img" onerror="this.style.display='none'">
-                    <div class="timeline-content">
-                        <div class="timeline-date">2023 - 2026 / 最钟爱但被迫退役</div>
-                        <div class="timeline-text">我使用时间最久的头像！虽然比较难看但是这是我之前最钟爱的头像之一。<span class="retire">> 退役原因：偶然发现旋转90°看起来就像一个小人跪地上放屁</span></div>
-                    </div>
-                </div>
-
-                <!-- 2026 -->
-                <div class="timeline-item">
-                    <img src="headpic/2026.jpg" alt="2026" class="timeline-img" onerror="this.style.display='none'">
-                    <div class="timeline-content">
-                        <div class="timeline-date">2026 - 至今 / 现在的我</div>
-                        <div class="timeline-text">目前我最喜爱的头像，为此我花了三天时间来建模，未来很长一段时间内没有更换的打算。<span class="retire" style="color: var(--nv-green);">> 状态：现役服役中</span></div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="overlay"></div>
+    <!-- 图片路径已统一 -->
+    <img src="logo/PineAppleStars.png" alt="Logo" class="center-logo" id="mainLogo" onerror="this.style.display='none'">
+    <div class="title-container"><div id="typewriter"></div></div>
+    <div class="action-container" id="actionBox"><a href="app.html" class="enter-btn" id="enterBtn">[ 点击 ] 进入</a></div>
+    
+    <div class="bottom-bar">
+        <div class="settings"><input type="checkbox" id="skipCheckbox"><label for="skipCheckbox">跳过开场动画</label></div>
+        <div class="settings"><input type="checkbox" id="muteCheckbox"><label for="muteCheckbox">禁止播放音乐</label></div>
+        <!-- 新增重置按钮 -->
+        <button class="reset-btn" onclick="resetMemory()">[ 重置记忆 ]</button>
     </div>
-
-    <div class="hud-header">
-        <div class="hud-left">
-            <div class="sys-logo" onclick="switchPage('home')">
-                <!-- 路径已修改为你重命名后的名字 -->
-                <img src="logo/PineAppleStars.png" alt="Logo" onerror="this.style.display='none'"> 
-                🍍Stars_Station <span>v1.0</span>
-            </div>
-            <nav class="sys-nav">
-                <a onclick="switchPage('home')" id="nav-home" class="nav-link active">首页</a>
-                <a onclick="switchPage('stars')" id="nav-stars" class="nav-link">🍍Stars</a>
-                <a onclick="switchPage('client')" id="nav-client" class="nav-link">陈羯喵Client</a>
-                <a onclick="switchPage('blog')" id="nav-blog" class="nav-link">日志</a>
-                <a onclick="switchPage('sponsor')" id="nav-sponsor" class="nav-link">赞助！</a>
-            </nav>
-        </div>
-        <div class="hud-right">
-            <div class="status-text">STATION_ONLINE</div>
-            <button id="audio-btn" class="audio-toggle">[ AUDIO: ON ]</button>
-        </div>
-    </div>
-
-    <!-- ==================== 主页区域 ==================== -->
-    <div id="page-home" class="page-section active">
-        <div class="main-container">
-            <div class="log-wrapper">
-                <div class="log-box">
-                    <div class="log-header"><span>SYSTEM_LOG</span><span id="clock">00:00:00</span></div>
-                    <div class="log-content" id="typewriter"></div>
-                </div>
-                <div class="log-box" style="border-color: var(--pineapple-yellow); box-shadow: inset 0 0 20px rgba(0,0,0,0.8), 0 0 20px rgba(255,215,0,0.1);">
-                    <div class="log-header" style="color: #fff; border-bottom-color: var(--pineapple-yellow);"><span>LATEST_BLOG</span><span style="font-size:0.8em; color:var(--pineapple-yellow);">📝</span></div>
-                    <div class="log-content" id="latest-blog-container"></div>
-                </div>
-            </div>
-
-            <div class="modules-grid">
-                <a onclick="switchPage('stars')" class="module-btn">
-                    <img src="logo/PineAppleStars.png" alt="🍍Stars">
-                    <div class="module-text"><h3>🍍Stars</h3><span>频道与神话宇宙</span></div>
-                </a>
-                
-                <a onclick="switchPage('client')" class="module-btn">
-                    <img src="logo/CJM.jpg" alt="Client" class="rounded">
-                    <div class="module-text"><h3>陈羯喵Client</h3><span>个人档案与日常</span></div>
-                </a>
-                
-                <a onclick="switchPage('blog')" class="module-btn">
-                    <div class="emoji-icon">📝</div>
-                    <div class="module-text"><h3>日志笔记</h3><span>站长随笔与记录</span></div>
-                </a>
-                <a href="javascript:void(0);" class="module-btn disabled">
-                    <div class="emoji-icon">🌍</div>
-                    <div class="module-text"><h3>MC服务器</h3><span>[ 暂未开放 ]</span></div>
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <!-- ==================== 🍍Stars 频道页 ==================== -->
-    <div id="page-stars" class="page-section">
-        <div class="profile-container">
-            <div class="profile-sidebar">
-                <!-- 路径已修改 -->
-                <img src="logo/PineAppleStars.png" alt="Stars Avatar" class="profile-avatar" onerror="this.src='https://placehold.co/120x120/03050A/FFD700?text=🍍'">
-                <div class="profile-name">🍍Stars</div>
-                <div class="profile-alias">[ 硬核创作区 ]</div>
-                
-                <div class="profile-info">
-                    <div><span>></span> 包含内容: 科技 / 硬件 / 作曲</div>
-                    <div><span>></span> 状态: 持续产出中</div>
-                </div>
-            </div>
-
-            <div class="profile-main">
-                <div class="profile-card">
-                    <h3><span>🌌</span> 菠萝星的起源</h3>
-                    <p>“菠萝”最开始只是我的外号。有天上课无聊，我瞎编出了一个“菠萝星”的宇宙：菠萝神和黑菠萝神（我那个姓孙的好哥们）相爱相杀，最终走向对立。</p>
-                    <p>后来，这个脑洞变成了我的频道品牌，并分化成了两个截然不同的模块。这里是 <strong>🍍Stars</strong>。</p>
-                </div>
-
-                <div class="profile-card">
-                    <h3><span>🛠</span> 科技与搞机频道</h3>
-                    <p>这里的我是硬核的。我会在这里记录折腾硬件的过程、写代码的日常，以及那期《14岁，压岁钱开MC服务器》的完整企划。</p>
-                </div>
-
-                <div class="profile-card">
-                    <h3><span>🎵</span> 梦核作曲基地</h3>
-                    <p>除了搞机，这里也是我的音乐自留地。我会在这里发布用 Am7-Fmaj7 写的梦核音乐，以及关于 3D 建模的各种脑洞。</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ==================== 陈羯喵Client 个人档案页 ==================== -->
-    <div id="page-client" class="page-section">
-        <div class="profile-container">
-            <div class="profile-sidebar">
-                <img src="headpic/2026.jpg" alt="Avatar" class="profile-avatar" onerror="this.src='logo/CJM.jpg'">
-                <div class="profile-name">陈羯喵Client</div>
-                <div class="profile-alias">[ 🍍Stars大菠萝神 ]</div>
-                
-                <button class="archive-btn" onclick="openArchive()">[ 查阅头像进化史 ]</button>
-
-                <div class="profile-info">
-                    <div><span>></span> 真名: 姓陈</div>
-                    <div><span>></span> 星座♑: 摩羯座 (羯)</div>
-                    <div><span>></span> 外号: 菠萝</div>
-                    <div><span>></span> QQ🐧: 1961643668</div>
-                    <div><span>></span> wx: ChenjiemiaoClient</div>
-                    <div><span>></span> E-mail📧: 1961643668@qq.com</div>
-                    <div><span>></span> (性别是男的没错)</div>
-                    <div><span>></span> 生日: 2012/12/30</div>
-                    <div><span>></span> 状态: 上课睡觉ing...</div>
-                </div>
-            </div>
-
-            <div class="profile-main">
-                <div class="profile-card">
-                    <h3><span>🐱</span> 关于“陈羯喵”</h3>
-                    <p>最早我其实叫“陈陈喵”，但那是2022年的事情了，当时就是随便给自己起个网名因为我姓陈然后自认为喜欢猫，虽然后面发现我好像最喜欢的并不是猫。</p>
-                    <p>后来觉得名字好蠢（2023），结合我摩羯座，就把“羯”字融进去了，因为“陈摩喵”不顺口。所以有了现在的名字。尤其是当我发现这个名字全网不重名。</p>
-                </div>
-
-                <div class="profile-card">
-                    <h3><span>🎮</span> 个人终端区</h3>
-                    <p>如果你更喜欢看游戏日常和整活，那这里就是你的地盘。除了搞机和作曲，我大部分时间都在这里当个人：在迷你世界里愉快的炸图😋😋😋恐鬼症最高难度，启动！😡😡😡致命公司日食Art😍😍😍CsGO咋这么好玩，发把刀呗大哥😋😋😋</p>
-                </div>
-
-                <div class="profile-card">
-                    <h3><span>🛠</span> 技能与愿望清单</h3>
-                    <ul class="data-list">
-                        <li>CS2 最高段位 <span>[ 金C+ (目前渡劫中) ]</span></li>
-                        <li>迷你号 <span>[ 1458017078 ]</span></li>
-                        <li>核心技能 <span>[ 3D建模 / 剪辑 / 开服 / 写代码&编程 / 计算机硬件 ]</span></li>
-                        <li>现役主力机 <span>[ AMD R5 5600 + RTX 3060 Ti ]</span></li>
-                        <li>梦中情卡 <span>[ RTX 5070 ]</span></li>
-                        <li>梦中情机 <span>[ 大疆 Pocket 3 ]</span></li>
-                        <li>玄学追求 <span>[ CS2 伽马多普勒蝴蝶刀 ]</span></li>
-                        <li>最想要的外挂 <span>[ 最先进的 ChatGPT ]</span></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ==================== 博客区域 ==================== -->
-    <div id="page-blog" class="page-section">
-        <div class="blog-container">
-            <div class="filter-bar" id="filter-bar">
-                <button class="filter-btn active" data-filter="all">[ 全部日志 ]</button>
-                <button class="filter-btn" data-filter="日常">[ 日常 ]</button>
-                <button class="filter-btn" data-filter="搞机">[ 搞机 ]</button>
-                <button class="filter-btn" data-filter="系统">[ 系统 ]</button>
-                <button class="filter-btn" data-filter="原创音乐">[ 原创音乐 ]</button>
-            </div>
-
-            <div class="post" id="latest-blog" data-category="日常">
-                <div class="post-meta">
-                    <span class="post-date">2026-10-18 / LOG_001</span>
-                    <span class="post-tag">日常 / 碎碎念</span>
-                </div>
-                <h2 class="post-title">空间站建立的第一天</h2>
-                <div class="post-content">
-                    <p>这里是陈羯喵，欢迎来到我的空间站。</p>
-                    <p>折腾了很久的 HTML 和 CSS，终于把这个站搭起来了。今天先放了一个开机动画，后面打算把搞机的设备评测、MC服务器的搭建过程，还有我写的梦核音乐都慢慢搬上来。</p>
-                    <p>黑菠萝神今天又在催我更新了，但我决定先摸个鱼知道吧。不是我说白了csgo直接启动</p>
-                </div>
-            </div>
-
-            <div class="post" data-category="搞机">
-                <div class="post-meta">
-                    <span class="post-date">2026-10-18 / LOG_002</span>
-                    <span class="post-tag">搞机 / 硬件</span>
-                </div>
-                <h2>14岁，压岁钱开MC服务器（预告）</h2>
-                <div class="post-content">
-                    <p>过年准备和黑菠萝神一起拍一期大制作！我们要用压岁钱买设备开一台MC服务器。</p>
-                    <p>目前设备没买，等搭好了，白名单会直接发在群里。敬请期待！</p>
-                </div>
-            </div>
-
-            <div class="post" data-category="原创音乐">
-                <div class="post-meta">
-                    <span class="post-date">2026-10-18 / LOG_003</span>
-                    <span class="post-tag">编曲 / 音乐</span>
-                </div>
-                <h2>用 Am7-Fmaj7-Cmaj7-Em7 写了一首新曲子</h2>
-                <div class="post-content">
-                    <p>今天摸索了一下七和弦。</p>
-                    <p>以后要是网站换背景音乐了，估计就会用这首。</p>
-                </div>
-            </div>
-
-            <div class="post" data-category="系统">
-                <div class="post-meta">
-                    <span class="post-date">2026-10-18 / LOG_000</span>
-                    <span class="post-tag">系统 / 初始化</span>
-                </div>
-                <h2>终端正在初始化...</h2>
-                <div class="post-content">
-                    <p>这是一条测试日志。如果你看到了这条信息，说明网络连接正常，数据流运转良好。</p>
-                    <p>接下来这里会更新更多关于硬件折腾、游戏日常和 3D 建模的内容。</p>
-                    <p>感谢你的接入。</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ==================== 赞助区域 ==================== -->
-    <div id="page-sponsor" class="page-section">
-        <div class="sponsor-container">
-            <div class="sponsor-terminal">
-                <div class="sponsor-title">Buy_US_A_Coffee</div>
-                <div class="sponsor-desc">请菠萝喝杯咖啡来让菠萝叫你大哥(╹ڡ╹ )</div>
-                
-                <div class="sponsor-img-box">
-                    <img src="pic/ewm.png" alt="收款码" class="sponsor-img" onerror="this.src='https://placehold.co/250x250/03050A/FFD700?text=ewm.png+NOT+FOUND'">
-                </div>
-                
-                <div class="sponsor-footer">[ SYSTEM THANKS FOR YOUR SUPPORT ]</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ==================== 底部社交超大按钮 ==================== -->
-    <div class="bottom-social-panel">
-        <div class="social-grid">
-            <a href="https://space.bilibili.com/3493294059292826" target="_blank" class="social-btn bili">
-                <img src="https://s1.hdslb.com/bfs/static/jinkela/long/images/favicon.ico" alt="Bilibili" class="social-icon-img">
-                <span class="social-name">BILIBILI</span>
-            </a>
-            <a href="https://www.xiaohongshu.com/user/profile/68a6f9c80000000019020886?m_source=pwa" target="_blank" class="social-btn xhs">
-                <img src="https://www.xiaohongshu.com/favicon.ico" alt="小红书" class="social-icon-img">
-                <span class="social-name">小红书</span>
-            </a>
-            <a href="https://music.163.com/#/artist?id=129286029" target="_blank" class="social-btn netease">
-                <img src="https://s1.music.126.net/style/favicon.ico" alt="网易云音乐" class="social-icon-img">
-                <span class="social-name">网易云音乐</span>
-            </a>
-        </div>
-    </div>
+    <audio id="bgMusic" loop><source src="bgm/bgm.mp3" type="audio/mpeg"></audio>
 
     <script>
-        // ==========================================
-        // 模块 6：头像档案馆逻辑
-        // ==========================================
-        function openArchive() {
-            document.getElementById('archive-modal').classList.add('active');
-        }
-        function closeArchive(event) {
-            if (event.target.id === 'archive-modal' || event.target.classList.contains('close-btn')) {
-                document.getElementById('archive-modal').classList.remove('active');
-            }
-        }
+        const textToType = "System Initialized.\nWelcome to 🍍Stars.";
+        const typewriterElement = document.getElementById('typewriter');
+        const actionBox = document.getElementById('actionBox');
+        const mainLogo = document.getElementById('mainLogo');
+        const skipCheckbox = document.getElementById('skipCheckbox');
+        const muteCheckbox = document.getElementById('muteCheckbox');
+        const bgMusic = document.getElementById('bgMusic');
+        const enterBtn = document.getElementById('enterBtn');
 
-        // ==========================================
-        // 模块 3：时钟与打字机
-        // ==========================================
-        const logText = "系统日志 #2026-10\n\n> 建站成功！\n> 黑菠萝星一边玩去\n> 音频模块加载完毕\n\n> 终端已准备就绪。";
-        const typeBox = document.getElementById('typewriter');
-        let typeIdx = 0;
-        let typingTimer = null;
+        const isSkipped = localStorage.getItem('skipAnimation') === 'true';
+        const isMuted = localStorage.getItem('muteMusic') === 'true';
+        skipCheckbox.checked = isSkipped;
+        muteCheckbox.checked = isMuted;
 
-        function typeWriter() {
-            clearTimeout(typingTimer);
-            if(typeIdx < logText.length) {
-                typeBox.innerHTML = logText.substring(0, typeIdx+1).replace(/\n/g, '<br>') + '<span class="cursor"></span>';
-                typeIdx++;
-                typingTimer = setTimeout(typeWriter, 40);
-            }
-        }
-        setTimeout(typeWriter, 1000);
-
-        // ==========================================
-        // 模块 1：页面无刷新切换 (SPA)
-        // ==========================================
-        function switchPage(pageId) {
-            document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
-            document.getElementById('page-' + pageId).classList.add('active');
-            
-            document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
-            const navBtn = document.getElementById('nav-' + pageId);
-            if(navBtn) navBtn.classList.add('active');
-
-            if (pageId === 'home') {
-                typeIdx = 0;
-                typeBox.innerHTML = '';
-                setTimeout(typeWriter, 300); 
-            }
-        }
-
-        // ==========================================
-        // 模块 2：音乐无缝控制
-        // ==========================================
-        const musicFrame = document.getElementById('music-frame');
-        const audioBtn = document.getElementById('audio-btn');
-        let isMusicPlaying = sessionStorage.getItem('musicPlayingState') === 'true';
-
-        function updateAudioUI(playing) {
-            isMusicPlaying = playing;
-            if (playing) {
-                audioBtn.innerHTML = '[ AUDIO: ON ]';
-                audioBtn.classList.remove('off');
-                musicFrame.contentWindow.postMessage('play', '*');
-            } else {
-                audioBtn.innerHTML = '[ AUDIO: OFF ]';
-                audioBtn.classList.add('off');
-                musicFrame.contentWindow.postMessage('pause', '*');
-            }
-        }
-
-        musicFrame.onload = () => {
-            if (isMusicPlaying) musicFrame.contentWindow.postMessage('play', '*');
-            updateAudioUI(isMusicPlaying);
-        };
-
-        audioBtn.addEventListener('click', () => {
-            isMusicPlaying = !isMusicPlaying;
-            sessionStorage.setItem('musicPlayingState', isMusicPlaying ? 'true' : 'false');
-            updateAudioUI(isMusicPlaying);
+        skipCheckbox.addEventListener('change', function() { localStorage.setItem('skipAnimation', this.checked); });
+        muteCheckbox.addEventListener('change', function() {
+            localStorage.setItem('muteMusic', this.checked);
+            if (this.checked) bgMusic.pause(); 
         });
 
-        function updateClock() { 
-            const clockEl = document.getElementById('clock');
-            if(clockEl) clockEl.innerText = new Date().toLocaleTimeString('en-US', { hour12: false }); 
+        // 重置记忆函数
+        function resetMemory() {
+            localStorage.removeItem('skipAnimation');
+            localStorage.removeItem('muteMusic');
+            sessionStorage.removeItem('musicPlayingState');
+            skipCheckbox.checked = false;
+            muteCheckbox.checked = false;
+            location.reload(); // 刷新页面
         }
-        setInterval(updateClock, 1000); updateClock();
 
-        // ==========================================
-        // 模块 4：自动抓取最新博客到主页
-        // ==========================================
-        function loadLatestBlog() {
-            const latestPost = document.getElementById('latest-blog');
-            if (latestPost) {
-                const title = latestPost.querySelector('.post-title').innerText;
-                const date = latestPost.querySelector('.post-date').innerText;
-                const firstParagraph = latestPost.querySelector('.post-content p');
-                let excerpt = firstParagraph ? firstParagraph.innerText : "点击查看全文...";
-                if (excerpt.length > 60) excerpt = excerpt.substring(0, 60) + "...";
-
-                document.getElementById('latest-blog-container').innerHTML = `
-                    <a onclick="switchPage('blog')" class="blog-preview">
-                        <div class="blog-preview-date">${date}</div>
-                        <div class="blog-preview-title">${title}</div>
-                        <div class="blog-preview-excerpt">${excerpt}</div>
-                        <div class="blog-preview-read">阅读全文</div>
-                    </a>
-                `;
+        function showActionButtons() { actionBox.style.opacity = '1'; mainLogo.style.opacity = '1'; typewriterElement.innerHTML = textToType; }
+        function startTyping() {
+            if (isSkipped) { showActionButtons(); return; }
+            let i = 0; const speed = 50; typewriterElement.innerHTML = '<span class="cursor"></span>';
+            function type() {
+                if (i < textToType.length) {
+                    typewriterElement.innerHTML = textToType.substring(0, i + 1) + '<span class="cursor"></span>';
+                    i++; setTimeout(type, speed);
+                } else { typewriterElement.innerHTML = textToText = textToType; showActionButtons(); }
             }
+            setTimeout(type, 300);
         }
-        loadLatestBlog();
+        window.onload = () => { setTimeout(startTyping, 100); };
 
-        // ==========================================
-        // 模块 5：博客分类过滤 (这是之前断掉的部分，已修复)
-        // ==========================================
-        const filterBtns = document.querySelectorAll('.filter-btn');
-        const posts = document.querySelectorAll('.post');
-
-        filterBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                filterBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-
-                const filterValue = btn.getAttribute('data-filter');
-
-                posts.forEach(post => {
-                    const postCategory = post.getAttribute('data-category');
-                    if (filterValue === 'all' || postCategory === filterValue) {
-                        post.style.display = 'block';
-                        post.style.animation = 'none';
-                        post.offsetHeight; 
-                        post.style.animation = 'fade-in 0.5s ease';
-                    } else {
-                        post.style.display = 'none';
-                    }
-                });
-            });
+        enterBtn.addEventListener('click', function(e) {
+            if (muteCheckbox.checked) { sessionStorage.removeItem('musicPlayingState'); return; }
+            bgMusic.play();
+            sessionStorage.setItem('musicPlayingState', 'true');
         });
     </script>
 </body>
