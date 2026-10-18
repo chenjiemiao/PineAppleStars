@@ -497,18 +497,7 @@
                 <button class="filter-btn" data-filter="系统">[ 系统 ]</button>
                 <button class="filter-btn" data-filter="原创音乐">[ 原创音乐 ]</button>
             </div>
-			
-			<div class="post" data-category="日常">
-				<div class="post-meta">
-					<span class="post-date">2026-10-19 / LOG_005</span>
-					<span class="post-tag">日常 / 碎碎念</span>
-				</div>
-				<h2 class="post-title">网站正式开放！</h2>
-				<div class="post-content">
-					<p>经过几个小时的努力我终于tm把这个网站完工了，10/19就是这个网站的纪念日好吧</p>
-				</div>
-			</div>
-			
+
             <div class="post" id="latest-blog" data-category="日常">
                 <div class="post-meta">
                     <span class="post-date">2026-10-18 / LOG_001</span>
@@ -677,9 +666,36 @@
             }
         }
 
-        // 初始化主页的留言板
+        // ==========================================
+        // 模块 4：自动抓取最新博客到主页 (修复版)
+        // ==========================================
+        function loadLatestBlog() {
+            const latestPost = document.getElementById('latest-blog');
+            if (latestPost) {
+                // 直接读取同一页面里的 DOM 元素，速度极快，不会被拦截
+                const title = latestPost.querySelector('.post-title').innerText;
+                const date = latestPost.querySelector('.post-date').innerText;
+                const firstParagraph = latestPost.querySelector('.post-content p');
+                
+                let excerpt = firstParagraph ? firstParagraph.innerText : "点击查看全文...";
+                // 截取前 60 个字符作为摘要
+                if (excerpt.length > 60) excerpt = excerpt.substring(0, 60) + "...";
+
+                document.getElementById('latest-blog-container').innerHTML = `
+                    <a onclick="switchPage('blog')" class="blog-preview">
+                        <div class="blog-preview-date">${date}</div>
+                        <div class="blog-preview-title">${title}</div>
+                        <div class="blog-preview-excerpt">${excerpt}</div>
+                        <div class="blog-preview-read">阅读全文</div>
+                    </a>
+                `;
+            }
+        }
+
+        // 确保页面完全加载后再执行所有初始化
         window.onload = () => {
-            loadTwikoo('home');
+            loadLatestBlog(); // 加载最新博客到主页
+            loadTwikoo('home'); // 加载主页的留言板
         };
 
         // ==========================================
@@ -718,35 +734,6 @@
             if(clockEl) clockEl.innerText = new Date().toLocaleTimeString('en-US', { hour12: false }); 
         }
         setInterval(updateClock, 1000); updateClock();
-
-        // ==========================================
-        // 模块 4：自动抓取最新博客到主页 (修复版)
-        // ==========================================
-        function loadLatestBlog() {
-            // 直接找页面里的最新一篇博客
-            const latestPost = document.getElementById('latest-blog');
-            if (latestPost) {
-                // 把标题、日期、摘要提取出来
-                const title = latestPost.querySelector('.post-title').innerText;
-                const date = latestPost.querySelector('.post-date').innerText;
-                const firstParagraph = latestPost.querySelector('.post-content p');
-                let excerpt = firstParagraph ? firstParagraph.innerText : "点击查看全文...";
-                
-                // 如果摘要太长，截断一下
-                if (excerpt.length > 60) excerpt = excerpt.substring(0, 60) + "...";
-
-                // 把提取到的内容，强行“塞”到主页右上角的框里
-                document.getElementById('latest-blog-container').innerHTML = `
-                    <a onclick="switchPage('blog')" class="blog-preview">
-                        <div class="blog-preview-date">${date}</div>
-                        <div class="blog-preview-title">${title}</div>
-                        <div class="blog-preview-excerpt">${excerpt}</div>
-                        <div class="blog-preview-read">阅读全文</div>
-                    </a>
-                `;
-            }
-        }
-        loadLatestBlog();
 
         // ==========================================
         // 模块 5：博客分类过滤
