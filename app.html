@@ -23,7 +23,6 @@
         }
         body {
             margin: 0; overflow: hidden;
-            /* 相对路径 */
             background-image: url('bg/Stars-bg.jpg'); background-size: cover; background-position: center; background-attachment: fixed;
             background-color: var(--bg-deep); color: var(--phasma-bright); user-select: none;
             -webkit-overflow-scrolling: touch;
@@ -167,40 +166,34 @@
         .data-list span { color: var(--phasma-cyan); font-size: 1rem; }
 
         /* --- 头像档案馆 (模态框 & 时间轴) --- */
-        #archive-modal {
-            position: fixed; inset: 0; z-index: 10000; background: rgba(0, 0, 0, 0.85);
-            display: none; justify-content: center; align-items: center; backdrop-filter: blur(10px); padding: 20px; box-sizing: border-box;
-        }
+        #archive-modal { position: fixed; inset: 0; z-index: 10000; background: rgba(0, 0, 0, 0.85); display: none; justify-content: center; align-items: center; backdrop-filter: blur(10px); padding: 20px; box-sizing: border-box; }
         #archive-modal.active { display: flex; }
-        .archive-box {
-            background: var(--panel-bg); border: 1px solid var(--phasma-cyan); width: 100%; max-width: 800px;
-            max-height: 85vh; border-radius: 8px; overflow-y: auto; padding: 30px 40px; position: relative;
-            box-shadow: 0 0 50px rgba(0, 229, 255, 0.2); clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px);
-            animation: modal-in 0.3s ease;
-        }
+        .archive-box { background: var(--panel-bg); border: 1px solid var(--phasma-cyan); width: 100%; max-width: 800px; max-height: 85vh; border-radius: 8px; overflow-y: auto; padding: 30px 40px; position: relative; box-shadow: 0 0 50px rgba(0, 229, 255, 0.2); clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px); animation: modal-in 0.3s ease; }
         @keyframes modal-in { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
         .archive-box::-webkit-scrollbar { width: 6px; }
         .archive-box::-webkit-scrollbar-thumb { background: var(--phasma-cyan); border-radius: 3px; }
-        
         .archive-title { font-size: 1.8rem; color: var(--phasma-cyan); border-bottom: 1px solid var(--phasma-dim); padding-bottom: 15px; margin-bottom: 25px; text-shadow: 0 0 10px rgba(0,229,255,0.5); display: flex; justify-content: space-between; align-items: center;}
         .close-btn { cursor: pointer; color: #ff3333; font-size: 1.2rem; transition: 0.3s; }
         .close-btn:hover { text-shadow: 0 0 10px #ff3333; }
-
         .timeline { position: relative; margin-top: 10px; padding-left: 20px; border-left: 2px dashed var(--phasma-border); }
         .timeline-item { position: relative; margin-bottom: 25px; display: flex; gap: 20px; align-items: flex-start; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.05); }
-        .timeline-item::before { 
-            content: ''; position: absolute; left: -27px; top: 25px; width: 10px; height: 10px; background: var(--pineapple-yellow); 
-            border-radius: 50%; box-shadow: 0 0 10px var(--pineapple-yellow); border: 2px solid var(--bg-deep);
-        }
-        .timeline-img { 
-            width: 80px; height: 80px; object-fit: cover; border-radius: 8px; 
-            border: 1px solid var(--phasma-cyan); background: rgba(0,0,0,0.5); flex-shrink: 0; transition: 0.3s;
-        }
+        .timeline-item::before { content: ''; position: absolute; left: -27px; top: 25px; width: 10px; height: 10px; background: var(--pineapple-yellow); border-radius: 50%; box-shadow: 0 0 10px var(--pineapple-yellow); border: 2px solid var(--bg-deep); }
+        .timeline-img { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; border: 1px solid var(--phasma-cyan); background: rgba(0,0,0,0.5); flex-shrink: 0; transition: 0.3s; }
         .timeline-img:hover { transform: scale(1.1); box-shadow: 0 0 15px var(--phasma-cyan); }
         .timeline-content { flex: 1; }
         .timeline-date { color: var(--pineapple-yellow); font-size: 0.9rem; margin-bottom: 5px; font-weight: bold; }
         .timeline-text { color: #ddd; font-size: 1.3rem; line-height: 1.3; }
         .timeline-text .retire { color: #ff3333; font-size: 1rem; display: block; margin-top: 5px; }
+
+        /* --- 常驻留言板样式 --- */
+        .global-comment-section {
+            max-width: 900px; margin: 0 auto 40px auto; padding: 0 20px; width: 100%; box-sizing: border-box;
+        }
+        .comment-box {
+            background: var(--panel-bg); border: 1px solid var(--phasma-border); border-radius: 8px;
+            padding: 30px 40px; backdrop-filter: blur(10px); box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
+        }
 
         @media screen and (max-width: 768px) {
             .hud-header { height: auto; padding: 15px 20px; flex-direction: column; align-items: stretch; gap: 15px; }
@@ -212,7 +205,6 @@
             .nav-link::after { display: none; }
             .hud-right { display: none; }
             .page-section { padding-top: 160px; padding-bottom: 100px; }
-            
             .log-wrapper { grid-template-columns: 1fr; gap: 15px; }
             .log-box { min-height: 160px; padding: 15px 20px; }
             .modules-grid { grid-template-columns: 1fr; gap: 15px; }
@@ -220,37 +212,34 @@
             .module-btn img, .module-btn .emoji-icon { width: 50px; height: 50px; font-size: 2.5rem; }
             .module-text { text-align: left; }
             .module-text h3 { font-size: 1.2rem; }
-            
             .blog-container { margin-top: 0; padding: 0 15px; }
             .post { padding: 20px; margin-bottom: 20px; }
             .post h2 { font-size: 2rem; }
             .post-meta { flex-direction: column; align-items: flex-start; gap: 8px; }
             .filter-bar { gap: 10px; padding: 10px; margin-bottom: 20px; }
             .filter-btn { font-size: 0.9rem; padding: 6px 12px; }
-
             .sponsor-terminal { padding: 25px 20px; }
             .sponsor-title { font-size: 1.5rem; }
             .sponsor-desc { font-size: 1.2rem; margin-bottom: 20px; }
             .sponsor-img { width: 200px; }
-
             .profile-container { grid-template-columns: 1fr; gap: 20px; padding: 0 15px; }
             .profile-sidebar { padding: 20px; }
             .profile-card { padding: 20px; }
-            
             .log-content, .post-content, .profile-card p { font-size: 1.4rem; }
             .data-list { font-size: 1.2rem; }
             .data-list span { font-size: 0.9rem; }
-
             .archive-box { padding: 20px; }
             .timeline-item { flex-direction: column; gap: 10px; }
             .timeline-img { width: 100%; height: 150px; object-fit: contain; }
             .timeline-text { font-size: 1.1rem; }
-
             .bottom-social-panel { padding: 0 10px 15px; }
             .social-grid { gap: 10px; }
             .social-btn { flex-direction: column; gap: 5px; padding: 12px 5px; }
             .social-icon-img { width: 28px; height: 28px; }
             .social-name { font-size: 0.8rem; }
+            
+            .global-comment-section { padding: 0 15px; margin-bottom: 20px;}
+            .comment-box { padding: 20px; }
         }
     </style>
 </head>
@@ -269,7 +258,6 @@
                 <span class="close-btn" onclick="closeArchive(event)">[ X 关闭 ]</span>
             </div>
             <div class="timeline">
-                <!-- 2019 -->
                 <div class="timeline-item">
                     <img src="headpic/2019.png" alt="2019" class="timeline-img" onerror="this.style.display='none'">
                     <div class="timeline-content">
@@ -277,8 +265,6 @@
                         <div class="timeline-text">我印象里我从未使用过此图片作为logo，何时绘制的此图已无从考证。</div>
                     </div>
                 </div>
-
-                <!-- 2020 -->
                 <div class="timeline-item">
                     <img src="headpic/2020.png" alt="2020" class="timeline-img" onerror="this.style.display='none'">
                     <div class="timeline-content">
@@ -286,8 +272,6 @@
                         <div class="timeline-text">陈陈喵创立时的头像。当时还没创立任何一个社交平台的账号，但是先接触了编程猫，为了给自己的作品搞点什么开场工作室声明就随便绘制了这个图片。<span class="retire">> 退役原因：自然退役</span></div>
                     </div>
                 </div>
-
-                <!-- 2021 -->
                 <div class="timeline-item">
                     <img src="headpic/2021.png" alt="2021" class="timeline-img" onerror="this.style.display='none'">
                     <div class="timeline-content">
@@ -295,8 +279,6 @@
                         <div class="timeline-text">陈陈喵替换为陈羯喵的一年！与下图同一时间绘制，最后遭废弃。<span class="retire">> 退役原因：直接废弃</span></div>
                     </div>
                 </div>
-
-                <!-- 2023-1 -->
                 <div class="timeline-item">
                     <img src="headpic/2023-1.jpg" alt="2023-1" class="timeline-img" onerror="this.style.display='none'">
                     <div class="timeline-content">
@@ -304,8 +286,6 @@
                         <div class="timeline-text">我创立自己的社交帐号的一年！此图只存在了三个月便被替代。<span class="retire">> 退役原因：自然退役</span></div>
                     </div>
                 </div>
-
-                <!-- 2023-2 -->
                 <div class="timeline-item">
                     <img src="headpic/2023-2.png" alt="2023-2" class="timeline-img" onerror="this.style.display='none'">
                     <div class="timeline-content">
@@ -313,8 +293,6 @@
                         <div class="timeline-text">我使用时间最久的头像！虽然比较难看但是这是我之前最钟爱的头像之一。<span class="retire">> 退役原因：偶然发现旋转90°看起来就像一个小人跪地上放屁</span></div>
                     </div>
                 </div>
-
-                <!-- 2026 -->
                 <div class="timeline-item">
                     <img src="headpic/2026.jpg" alt="2026" class="timeline-img" onerror="this.style.display='none'">
                     <div class="timeline-content">
@@ -381,6 +359,13 @@
                 </a>
             </div>
         </div>
+
+        <!-- 首页的留言板 -->
+        <div class="global-comment-section">
+            <div class="comment-box">
+                <div id="tcomment-home" class="twikoo-container"></div>
+            </div>
+        </div>
     </div>
 
     <!-- ==================== 🍍Stars 频道页 ==================== -->
@@ -413,6 +398,13 @@
                     <h3><span>🎵</span> 梦核作曲基地</h3>
                     <p>除了搞机，这里也是我的音乐自留地。我会在这里发布用 Am7-Fmaj7 写的梦核音乐，以及关于 3D 建模的各种脑洞。</p>
                 </div>
+            </div>
+        </div>
+
+        <!-- Stars页的留言板 -->
+        <div class="global-comment-section">
+            <div class="comment-box">
+                <div id="tcomment-stars" class="twikoo-container"></div>
             </div>
         </div>
     </div>
@@ -465,6 +457,13 @@
                         <li>最想要的外挂 <span>[ 最先进的 ChatGPT ]</span></li>
                     </ul>
                 </div>
+            </div>
+        </div>
+
+        <!-- Client页的留言板 -->
+        <div class="global-comment-section">
+            <div class="comment-box">
+                <div id="tcomment-client" class="twikoo-container"></div>
             </div>
         </div>
     </div>
@@ -530,6 +529,13 @@
                 </div>
             </div>
         </div>
+
+        <!-- 日志页的留言板 -->
+        <div class="global-comment-section">
+            <div class="comment-box">
+                <div id="tcomment-blog" class="twikoo-container"></div>
+            </div>
+        </div>
     </div>
 
     <!-- ==================== 赞助区域 ==================== -->
@@ -544,6 +550,13 @@
                 </div>
                 
                 <div class="sponsor-footer">[ SYSTEM THANKS FOR YOUR SUPPORT ]</div>
+            </div>
+        </div>
+
+        <!-- 赞助页的留言板 -->
+        <div class="global-comment-section">
+            <div class="comment-box">
+                <div id="tcomment-sponsor" class="twikoo-container"></div>
             </div>
         </div>
     </div>
@@ -566,13 +579,13 @@
         </div>
     </div>
 
+    <!-- 引入 Twikoo 脚本 -->
+    <script src="https://cdn.jsdelivr.net/npm/twikoo@2.0.12/dist/twikoo.min.js"></script>
     <script>
         // ==========================================
         // 模块 6：头像档案馆逻辑
         // ==========================================
-        function openArchive() {
-            document.getElementById('archive-modal').classList.add('active');
-        }
+        function openArchive() { document.getElementById('archive-modal').classList.add('active'); }
         function closeArchive(event) {
             if (event.target.id === 'archive-modal' || event.target.classList.contains('close-btn')) {
                 document.getElementById('archive-modal').classList.remove('active');
@@ -598,8 +611,22 @@
         setTimeout(typeWriter, 1000);
 
         // ==========================================
-        // 模块 1：页面无刷新切换 (SPA)
+        // 模块 1：页面无刷新切换 (SPA) & 动态加载留言板
         // ==========================================
+        const twikooLoaded = { home: false, stars: false, client: false, blog: false, sponsor: false };
+        const envId = "https://cjm-mu.vercel.app/";
+
+        function loadTwikoo(pageId) {
+            if (!twikooLoaded[pageId]) {
+                twikoo.init({
+                    envId: envId,
+                    el: '#tcomment-' + pageId,
+                    path: '/', // 让所有页面的评论互通
+                });
+                twikooLoaded[pageId] = true;
+            }
+        }
+
         function switchPage(pageId) {
             document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
             document.getElementById('page-' + pageId).classList.add('active');
@@ -608,12 +635,20 @@
             const navBtn = document.getElementById('nav-' + pageId);
             if(navBtn) navBtn.classList.add('active');
 
+            // 切换页面时加载评论框
+            loadTwikoo(pageId);
+
             if (pageId === 'home') {
                 typeIdx = 0;
                 typeBox.innerHTML = '';
                 setTimeout(typeWriter, 300); 
             }
         }
+
+        // 初始化主页的留言板
+        window.onload = () => {
+            loadTwikoo('home');
+        };
 
         // ==========================================
         // 模块 2：音乐无缝控制
