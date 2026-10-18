@@ -7,7 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
     <style>
         body {
-            /* 如果你改了背景图名字，记得改下面这行 */
             background-image: url('bg/stars-bg.jpg'); background-size: cover; background-position: center; background-attachment: fixed;
             background-color: #0d1117; color: #c9d1d9; font-family: 'Courier New', Courier, monospace;
             height: 100vh; margin: 0; display: flex; flex-direction: column; justify-content: center; align-items: center;
@@ -27,15 +26,13 @@
         .settings { display: flex; align-items: center; gap: 8px; }
         .settings input[type="checkbox"] { cursor: pointer; accent-color: #ffd700; }
         .settings label { cursor: pointer; user-select: none; }
-        
-        /* 新增的极客重置按钮 */
         .reset-btn { background: transparent; border: 1px solid #8b949e; color: #8b949e; padding: 2px 8px; border-radius: 3px; cursor: pointer; font-size: 0.9em; transition: 0.3s; }
         .reset-btn:hover { border-color: #ff3333; color: #ff3333; box-shadow: 0 0 10px rgba(255, 51, 51, 0.3); }
     </style>
 </head>
 <body>
     <div class="overlay"></div>
-    <!-- 图片路径已统一 -->
+    <!-- 统一使用英文名 -->
     <img src="logo/PineAppleStars.png" alt="Logo" class="center-logo" id="mainLogo" onerror="this.style.display='none'">
     <div class="title-container"><div id="typewriter"></div></div>
     <div class="action-container" id="actionBox"><a href="app.html" class="enter-btn" id="enterBtn">[ 点击 ] 进入</a></div>
@@ -43,7 +40,6 @@
     <div class="bottom-bar">
         <div class="settings"><input type="checkbox" id="skipCheckbox"><label for="skipCheckbox">跳过开场动画</label></div>
         <div class="settings"><input type="checkbox" id="muteCheckbox"><label for="muteCheckbox">禁止播放音乐</label></div>
-        <!-- 新增重置按钮 -->
         <button class="reset-btn" onclick="resetMemory()">[ 重置记忆 ]</button>
     </div>
     <audio id="bgMusic" loop><source src="bgm/bgm.mp3" type="audio/mpeg"></audio>
@@ -69,14 +65,13 @@
             if (this.checked) bgMusic.pause(); 
         });
 
-        // 重置记忆函数
         function resetMemory() {
             localStorage.removeItem('skipAnimation');
             localStorage.removeItem('muteMusic');
             sessionStorage.removeItem('musicPlayingState');
             skipCheckbox.checked = false;
             muteCheckbox.checked = false;
-            location.reload(); // 刷新页面
+            location.reload();
         }
 
         function showActionButtons() { actionBox.style.opacity = '1'; mainLogo.style.opacity = '1'; typewriterElement.innerHTML = textToType; }
@@ -87,7 +82,7 @@
                 if (i < textToType.length) {
                     typewriterElement.innerHTML = textToType.substring(0, i + 1) + '<span class="cursor"></span>';
                     i++; setTimeout(type, speed);
-                } else { typewriterElement.innerHTML = textToText = textToType; showActionButtons(); }
+                } else { typewriterElement.innerHTML = textToType; showActionButtons(); }
             }
             setTimeout(type, 300);
         }
