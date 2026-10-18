@@ -32,8 +32,8 @@
 </head>
 <body>
     <div class="overlay"></div>
-    <!-- 统一使用英文名 -->
-    <img src="logo/PineAppleStars.png" alt="Logo" class="center-logo" id="mainLogo" onerror="this.style.display='none'">
+    <!-- 路径直接指向根目录图片 -->
+    <img src="PineAppleStars.png" alt="Logo" class="center-logo" id="mainLogo" onerror="this.style.display='none'">
     <div class="title-container"><div id="typewriter"></div></div>
     <div class="action-container" id="actionBox"><a href="app.html" class="enter-btn" id="enterBtn">[ 点击 ] 进入</a></div>
     
@@ -42,7 +42,8 @@
         <div class="settings"><input type="checkbox" id="muteCheckbox"><label for="muteCheckbox">禁止播放音乐</label></div>
         <button class="reset-btn" onclick="resetMemory()">[ 重置记忆 ]</button>
     </div>
-    <audio id="bgMusic" loop><source src="bgm/bgm.mp3" type="audio/mpeg"></audio>
+    <!-- 背景音乐路径 -->
+    <audio id="bgMusic" loop><source src="bgm.mp3" type="audio/mpeg"></audio>
 
     <script>
         const textToType = "System Initialized.\nWelcome to 🍍Stars.";
