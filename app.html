@@ -60,7 +60,7 @@
         .audio-toggle.off:hover { background: rgba(255, 51, 51, 0.1); border-color: #ff3333; }
 
         /* 页面切换控制 */
-        .page-section { display: none; height: 100vh; overflow-y: auto; position: relative; z-index: 20; box-sizing: border-box; padding-top: 110px; padding-bottom: 150px; /* 加高底部防止被遮挡 */ }
+        .page-section { display: none; height: 100vh; overflow-y: auto; position: relative; z-index: 20; box-sizing: border-box; padding-top: 110px; padding-bottom: 150px; }
         .page-section.active { display: block; }
 
         /* --- 底部社交超大按钮 --- */
@@ -194,7 +194,7 @@
 
         /* --- 常驻留言板样式 --- */
         .global-comment-section {
-            max-width: 900px; margin: 0 auto 80px auto; /* 增加底边距，防止被底栏遮挡 */
+            max-width: 900px; margin: 0 auto 80px auto;
             padding: 0 20px; width: 100%; box-sizing: border-box;
         }
         .comment-box {
@@ -247,10 +247,10 @@
             .sys-nav::-webkit-scrollbar { display: none; }
             .nav-link { flex-shrink: 0; font-size: 1rem; padding: 8px 15px; border: 1px solid var(--phasma-dim); background: rgba(0,0,0,0.5); }
             .nav-link::after { display: none; }
-            .hud-right { display: none; } /* 手机端隐藏原本右上角的音乐按钮 */
-            .mobile-music-btn { display: flex; } /* 手机端显示悬浮音乐按钮 */
+            .hud-right { display: none; }
+            .mobile-music-btn { display: flex; }
             
-            .page-section { padding-top: 160px; padding-bottom: 180px; /* 为底部留出足够空间 */ }
+            .page-section { padding-top: 160px; padding-bottom: 180px; }
             .log-wrapper { grid-template-columns: 1fr; gap: 15px; }
             .log-box { min-height: 160px; padding: 15px 20px; }
             .modules-grid { grid-template-columns: 1fr; gap: 15px; }
@@ -363,7 +363,7 @@
         <div class="hud-left">
             <div class="sys-logo" onclick="switchPage('home')">
                 <img src="logo/菠萝Stars.png" alt="Logo" onerror="this.style.display='none'"> 
-                🍍Stars_Station <span>v1.0</span>
+                🍍Stars_Station <span>v1.5</span>
             </div>
             <nav class="sys-nav">
                 <a onclick="switchPage('home')" id="nav-home" class="nav-link active">首页</a>
@@ -537,7 +537,7 @@
                 <button class="filter-btn" data-filter="原创音乐">[ 原创音乐 ]</button>
             </div>
 
-            <!-- 最新博客（带有 id="latest-blog"） -->
+            <!-- LOG_005 (最新) -->
             <div class="post" id="latest-blog" data-category="日常">
                 <div class="post-meta">
                     <span class="post-date">2026-10-19 / LOG_005</span>
