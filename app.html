@@ -382,7 +382,7 @@
         <div class="hud-left">
             <div class="sys-logo" onclick="switchPage('home')">
                 <img src="logo/菠萝Stars.png" alt="Logo" onerror="this.style.display='none'"> 
-                🍍Stars_Station <span>v1.9</span>
+                🍍Stars_Station <span>v2.0</span>
             </div>
             <nav class="sys-nav">
                 <a onclick="switchPage('home')" id="nav-home" class="nav-link active">首页</a>
@@ -551,7 +551,8 @@
                 <button class="filter-btn" data-filter="原创音乐">[ 原创音乐 ]</button>
             </div>
 
-            <div class="post" id="latest-blog" data-category="日常">
+            <!-- 🔴 注意这里：把原来的 id="latest-blog" 改成了 id="post-latest" -->
+            <div class="post" id="post-latest" data-category="日常">
                 <div class="post-meta">
                     <span class="post-date">2026-10-19 / LOG_006</span>
                     <span class="post-tag">日常 / 碎碎念</span>
@@ -721,7 +722,8 @@
         // ==========================================
         function loadLatestBlog() {
             setTimeout(() => {
-                const latestPost = document.getElementById('latest-blog');
+                // 抓取最新文章使用 post-latest 这个唯一的 ID
+                const latestPost = document.getElementById('post-latest');
                 if (latestPost) {
                     const title = latestPost.querySelector('.post-title').innerText;
                     const date = latestPost.querySelector('.post-date').innerText;
