@@ -217,6 +217,11 @@
             box-shadow: inset 0 0 10px rgba(0, 229, 255, 0.2);
         }
 
+        /* 隐藏的音频标签（为了绕开手机端 iframe 限制） */
+        #bgm-audio {
+            display: none;
+        }
+
         /* 手机端专属：悬浮音乐按钮 */
         .mobile-music-btn {
             display: none;
@@ -247,8 +252,8 @@
             .sys-nav::-webkit-scrollbar { display: none; }
             .nav-link { flex-shrink: 0; font-size: 1rem; padding: 8px 15px; border: 1px solid var(--phasma-dim); background: rgba(0,0,0,0.5); }
             .nav-link::after { display: none; }
-            .hud-right { display: none; }
-            .mobile-music-btn { display: flex; }
+            .hud-right { display: none; } /* 手机端隐藏原本右上角 */
+            .mobile-music-btn { display: flex; } /* 手机端显示悬浮按钮 */
             
             .page-section { padding-top: 160px; padding-bottom: 180px; }
             .log-wrapper { grid-template-columns: 1fr; gap: 15px; }
@@ -300,10 +305,13 @@
     <div id="signal-bg"></div>
     <div class="scanlines"></div>
 
-    <iframe id="music-frame" src="music.html" style="display:none;"></iframe>
+    <!-- 核心修改：直接使用 audio 标签，抛弃 iframe，防止手机端拦截 -->
+    <audio id="bgm-audio" loop>
+        <source src="bgm/bgm.mp3" type="audio/mpeg">
+    </audio>
 
     <!-- 手机端悬浮音乐按钮 -->
-    <div class="mobile-music-btn" id="mobile-audio-btn" onclick="toggleAudio()">🎵</div>
+    <div class="mobile-music-btn" id="mobile-audio-btn">🎵</div>
 
     <!-- 头像档案馆模态框 -->
     <div id="archive-modal" onclick="closeArchive(event)">
@@ -375,7 +383,7 @@
         </div>
         <div class="hud-right">
             <div class="status-text">STATION_ONLINE</div>
-            <button id="audio-btn" class="audio-toggle" onclick="toggleAudio()">[ AUDIO: ON ]</button>
+            <button id="audio-btn" class="audio-toggle">[ AUDIO: ON ]</button>
         </div>
     </div>
 
@@ -750,9 +758,9 @@
         };
 
         // ==========================================
-        // 模块 2：音乐无缝控制 (兼容PC和手机端)
+        // 模块 2：音乐无缝控制 (直接使用 audio 标签，彻底解决手机端拦截)
         // ==========================================
-        const musicFrame = document.getElementById('music-frame');
+        const bgmAudio = document.getElementById('bgm-audio');
         const audioBtn = document.getElementById('audio-btn');
         const mobileAudioBtn = document.getElementById('mobile-audio-btn');
         let isMusicPlaying = sessionStorage.getItem('musicPlayingState') === 'true';
@@ -764,27 +772,36 @@
                 audioBtn.classList.remove('off');
                 mobileAudioBtn.innerHTML = '🎵';
                 mobileAudioBtn.classList.remove('off');
-                musicFrame.contentWindow.postMessage('play', '*');
             } else {
                 audioBtn.innerHTML = '[ AUDIO: OFF ]';
                 audioBtn.classList.add('off');
                 mobileAudioBtn.innerHTML = '🔇';
                 mobileAudioBtn.classList.add('off');
-                musicFrame.contentWindow.postMessage('pause', '*');
             }
         }
 
-        musicFrame.onload = () => {
-            if (isMusicPlaying) musicFrame.contentWindow.postMessage('play', '*');
-            updateAudioUI(isMusicPlaying);
-        };
+        // 如果上一次在封面页点击了播放，进来直接播放
+        if (isMusicPlaying) {
+            bgmAudio.play().catch(e => {
+                // 如果被浏览器拦截，需要用户再次点击才能播放
+                console.log("等待用户点击播放");
+            });
+        }
+        updateAudioUI(isMusicPlaying);
 
         function toggleAudio() {
-            isMusicPlaying = !isMusicPlaying;
-            sessionStorage.setItem('musicPlayingState', isMusicPlaying ? 'true' : 'false');
-            updateAudioUI(isMusicPlaying);
+            if (bgmAudio.paused) {
+                bgmAudio.play();
+                sessionStorage.setItem('musicPlayingState', 'true');
+                updateAudioUI(true);
+            } else {
+                bgmAudio.pause();
+                sessionStorage.setItem('musicPlayingState', 'false');
+                updateAudioUI(false);
+            }
         }
 
+        // 绑定点击事件
         audioBtn.addEventListener('click', toggleAudio);
         mobileAudioBtn.addEventListener('click', toggleAudio);
 
