@@ -382,7 +382,7 @@
         <div class="hud-left">
             <div class="sys-logo" onclick="switchPage('home')">
                 <img src="logo/菠萝Stars.png" alt="Logo" onerror="this.style.display='none'"> 
-                🍍Stars_Station <span>v1.5</span>
+                🍍Stars_Station <span>v1.7</span>
             </div>
             <nav class="sys-nav">
                 <a onclick="switchPage('home')" id="nav-home" class="nav-link active">首页</a>
@@ -704,32 +704,38 @@
         // ==========================================
         // 模块 1：页面无刷新切换 (SPA) & 智能加载留言板
         // ==========================================
-        const envId = "https://cjm-mu.vercel.app/";
-        const twikooLoaded = {}; // 记录页面是否已经加载过评论
+        const envId = "https://cjm-mu.vercel.app"; // 注意：去掉了最后的斜杠
+        const twikooLoaded = {}; 
 
         function loadTwikoo(pageId) {
-            // 页面未激活不加载
             if (!document.getElementById('page-' + pageId).classList.contains('active')) return;
-            // 已经加载过的不重复加载（防止 DOM 冲突和重复实例化）
             if (twikooLoaded[pageId]) return;
 
-            // 稍微延迟一下，确保页面渲染完成再加载
+            // 延迟 300ms 确保手机端 DOM 完全渲染出高度
             setTimeout(() => {
                 try {
+                    const container = document.getElementById('tcomment-' + pageId);
+                    console.log(`准备初始化 Twikoo: ${pageId}`, container);
+                    
+                    if(!container) {
+                        console.error(`找不到容器 #tcomment-${pageId}`);
+                        return;
+                    }
+
                     twikoo.init({
                         envId: envId,
                         el: '#tcomment-' + pageId,
-                        path: window.location.pathname // 或者改成 '/' + pageId 区分不同页面
+                        path: '/' + pageId // 区分不同页面的评论
                     }).then(() => {
                         twikooLoaded[pageId] = true;
-                        console.log(`Twikoo ${pageId} 加载完成`);
+                        console.log(`✅ Twikoo ${pageId} 加载成功`);
                     }).catch(e => {
-                        console.error(`Twikoo ${pageId} 加载失败: `, e);
+                        console.error(`❌ Twikoo ${pageId} 加载失败: `, e);
                     });
                 } catch (error) {
-                    console.error("Twikoo 初始化错误: ", error);
+                    console.error("❌ Twikoo 初始化崩溃: ", error);
                 }
-            }, 100);
+            }, 300); // 延迟增加到 300ms
         }
 
         function switchPage(pageId) {
