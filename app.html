@@ -217,6 +217,17 @@
             box-shadow: inset 0 0 10px rgba(0, 229, 255, 0.2);
         }
 
+        /* 调整 Twikoo 内部样式（为了让报错和超时更清晰） */
+        .twikoo-container .tk-error-message {
+            color: #ff3333 !important;
+            font-weight: bold;
+            font-family: 'Share Tech Mono', monospace !important;
+            background: rgba(255, 51, 51, 0.1);
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px dashed #ff3333;
+        }
+
         /* 隐藏的音频标签（为了绕开手机端 iframe 限制） */
         #bgm-audio {
             display: none;
@@ -659,8 +670,8 @@
         </div>
     </div>
 
-    <!-- 引入 Twikoo 脚本（改成了国内淘宝镜像源，防止被墙） -->
-    <script src="https://registry.npmmirror.com/twikoo/2.0.12/files/dist/twikoo.min.js"></script>
+    <!-- 引入 Twikoo 脚本（换成了更稳的 unpkg） -->
+    <script src="https://unpkg.com/twikoo@2.0.12/dist/twikoo.min.js"></script>
     <script>
         // ==========================================
         // 模块 6：头像档案馆逻辑
@@ -675,7 +686,7 @@
         // ==========================================
         // 模块 3：时钟与打字机
         // ==========================================
-        const logText = "系统日志 #2026-10\n\n> 建站成功！\n> 黑菠萝星一边玩去\n> 音频模块加载完毕\n\n> 终端已就绪。";
+        const logText = "系统日志 #2026-10\n\n> 建站成功！\n> 黑菠萝星一边玩去\n> 音频模块加载完毕\n\n> 终端已准备就绪。";
         const typeBox = document.getElementById('typewriter');
         let typeIdx = 0;
         let typingTimer = null;
@@ -691,20 +702,29 @@
         setTimeout(typeWriter, 1000);
 
         // ==========================================
-        // 模块 1：页面无刷新切换 (SPA) & 动态加载留言板
+        // 模块 1：页面无刷新切换 (SPA) & 动态加载留言板 (防快速切换BUG)
         // ==========================================
         const twikooLoaded = { home: false, stars: false, client: false, blog: false, sponsor: false };
         const envId = "https://cjm-mu.vercel.app/";
+        let loadTimeout = null; // 防抖定时器
 
         function loadTwikoo(pageId) {
-            if (!twikooLoaded[pageId]) {
+            // 如果页面已经加载过，或者页面被隐藏了，就不执行
+            if (twikooLoaded[pageId]) return;
+            if (!document.getElementById('page-' + pageId).classList.contains('active')) return;
+
+            // 加一个小延迟，防止用户快速连点导致 DOM 错乱
+            clearTimeout(loadTimeout);
+            loadTimeout = setTimeout(() => {
                 twikoo.init({
                     envId: envId,
                     el: '#tcomment-' + pageId,
-                    path: '/', // 让所有页面的评论互通
+                    path: '/',
+                    onCommentLoaded: () => {
+                        twikooLoaded[pageId] = true;
+                    }
                 });
-                twikooLoaded[pageId] = true;
-            }
+            }, 300); // 300毫秒延迟
         }
 
         function switchPage(pageId) {
