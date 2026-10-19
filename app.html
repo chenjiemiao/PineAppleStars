@@ -259,7 +259,7 @@
             .hud-header { height: auto; padding: 15px 20px; flex-direction: column; align-items: stretch; gap: 15px; }
             .hud-left { flex-direction: column; width: 100%; gap: 15px; align-items: stretch; }
             .sys-logo { border-right: none; padding-right: 0; font-size: 1.5rem; justify-content: space-between; border-bottom: 1px solid var(--phasma-dim); padding-bottom: 10px; }
-            .sys-nav { overflow-x: auto; white-space: nowrap; padding-bottom: 5px; gap: 8px; scrollbar-width: none; }
+            .sys-nav { overflow-x: auto; white-space: nowrap; padding-bottom: 5px; gap: 8px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
             .sys-nav::-webkit-scrollbar { display: none; }
             .nav-link { flex-shrink: 0; font-size: 1rem; padding: 8px 15px; border: 1px solid var(--phasma-dim); background: rgba(0,0,0,0.5); }
             .nav-link::after { display: none; }
@@ -664,14 +664,14 @@
                 <span class="social-name">小红书</span>
             </a>
             <a href="https://music.163.com/#/artist?id=129286029" target="_blank" class="social-btn netease">
-                <img src="https://s1.music.126.net/style/favicon.ico" alt="网易云音乐" class="social-icon-img">
+                <img src="https://www.163.com/favicon.ico" alt="网易云音乐" class="social-icon-img">
                 <span class="social-name">网易云音乐</span>
             </a>
         </div>
     </div>
 
-    <!-- 引入 Twikoo 脚本（换成了更稳的 unpkg） -->
-    <script src="https://unpkg.com/twikoo@2.0.12/dist/twikoo.min.js"></script>
+    <!-- 引入 Twikoo 脚本（换成了极度稳定的 jsDelivr 官方源，并锁定版本） -->
+    <script src="https://cdn.jsdelivr.net/npm/twikoo@1.6.44/dist/twikoo.min.js"></script>
     <script>
         // ==========================================
         // 模块 6：头像档案馆逻辑
@@ -702,29 +702,34 @@
         setTimeout(typeWriter, 1000);
 
         // ==========================================
-        // 模块 1：页面无刷新切换 (SPA) & 动态加载留言板 (防快速切换BUG)
+        // 模块 1：页面无刷新切换 (SPA) & 智能加载留言板
         // ==========================================
-        const twikooLoaded = { home: false, stars: false, client: false, blog: false, sponsor: false };
         const envId = "https://cjm-mu.vercel.app/";
-        let loadTimeout = null; // 防抖定时器
+        const twikooLoaded = {}; // 记录页面是否已经加载过评论
 
         function loadTwikoo(pageId) {
-            // 如果页面已经加载过，或者页面被隐藏了，就不执行
-            if (twikooLoaded[pageId]) return;
+            // 页面未激活不加载
             if (!document.getElementById('page-' + pageId).classList.contains('active')) return;
+            // 已经加载过的不重复加载（防止 DOM 冲突和重复实例化）
+            if (twikooLoaded[pageId]) return;
 
-            // 加一个小延迟，防止用户快速连点导致 DOM 错乱
-            clearTimeout(loadTimeout);
-            loadTimeout = setTimeout(() => {
-                twikoo.init({
-                    envId: envId,
-                    el: '#tcomment-' + pageId,
-                    path: '/',
-                    onCommentLoaded: () => {
+            // 稍微延迟一下，确保页面渲染完成再加载
+            setTimeout(() => {
+                try {
+                    twikoo.init({
+                        envId: envId,
+                        el: '#tcomment-' + pageId,
+                        path: window.location.pathname // 或者改成 '/' + pageId 区分不同页面
+                    }).then(() => {
                         twikooLoaded[pageId] = true;
-                    }
-                });
-            }, 300); // 300毫秒延迟
+                        console.log(`Twikoo ${pageId} 加载完成`);
+                    }).catch(e => {
+                        console.error(`Twikoo ${pageId} 加载失败: `, e);
+                    });
+                } catch (error) {
+                    console.error("Twikoo 初始化错误: ", error);
+                }
+            }, 100);
         }
 
         function switchPage(pageId) {
@@ -735,7 +740,7 @@
             const navBtn = document.getElementById('nav-' + pageId);
             if(navBtn) navBtn.classList.add('active');
 
-            // 切换页面时加载评论框
+            // 切换页面时调用评论加载（包含防抖和状态记录）
             loadTwikoo(pageId);
 
             if (pageId === 'home') {
@@ -746,7 +751,7 @@
         }
 
         // ==========================================
-        // 模块 4：自动抓取最新博客到主页 (修复版)
+        // 模块 4：自动抓取最新博客到主页
         // ==========================================
         function loadLatestBlog() {
             setTimeout(() => {
@@ -771,14 +776,8 @@
             }, 100);
         }
 
-        // 初始化
-        window.onload = () => {
-            loadTwikoo('home');
-            loadLatestBlog(); 
-        };
-
         // ==========================================
-        // 模块 2：音乐无缝控制 (直接使用 audio 标签，彻底解决手机端拦截)
+        // 模块 2：音乐无缝控制 (直接使用 audio 标签)
         // ==========================================
         const bgmAudio = document.getElementById('bgm-audio');
         const audioBtn = document.getElementById('audio-btn');
@@ -800,12 +799,9 @@
             }
         }
 
-        // 如果上一次在封面页点击了播放，进来直接播放
+        // 尝试恢复播放
         if (isMusicPlaying) {
-            bgmAudio.play().catch(e => {
-                // 如果被浏览器拦截，需要用户再次点击才能播放
-                console.log("等待用户点击播放");
-            });
+            bgmAudio.play().catch(e => console.log("需要用户交互才能播放: ", e));
         }
         updateAudioUI(isMusicPlaying);
 
@@ -824,6 +820,14 @@
         // 绑定点击事件
         audioBtn.addEventListener('click', toggleAudio);
         mobileAudioBtn.addEventListener('click', toggleAudio);
+
+        // 针对移动端的强制解锁（移动端需要首次触摸页面才能播放）
+        document.body.addEventListener('touchstart', function unlockAudio() {
+            if (isMusicPlaying && bgmAudio.paused) {
+                bgmAudio.play().catch(() => {});
+            }
+            document.body.removeEventListener('touchstart', unlockAudio);
+        }, { once: true });
 
         function updateClock() { 
             const clockEl = document.getElementById('clock');
@@ -857,6 +861,13 @@
                 });
             });
         });
+
+        // 初始化
+        window.onload = () => {
+            // 首页默认加载
+            loadTwikoo('home');
+            loadLatestBlog(); 
+        };
     </script>
 </body>
 </html>
