@@ -12,14 +12,15 @@
 
         .sys-logo, .nav-link, .status-text, .audio-toggle, .module-text h3, 
         .log-header, .post-meta, .filter-btn, .sponsor-title, .sponsor-footer,
-        #clock, .profile-alias, .data-list span, .timeline-date, .archive-btn, .social-name {
+        #clock, .profile-alias, .data-list span, .timeline-date, .archive-btn, .social-name,
+        .comment-toggle-btn, .close-comment-btn {
             font-family: 'Share Tech Mono', 'Courier New', Courier, monospace !important;
         }
 
         :root {
             --bg-deep: #03050a; --pineapple-yellow: #FFD700; --phasma-cyan: #00E5FF;
             --phasma-bright: #B2EBF2; --phasma-dim: rgba(0, 229, 255, 0.15);
-            --phasma-border: rgba(0, 229, 255, 0.4); --nv-green: #39FF14; --panel-bg: rgba(5, 10, 20, 0.75);
+            --phasma-border: rgba(0, 229, 255, 0.4); --nv-green: #39FF14; --panel-bg: rgba(5, 10, 20, 0.85);
         }
         
         body {
@@ -64,7 +65,7 @@
         .page-section.active { display: block; }
 
         /* --- 底部社交超大按钮 --- */
-        .bottom-social-panel { position: fixed; bottom: 0; left: 0; width: 100%; padding: 0 20px 20px; box-sizing: border-box; z-index: 100; display: flex; justify-content: center; }
+        .bottom-social-panel { position: fixed; bottom: 0; left: 0; width: 100%; padding: 0 20px 20px; box-sizing: border-box; z-index: 80; display: flex; justify-content: center; transition: bottom 0.3s; }
         .social-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; width: 100%; max-width: 800px; }
         .social-btn { display: flex; align-items: center; justify-content: center; gap: 15px; background: var(--panel-bg); border: 1px solid var(--phasma-border); padding: 15px 20px; border-radius: 6px; color: #ccc; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); position: relative; overflow: hidden; clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px); box-shadow: 0 5px 15px rgba(0,0,0,0.5); backdrop-filter: blur(10px); }
         .social-btn::before { content: ''; position: absolute; inset: 0; background: linear-gradient(45deg, transparent, rgba(255,255,255,0.05), transparent); z-index: 0; transition: 0.5s; }
@@ -192,66 +193,60 @@
         .timeline-text { color: #ddd; font-size: 1.3rem; line-height: 1.3; }
         .timeline-text .retire { color: #ff3333; font-size: 1rem; display: block; margin-top: 5px; }
 
-        /* --- 常驻留言板样式 --- */
+        /* --- 常驻留言板按钮 & 抽屉面板 --- */
+        
+        /* 悬浮按钮 */
+        .comment-toggle-btn {
+            position: fixed; bottom: 100px; right: 20px; z-index: 1000;
+            background: var(--panel-bg); border: 1px solid var(--phasma-cyan); color: var(--phasma-cyan);
+            padding: 12px 20px; border-radius: 30px; font-size: 1.1rem; font-weight: bold;
+            cursor: pointer; backdrop-filter: blur(10px); box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
+            display: flex; align-items: center; gap: 8px; transition: all 0.3s;
+        }
+        .comment-toggle-btn:hover { background: var(--phasma-cyan); color: #000; box-shadow: 0 0 25px var(--phasma-cyan); transform: scale(1.05); }
+        
+        /* 抽屉面板 */
         .global-comment-section {
-            max-width: 900px; margin: 0 auto 80px auto;
-            padding: 0 20px; width: 100%; box-sizing: border-box;
+            position: fixed; bottom: -100%; left: 0; width: 100%; height: 75vh;
+            z-index: 2000; transition: bottom 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            display: flex; justify-content: center; pointer-events: none;
         }
+        .global-comment-section.active { bottom: 0; pointer-events: auto; }
+        
         .comment-box {
-            background: var(--panel-bg); border: 1px solid var(--phasma-border); border-radius: 8px;
-            padding: 30px 40px; backdrop-filter: blur(10px); box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
+            background: rgba(5, 10, 20, 0.95); border: 1px solid var(--phasma-border); border-bottom: none;
+            border-radius: 12px 12px 0 0; padding: 20px 30px 30px; backdrop-filter: blur(20px);
+            box-shadow: 0 -10px 50px rgba(0, 0, 0, 0.9);
+            width: 100%; max-width: 900px; display: flex; flex-direction: column; height: 100%;
+            clip-path: polygon(20px 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%, 0 20px);
         }
+
+        .comment-box-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid var(--phasma-dim); padding-bottom: 10px; }
+        .comment-box-title { color: var(--pineapple-yellow); font-size: 1.4rem; font-weight: bold; display: flex; gap: 10px; align-items: center; }
+        .close-comment-btn { background: transparent; border: 1px solid #ff3333; color: #ff3333; padding: 5px 15px; border-radius: 4px; cursor: pointer; transition: 0.3s; font-size: 1rem; }
+        .close-comment-btn:hover { background: #ff3333; color: #000; box-shadow: 0 0 15px #ff3333; }
 
         .comment-tip {
-            background: rgba(0, 229, 255, 0.1);
-            border: 1px dashed var(--phasma-cyan);
-            color: var(--phasma-cyan);
-            padding: 12px 20px;
-            border-radius: 6px;
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-            text-align: center;
-            text-shadow: 0 0 5px rgba(0, 229, 255, 0.5);
-            font-weight: bold;
-            box-shadow: inset 0 0 10px rgba(0, 229, 255, 0.2);
+            background: rgba(0, 229, 255, 0.1); border: 1px dashed var(--phasma-cyan);
+            color: var(--phasma-cyan); padding: 10px 15px; border-radius: 6px;
+            font-size: 0.95rem; margin-bottom: 15px; text-align: left; line-height: 1.5;
         }
 
-        /* 调整 Twikoo 内部样式（为了让报错和超时更清晰） */
-        .twikoo-container .tk-error-message {
-            color: #ff3333 !important;
-            font-weight: bold;
-            font-family: 'Share Tech Mono', monospace !important;
-            background: rgba(255, 51, 51, 0.1);
-            padding: 10px;
-            border-radius: 4px;
-            border: 1px dashed #ff3333;
-        }
+        .twikoo-wrapper { flex: 1; overflow-y: auto; padding-right: 10px; }
+        .twikoo-wrapper::-webkit-scrollbar { width: 6px; }
+        .twikoo-wrapper::-webkit-scrollbar-thumb { background: var(--phasma-dim); border-radius: 3px; }
 
-        /* 隐藏的音频标签（为了绕开手机端 iframe 限制） */
-        #bgm-audio {
-            display: none;
-        }
+        /* 隐藏的音频标签 */
+        #bgm-audio { display: none; }
 
         /* 手机端专属：悬浮音乐按钮 */
         .mobile-music-btn {
             display: none;
-            position: fixed;
-            bottom: 90px;
-            right: 20px;
-            z-index: 999;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: var(--panel-bg);
-            border: 1px solid var(--phasma-cyan);
-            color: var(--phasma-cyan);
-            font-size: 1.2rem;
-            cursor: pointer;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
-            justify-content: center;
-            align-items: center;
+            position: fixed; bottom: 160px; right: 20px; z-index: 999;
+            width: 45px; height: 45px; border-radius: 50%;
+            background: var(--panel-bg); border: 1px solid var(--phasma-cyan); color: var(--phasma-cyan);
+            font-size: 1.2rem; cursor: pointer; backdrop-filter: blur(10px);
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.3); justify-content: center; align-items: center;
         }
         .mobile-music-btn.off { border-color: #ff3333; color: #ff3333; box-shadow: 0 0 15px rgba(255, 51, 51, 0.3); }
 
@@ -263,10 +258,11 @@
             .sys-nav::-webkit-scrollbar { display: none; }
             .nav-link { flex-shrink: 0; font-size: 1rem; padding: 8px 15px; border: 1px solid var(--phasma-dim); background: rgba(0,0,0,0.5); }
             .nav-link::after { display: none; }
-            .hud-right { display: none; } /* 手机端隐藏原本右上角 */
-            .mobile-music-btn { display: flex; } /* 手机端显示悬浮按钮 */
+            .hud-right { display: none; } 
+            .mobile-music-btn { display: flex; } 
             
-            .page-section { padding-top: 160px; padding-bottom: 180px; }
+            .page-section { padding-top: 160px; padding-bottom: 120px; }
+            
             .log-wrapper { grid-template-columns: 1fr; gap: 15px; }
             .log-box { min-height: 160px; padding: 15px 20px; }
             .modules-grid { grid-template-columns: 1fr; gap: 15px; }
@@ -294,15 +290,19 @@
             .timeline-item { flex-direction: column; gap: 10px; }
             .timeline-img { width: 100%; height: 150px; object-fit: contain; }
             .timeline-text { font-size: 1.1rem; }
-            .bottom-social-panel { padding: 0 10px 15px; }
-            .social-grid { gap: 10px; }
-            .social-btn { flex-direction: column; gap: 5px; padding: 12px 5px; }
-            .social-icon-img { width: 28px; height: 28px; }
-            .social-name { font-size: 0.8rem; }
             
-            .global-comment-section { padding: 0 15px; margin-bottom: 80px; }
-            .comment-box { padding: 20px; }
-            .comment-tip { font-size: 1rem; padding: 10px; }
+            /* 手机端社交按钮缩小并靠边 */
+            .bottom-social-panel { padding: 0 10px 15px; bottom: 0; }
+            .social-grid { gap: 10px; }
+            .social-btn { flex-direction: column; gap: 5px; padding: 10px 5px; }
+            .social-icon-img { width: 24px; height: 24px; }
+            .social-name { font-size: 0.75rem; }
+
+            /* 手机端留言板调整 */
+            .comment-toggle-btn { bottom: 90px; right: 15px; padding: 10px 15px; font-size: 0.9rem; border-radius: 20px; }
+            .global-comment-section { height: 85vh; }
+            .comment-box { padding: 15px; }
+            .comment-box-title { font-size: 1.2rem; }
         }
     </style>
 </head>
@@ -316,13 +316,13 @@
     <div id="signal-bg"></div>
     <div class="scanlines"></div>
 
-    <!-- 核心修改：直接使用 audio 标签，抛弃 iframe，防止手机端拦截 -->
     <audio id="bgm-audio" loop>
         <source src="bgm/bgm.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- 手机端悬浮音乐按钮 -->
+    <!-- 悬浮按钮区 -->
     <div class="mobile-music-btn" id="mobile-audio-btn">🎵</div>
+    <div class="comment-toggle-btn" onclick="toggleCommentPanel()">💬 打开评论区</div>
 
     <!-- 头像档案馆模态框 -->
     <div id="archive-modal" onclick="closeArchive(event)">
@@ -382,7 +382,7 @@
         <div class="hud-left">
             <div class="sys-logo" onclick="switchPage('home')">
                 <img src="logo/菠萝Stars.png" alt="Logo" onerror="this.style.display='none'"> 
-                🍍Stars_Station <span>v1.7</span>
+                🍍Stars_Station <span>v1.9</span>
             </div>
             <nav class="sys-nav">
                 <a onclick="switchPage('home')" id="nav-home" class="nav-link active">首页</a>
@@ -395,6 +395,24 @@
         <div class="hud-right">
             <div class="status-text">STATION_ONLINE</div>
             <button id="audio-btn" class="audio-toggle">[ AUDIO: ON ]</button>
+        </div>
+    </div>
+
+    <!-- ==================== 常驻留言板（抽屉形式） ==================== -->
+    <div class="global-comment-section" id="comment-drawer">
+        <div class="comment-box">
+            <div class="comment-box-header">
+                <div class="comment-box-title">💬 终端通讯区 / 留言板</div>
+                <button class="close-comment-btn" onclick="toggleCommentPanel()">[ X 收起 ]</button>
+            </div>
+            <div class="comment-tip">
+                [ 系统提示 ] 1.如果评论功能完全不显示，大概率是网络问题，多等等即可。<br>
+                2.如果提示邮箱为必填项，请直接填入 123@123.com 即可发布！<br>
+                3.这边更推荐加入交流群:QQ 780488417
+            </div>
+            <div class="twikoo-wrapper">
+                <div id="tcomment-global" class="twikoo-container"></div>
+            </div>
         </div>
     </div>
 
@@ -433,14 +451,6 @@
                 </a>
             </div>
         </div>
-
-        <!-- 首页的留言板 -->
-        <div class="global-comment-section">
-            <div class="comment-box">
-                <div class="comment-tip">[ 系统提示 ] 1.如果评论功能完全不显示，大概率是网络问题，多等等即可，显示无法发送评论也是一样的情况<br>2.如果提示邮箱为必填项，请直接填入 123@123.com 即可发布！<br>3.这边更推荐加入交流群:QQ780488417</div>
-                <div id="tcomment-home" class="twikoo-container"></div>
-            </div>
-        </div>
     </div>
 
     <!-- ==================== 🍍Stars 频道页 ==================== -->
@@ -473,14 +483,6 @@
                     <h3><span>🎵</span> 梦核作曲基地</h3>
                     <p>除了搞机，这里也是我的音乐自留地。我会在这里发布用 Am7-Fmaj7 写的梦核音乐，以及关于 3D 建模的各种脑洞。</p>
                 </div>
-            </div>
-        </div>
-
-        <!-- Stars页的留言板 -->
-        <div class="global-comment-section">
-            <div class="comment-box">
-                <div class="comment-tip">[ 系统提示 ] 如果提示邮箱为必填项，请直接填入 123@123.com 即可发布！</div>
-                <div id="tcomment-stars" class="twikoo-container"></div>
             </div>
         </div>
     </div>
@@ -533,14 +535,6 @@
                         <li>最想要的外挂 <span>[ 最先进的 ChatGPT ]</span></li>
                     </ul>
                 </div>
-            </div>
-        </div>
-
-        <!-- Client页的留言板 -->
-        <div class="global-comment-section">
-            <div class="comment-box">
-                <div class="comment-tip">[ 系统提示 ] 如果提示邮箱为必填项，请直接填入 123@123.com 即可发布！</div>
-                <div id="tcomment-client" class="twikoo-container"></div>
             </div>
         </div>
     </div>
@@ -618,14 +612,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- 日志页的留言板 -->
-        <div class="global-comment-section">
-            <div class="comment-box">
-                <div class="comment-tip">[ 系统提示 ] 如果提示邮箱为必填项，请直接填入 123@123.com 即可发布！</div>
-                <div id="tcomment-blog" class="twikoo-container"></div>
-            </div>
-        </div>
     </div>
 
     <!-- ==================== 赞助区域 ==================== -->
@@ -642,14 +628,6 @@
                 <div class="sponsor-footer">[ SYSTEM THANKS FOR YOUR SUPPORT ]</div>
             </div>
         </div>
-
-        <!-- 赞助页的留言板 -->
-        <div class="global-comment-section">
-            <div class="comment-box">
-                <div class="comment-tip">[ 系统提示 ] 如果提示邮箱为必填项，请直接填入 123@123.com 即可发布！</div>
-                <div id="tcomment-sponsor" class="twikoo-container"></div>
-            </div>
-        </div>
     </div>
 
     <!-- ==================== 底部社交超大按钮 ==================== -->
@@ -660,7 +638,7 @@
                 <span class="social-name">BILIBILI</span>
             </a>
             <a href="https://www.xiaohongshu.com/user/profile/68a6f9c80000000019020886?m_source=pwa" target="_blank" class="social-btn xhs">
-                <img src="https://www.xiaohongshu.com/favicon.ico" alt="小红书" class="social-icon-img">
+                <img src="https://www.xiaohongshu.com/bfs/static/jinkela/long/images/favicon.ico" alt="小红书" class="social-icon-img">
                 <span class="social-name">小红书</span>
             </a>
             <a href="https://music.163.com/#/artist?id=129286029" target="_blank" class="social-btn netease">
@@ -670,11 +648,19 @@
         </div>
     </div>
 
-    <!-- 引入 Twikoo 脚本（换成了极度稳定的 jsDelivr 官方源，并锁定版本） -->
+    <!-- 引入 Twikoo 脚本 -->
     <script src="https://cdn.jsdelivr.net/npm/twikoo@1.6.44/dist/twikoo.min.js"></script>
     <script>
         // ==========================================
-        // 模块 6：头像档案馆逻辑
+        // 模块 1：留言板抽屉开关
+        // ==========================================
+        function toggleCommentPanel() {
+            const drawer = document.getElementById('comment-drawer');
+            drawer.classList.toggle('active');
+        }
+
+        // ==========================================
+        // 模块 2：头像档案馆逻辑
         // ==========================================
         function openArchive() { document.getElementById('archive-modal').classList.add('active'); }
         function closeArchive(event) {
@@ -702,42 +688,8 @@
         setTimeout(typeWriter, 1000);
 
         // ==========================================
-        // 模块 1：页面无刷新切换 (SPA) & 智能加载留言板
+        // 模块 4：页面无刷新切换 (SPA)
         // ==========================================
-        const envId = "https://cjm-mu.vercel.app"; // 注意：去掉了最后的斜杠
-        const twikooLoaded = {}; 
-
-        function loadTwikoo(pageId) {
-            if (!document.getElementById('page-' + pageId).classList.contains('active')) return;
-            if (twikooLoaded[pageId]) return;
-
-            // 延迟 300ms 确保手机端 DOM 完全渲染出高度
-            setTimeout(() => {
-                try {
-                    const container = document.getElementById('tcomment-' + pageId);
-                    console.log(`准备初始化 Twikoo: ${pageId}`, container);
-                    
-                    if(!container) {
-                        console.error(`找不到容器 #tcomment-${pageId}`);
-                        return;
-                    }
-
-                    twikoo.init({
-                        envId: envId,
-                        el: '#tcomment-' + pageId,
-                        path: '/' + pageId // 区分不同页面的评论
-                    }).then(() => {
-                        twikooLoaded[pageId] = true;
-                        console.log(`✅ Twikoo ${pageId} 加载成功`);
-                    }).catch(e => {
-                        console.error(`❌ Twikoo ${pageId} 加载失败: `, e);
-                    });
-                } catch (error) {
-                    console.error("❌ Twikoo 初始化崩溃: ", error);
-                }
-            }, 300); // 延迟增加到 300ms
-        }
-
         function switchPage(pageId) {
             document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
             document.getElementById('page-' + pageId).classList.add('active');
@@ -745,9 +697,6 @@
             document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
             const navBtn = document.getElementById('nav-' + pageId);
             if(navBtn) navBtn.classList.add('active');
-
-            // 切换页面时调用评论加载（包含防抖和状态记录）
-            loadTwikoo(pageId);
 
             if (pageId === 'home') {
                 typeIdx = 0;
@@ -757,7 +706,7 @@
         }
 
         // ==========================================
-        // 模块 4：自动抓取最新博客到主页
+        // 模块 5：自动抓取最新博客到主页
         // ==========================================
         function loadLatestBlog() {
             setTimeout(() => {
@@ -783,7 +732,7 @@
         }
 
         // ==========================================
-        // 模块 2：音乐无缝控制 (直接使用 audio 标签)
+        // 模块 6：音乐无缝控制
         // ==========================================
         const bgmAudio = document.getElementById('bgm-audio');
         const audioBtn = document.getElementById('audio-btn');
@@ -805,7 +754,6 @@
             }
         }
 
-        // 尝试恢复播放
         if (isMusicPlaying) {
             bgmAudio.play().catch(e => console.log("需要用户交互才能播放: ", e));
         }
@@ -823,11 +771,9 @@
             }
         }
 
-        // 绑定点击事件
         audioBtn.addEventListener('click', toggleAudio);
         mobileAudioBtn.addEventListener('click', toggleAudio);
 
-        // 针对移动端的强制解锁（移动端需要首次触摸页面才能播放）
         document.body.addEventListener('touchstart', function unlockAudio() {
             if (isMusicPlaying && bgmAudio.paused) {
                 bgmAudio.play().catch(() => {});
@@ -842,7 +788,7 @@
         setInterval(updateClock, 1000); updateClock();
 
         // ==========================================
-        // 模块 5：博客分类过滤
+        // 模块 7：博客分类过滤
         // ==========================================
         const filterBtns = document.querySelectorAll('.filter-btn');
         const posts = document.querySelectorAll('.post');
@@ -868,11 +814,26 @@
             });
         });
 
-        // 初始化
+        // ==========================================
+        // 模块 8：Twikoo 初始化
+        // ==========================================
+        const envId = "https://cjm-mu.vercel.app"; 
+        
         window.onload = () => {
-            // 首页默认加载
-            loadTwikoo('home');
             loadLatestBlog(); 
+            
+            // 延迟加载，确保页面渲染完毕
+            setTimeout(() => {
+                twikoo.init({
+                    envId: envId,
+                    el: '#tcomment-global',
+                    path: '/' 
+                }).then(() => {
+                    console.log('✅ 常驻留言板加载成功');
+                }).catch(e => {
+                    console.error('❌ 常驻留言板加载失败: ', e);
+                });
+            }, 500);
         };
     </script>
 </body>
