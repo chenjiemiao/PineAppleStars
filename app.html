@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.3, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>🍍Stars_Station | 菠萝星空间站</title>
     
     <style>
@@ -24,19 +24,14 @@
         
         body {
             margin: 0; overflow: hidden;
-            /* 底层保留背景图防黑屏 */
             background-image: url('bg/Stars-bg.jpg'); background-size: cover; background-position: center;
             background-color: var(--bg-deep); color: var(--phasma-bright); user-select: none;
             -webkit-overflow-scrolling: touch;
         }
 
-        /* 视频背景层 */
         #bg-video {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            object-fit: cover;
-            z-index: -2;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover; z-index: -2;
         }
 
         a { text-decoration: none; color: inherit; }
@@ -65,7 +60,7 @@
         .audio-toggle.off:hover { background: rgba(255, 51, 51, 0.1); border-color: #ff3333; }
 
         /* 页面切换控制 */
-        .page-section { display: none; height: 100vh; overflow-y: auto; position: relative; z-index: 20; box-sizing: border-box; padding-top: 110px; padding-bottom: 120px; }
+        .page-section { display: none; height: 100vh; overflow-y: auto; position: relative; z-index: 20; box-sizing: border-box; padding-top: 110px; padding-bottom: 150px; /* 加高底部防止被遮挡 */ }
         .page-section.active { display: block; }
 
         /* --- 底部社交超大按钮 --- */
@@ -199,7 +194,8 @@
 
         /* --- 常驻留言板样式 --- */
         .global-comment-section {
-            max-width: 900px; margin: 0 auto 40px auto; padding: 0 20px; width: 100%; box-sizing: border-box;
+            max-width: 900px; margin: 0 auto 80px auto; /* 增加底边距，防止被底栏遮挡 */
+            padding: 0 20px; width: 100%; box-sizing: border-box;
         }
         .comment-box {
             background: var(--panel-bg); border: 1px solid var(--phasma-border); border-radius: 8px;
@@ -221,6 +217,28 @@
             box-shadow: inset 0 0 10px rgba(0, 229, 255, 0.2);
         }
 
+        /* 手机端专属：悬浮音乐按钮 */
+        .mobile-music-btn {
+            display: none;
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            z-index: 999;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--panel-bg);
+            border: 1px solid var(--phasma-cyan);
+            color: var(--phasma-cyan);
+            font-size: 1.2rem;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
+            justify-content: center;
+            align-items: center;
+        }
+        .mobile-music-btn.off { border-color: #ff3333; color: #ff3333; box-shadow: 0 0 15px rgba(255, 51, 51, 0.3); }
+
         @media screen and (max-width: 768px) {
             .hud-header { height: auto; padding: 15px 20px; flex-direction: column; align-items: stretch; gap: 15px; }
             .hud-left { flex-direction: column; width: 100%; gap: 15px; align-items: stretch; }
@@ -229,8 +247,10 @@
             .sys-nav::-webkit-scrollbar { display: none; }
             .nav-link { flex-shrink: 0; font-size: 1rem; padding: 8px 15px; border: 1px solid var(--phasma-dim); background: rgba(0,0,0,0.5); }
             .nav-link::after { display: none; }
-            .hud-right { display: none; }
-            .page-section { padding-top: 160px; padding-bottom: 100px; }
+            .hud-right { display: none; } /* 手机端隐藏原本右上角的音乐按钮 */
+            .mobile-music-btn { display: flex; } /* 手机端显示悬浮音乐按钮 */
+            
+            .page-section { padding-top: 160px; padding-bottom: 180px; /* 为底部留出足够空间 */ }
             .log-wrapper { grid-template-columns: 1fr; gap: 15px; }
             .log-box { min-height: 160px; padding: 15px 20px; }
             .modules-grid { grid-template-columns: 1fr; gap: 15px; }
@@ -264,7 +284,7 @@
             .social-icon-img { width: 28px; height: 28px; }
             .social-name { font-size: 0.8rem; }
             
-            .global-comment-section { padding: 0 15px; margin-bottom: 20px;}
+            .global-comment-section { padding: 0 15px; margin-bottom: 80px; }
             .comment-box { padding: 20px; }
             .comment-tip { font-size: 1rem; padding: 10px; }
         }
@@ -273,7 +293,7 @@
 <body>
 
     <!-- 视频背景 -->
-    <video id="bg-video" autoplay muted loop playsinline>
+    <video id="bg-video" autoplay muted loop playsinline preload="none">
         <source src="bg/bg.mp4" type="video/mp4">
     </video>
 
@@ -281,6 +301,9 @@
     <div class="scanlines"></div>
 
     <iframe id="music-frame" src="music.html" style="display:none;"></iframe>
+
+    <!-- 手机端悬浮音乐按钮 -->
+    <div class="mobile-music-btn" id="mobile-audio-btn" onclick="toggleAudio()">🎵</div>
 
     <!-- 头像档案馆模态框 -->
     <div id="archive-modal" onclick="closeArchive(event)">
@@ -340,7 +363,7 @@
         <div class="hud-left">
             <div class="sys-logo" onclick="switchPage('home')">
                 <img src="logo/菠萝Stars.png" alt="Logo" onerror="this.style.display='none'"> 
-                🍍Stars_Station <span>v1.3</span>
+                🍍Stars_Station <span>v1.0</span>
             </div>
             <nav class="sys-nav">
                 <a onclick="switchPage('home')" id="nav-home" class="nav-link active">首页</a>
@@ -352,7 +375,7 @@
         </div>
         <div class="hud-right">
             <div class="status-text">STATION_ONLINE</div>
-            <button id="audio-btn" class="audio-toggle">[ AUDIO: ON ]</button>
+            <button id="audio-btn" class="audio-toggle" onclick="toggleAudio()">[ AUDIO: ON ]</button>
         </div>
     </div>
 
@@ -483,7 +506,7 @@
                     <ul class="data-list">
                         <li>CS2 最高段位 <span>[ 金C+ (目前渡劫中) ]</span></li>
                         <li>迷你号 <span>[ 1458017078 ]</span></li>
-                        <li>核心技能 <span>[ 作曲 / 3D建模 / 剪辑 / 开服 / 写代码&编程 / 计算机硬件 ]</span></li>
+                        <li>核心技能 <span>[ 3D建模 / 剪辑 / 开服 / 写代码&编程 / 计算机硬件 ]</span></li>
                         <li>现役主力机 <span>[ AMD R5 5600 + RTX 3060 Ti ]</span></li>
                         <li>梦中情卡 <span>[ RTX 5070 ]</span></li>
                         <li>梦中情机 <span>[ 大疆 Pocket 3 ]</span></li>
@@ -513,19 +536,9 @@
                 <button class="filter-btn" data-filter="系统">[ 系统 ]</button>
                 <button class="filter-btn" data-filter="原创音乐">[ 原创音乐 ]</button>
             </div>
-            
+
+            <!-- 最新博客（带有 id="latest-blog"） -->
             <div class="post" id="latest-blog" data-category="日常">
-                <div class="post-meta">
-                    <span class="post-date">2026-10-19 / LOG_006</span>
-                    <span class="post-tag">日常 / 碎碎念</span>
-                </div>
-                <h2 class="post-title">这波我明显无能为力了/</h2>
-                <div class="post-content">
-                    <p>好奇为什么有人没法发评论，背景我明明选择替换为一段视频了为了避免异常才加的底图是一个图片，感觉始终没法播放这个视频，2.3MB的视频难道还大？</p>
-                </div>
-            </div>
-            
-            <div class="post"  data-category="日常">
                 <div class="post-meta">
                     <span class="post-date">2026-10-19 / LOG_005</span>
                     <span class="post-tag">日常 / 碎碎念</span>
@@ -708,7 +721,6 @@
         // 模块 4：自动抓取最新博客到主页 (修复版)
         // ==========================================
         function loadLatestBlog() {
-            // 延迟 100 毫秒，确保浏览器已经渲染完了整个 HTML 结构
             setTimeout(() => {
                 const latestPost = document.getElementById('latest-blog');
                 if (latestPost) {
@@ -730,7 +742,7 @@
                 }
             }, 100);
         }
-        
+
         // 初始化
         window.onload = () => {
             loadTwikoo('home');
@@ -738,10 +750,11 @@
         };
 
         // ==========================================
-        // 模块 2：音乐无缝控制
+        // 模块 2：音乐无缝控制 (兼容PC和手机端)
         // ==========================================
         const musicFrame = document.getElementById('music-frame');
         const audioBtn = document.getElementById('audio-btn');
+        const mobileAudioBtn = document.getElementById('mobile-audio-btn');
         let isMusicPlaying = sessionStorage.getItem('musicPlayingState') === 'true';
 
         function updateAudioUI(playing) {
@@ -749,10 +762,14 @@
             if (playing) {
                 audioBtn.innerHTML = '[ AUDIO: ON ]';
                 audioBtn.classList.remove('off');
+                mobileAudioBtn.innerHTML = '🎵';
+                mobileAudioBtn.classList.remove('off');
                 musicFrame.contentWindow.postMessage('play', '*');
             } else {
                 audioBtn.innerHTML = '[ AUDIO: OFF ]';
                 audioBtn.classList.add('off');
+                mobileAudioBtn.innerHTML = '🔇';
+                mobileAudioBtn.classList.add('off');
                 musicFrame.contentWindow.postMessage('pause', '*');
             }
         }
@@ -762,11 +779,14 @@
             updateAudioUI(isMusicPlaying);
         };
 
-        audioBtn.addEventListener('click', () => {
+        function toggleAudio() {
             isMusicPlaying = !isMusicPlaying;
             sessionStorage.setItem('musicPlayingState', isMusicPlaying ? 'true' : 'false');
             updateAudioUI(isMusicPlaying);
-        });
+        }
+
+        audioBtn.addEventListener('click', toggleAudio);
+        mobileAudioBtn.addEventListener('click', toggleAudio);
 
         function updateClock() { 
             const clockEl = document.getElementById('clock');
