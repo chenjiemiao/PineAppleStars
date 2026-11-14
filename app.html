@@ -236,6 +236,131 @@
         .twikoo-wrapper::-webkit-scrollbar { width: 6px; }
         .twikoo-wrapper::-webkit-scrollbar-thumb { background: var(--phasma-dim); border-radius: 3px; }
 
+        /* --- 新增：名人堂专属节点连线样式 --- */
+        .hall-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            padding: 20px 0;
+        }
+
+        /* 那条贯穿上下的数据线 */
+        .hall-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, transparent, var(--phasma-cyan) 10%, var(--phasma-cyan) 90%, transparent);
+            box-shadow: 0 0 10px var(--phasma-cyan);
+            z-index: 1;
+        }
+
+        .hall-node {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-bottom: 40px;
+            z-index: 2;
+        }
+
+        /* 节点上的发光小圆点 */
+        .hall-node::before {
+            content: '';
+            position: absolute;
+            left: -11px;
+            top: 40px;
+            width: 20px;
+            height: 20px;
+            background: var(--bg-deep);
+            border: 2px solid var(--pineapple-yellow);
+            border-radius: 50%;
+            box-shadow: 0 0 15px var(--pineapple-yellow);
+            z-index: 3;
+        }
+
+        /* 小圆点外的一圈光环动画 */
+        .hall-node::after {
+            content: '';
+            position: absolute;
+            left: -13px;
+            top: 38px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 1px solid var(--pineapple-yellow);
+            animation: pulse-ring 2s infinite;
+            z-index: 3;
+        }
+
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); opacity: 1; }
+            100% { transform: scale(2); opacity: 0; }
+        }
+
+        .hall-card {
+            background: var(--panel-bg);
+            border: 1px solid var(--phasma-border);
+            padding: 25px 30px;
+            border-radius: 6px;
+            margin-left: 30px;
+            backdrop-filter: blur(10px);
+            transition: 0.3s;
+            clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
+        }
+        
+        .hall-card:hover {
+            border-color: var(--pineapple-yellow);
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.15);
+            transform: translateX(5px);
+        }
+
+        /* --- 新增：展品 (Exhibit) 样式 --- */
+        .exhibit-card {
+            background: var(--panel-bg);
+            border: 1px solid var(--phasma-border);
+            border-radius: 8px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            position: relative;
+            transition: 0.3s;
+        }
+
+        .exhibit-card:hover {
+            border-color: var(--pineapple-yellow);
+            box-shadow: 0 15px 40px rgba(255, 215, 0, 0.15);
+        }
+
+        .exhibit-img {
+            width: 100%;
+            max-height: 400px;
+            object-fit: contain;
+            border-radius: 4px;
+            border: 1px solid var(--phasma-dim);
+            background: rgba(0,0,0,0.5);
+        }
+
+        .exhibit-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: var(--phasma-cyan);
+            border-bottom: 1px dashed var(--phasma-dim);
+            padding-bottom: 10px;
+        }
+        
+        .exhibit-message {
+            color: var(--pineapple-yellow);
+            font-size: 1.2rem;
+            font-style: italic;
+            text-shadow: 0 0 5px rgba(255, 215, 0, 0.3);
+        }
+
         /* 隐藏的音频标签 */
         #bgm-audio { display: none; }
 
@@ -303,6 +428,12 @@
             .global-comment-section { height: 85vh; }
             .comment-box { padding: 15px; }
             .comment-box-title { font-size: 1.2rem; }
+
+            /* 手机端名人堂调整 */
+            .hall-container::before { left: 20px; }
+            .hall-card { margin-left: 45px; padding: 20px; }
+            .hall-node::before { left: 9px; top: 30px; }
+            .hall-node::after { left: 7px; top: 28px; }
         }
     </style>
 </head>
@@ -382,12 +513,14 @@
         <div class="hud-left">
             <div class="sys-logo" onclick="switchPage('home')">
                 <img src="logo/菠萝Stars.png" alt="Logo" onerror="this.style.display='none'"> 
-                🍍Stars_Station <span>v2.0</span>
+                🍍Stars_Station <span>v2.5</span>
             </div>
             <nav class="sys-nav">
                 <a onclick="switchPage('home')" id="nav-home" class="nav-link active">首页</a>
                 <a onclick="switchPage('stars')" id="nav-stars" class="nav-link">🍍Stars</a>
                 <a onclick="switchPage('client')" id="nav-client" class="nav-link">陈羯喵Client</a>
+                <a onclick="switchPage('halloffame')" id="nav-halloffame" class="nav-link">名人堂</a>
+                <a onclick="switchPage('exhibit')" id="nav-exhibit" class="nav-link">展品</a>
                 <a onclick="switchPage('blog')" id="nav-blog" class="nav-link">日志</a>
                 <a onclick="switchPage('sponsor')" id="nav-sponsor" class="nav-link">赞助！</a>
             </nav>
@@ -446,6 +579,17 @@
                     <div class="emoji-icon">📝</div>
                     <div class="module-text"><h3>日志笔记</h3><span>站长随笔与记录</span></div>
                 </a>
+								
+				<a onclick="switchPage('halloffame')" class="module-btn">
+					<div class="emoji-icon">🌟</div>
+					<div class="module-text"><h3>名人堂</h3><span>星海引路人</span></div>
+				</a>
+				
+				<a onclick="switchPage('exhibit')" class="module-btn">
+					<div class="emoji-icon">🎁</div>
+					<div class="module-text"><h3>展品</h3><span>挚友の馈赠</span></div>
+				</a>
+				
                 <a href="javascript:void(0);" class="module-btn disabled">
                     <div class="emoji-icon">🌍</div>
                     <div class="module-text"><h3>MC服务器</h3><span>[ 暂未开放 ]</span></div>
@@ -557,7 +701,19 @@
                 <button class="filter-btn" data-filter="原创音乐">[ 原创音乐 ]</button>
 				<button class="filter-btn" data-filter="🍍StarsStudio">[ 🍍StarsGames工作室 ]</button>
             </div>
-			<div class="post" id="post-latest" data-category="🍍StarsStudio">
+			
+			<div class="post" id="post-latest"  data-category="系统">
+                <div class="post-meta">
+                    <span class="post-date">2026-11-15 / LOG_012</span>
+                    <span class="post-tag">系统 / 初始化</span>
+                </div>
+                <h2 class="post-title">网站大更新！</h2>
+                <div class="post-content">
+                    <p>🍍Stars空间站新增加了名人堂和展品，展品就是在网上收到的他人的礼物！名人堂那当然是对我人生中有重大意义的那些人，至于为什么有些谜语？这你就别管了</p>
+                </div>
+            </div>
+			
+			<div class="post"  data-category="🍍StarsStudio">
                 <div class="post-meta">
                     <span class="post-date">2026-11-07 / LOG_011</span>
                     <span class="post-tag">🍍StarsGames工作室</span>
@@ -701,6 +857,286 @@
             </div>
         </div>
     </div>
+	
+    <!-- ==================== 🏛️ 名人堂 (Hall of Fame) ==================== -->
+    <div id="page-halloffame" class="page-section">
+        <div class="blog-container"> 
+            <!-- 页面标题 -->
+            <div class="filter-bar" style="justify-content: center; border-color: var(--pineapple-yellow); margin-bottom: 20px;">
+                <h2 style="margin: 0; color: var(--pineapple-yellow); font-family: 'Share Tech Mono', monospace; letter-spacing: 2px;">
+                    🌟 HALL_OF_FAME // 星海引路人
+                </h2>
+            </div>
+
+            <!-- 暗语解密声明 -->
+            <div style="max-width: 800px; margin: 0 auto 40px auto; padding: 12px 20px; background: rgba(255, 51, 51, 0.1); border: 1px dashed #ff3333; border-radius: 6px; text-align: center; box-shadow: inset 0 0 10px rgba(255,51,51,0.2);">
+                <p style="margin: 0; color: #ff3333; font-family: 'Share Tech Mono', monospace; font-size: 0.95rem; letter-spacing: 1px;">
+                    ⚠️ [ DECRYPTION_WARNING ] // 终端安全提示
+                </p>
+                <p style="margin: 5px 0 0 0; color: #ccc; font-size: 1rem; line-height: 1.5;">
+                    整个“名人堂”档案中，带有 <strong style="color: #fff;">【%】</strong> 或 <strong style="color: #fff;">【/%】</strong> 符号包裹的句子均为<b>最高级别暗语</b>。<br>
+                    其字面意思与真实含义存在物理隔离，仅限特定权限终端解析，请勿按字面逻辑推理。
+                </p>
+            </div>
+
+            <!-- 核心连线容器 -->
+            <div class="hall-container">
+                
+                <!-- ================= 节点卡片 1：桃桃a ================= -->
+                <div class="hall-node">
+                    <div class="hall-card">
+                        <div style="display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
+                            <img src="https://placehold.co/120x120/1a1a1a/666666?text=Offline" alt="Avatar" style="width: 100px; height: 100px; border-radius: 8px; border: 2px solid #666; object-fit: cover; filter: grayscale(100%);">
+                            
+                            <div style="flex: 1; min-width: 250px;">
+                                <h3 style="margin: 0 0 10px 0; font-size: 1.6rem; color: #fff; border-bottom: 1px dashed var(--phasma-dim); padding-bottom: 10px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                    迷你世界桃桃a 
+                                    <span style="font-size: 0.9rem; color: #39FF14; font-weight: normal;">@迷你世界好友</span>
+                                    <span style="font-size: 0.75rem; color: #888; display: flex; align-items: center; gap: 4px; margin-left: 10px; background: rgba(255,255,255,0.05); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1);">
+                                        <span style="width: 8px; height: 8px; background: #666; border-radius: 50%;"></span> 离线 N 年
+                                    </span>
+                                </h3>
+
+                                <p style="color: #ccc; font-size: 1.1rem; line-height: 1.6; margin: 0;">
+                                    “我真正意义上的在互联网上认识的第一个网友！虽然仅限于迷你世界内，但是不可否认的是 2021-2022 年我们玩的都很开心。当然，她换了很多号，最后一个号也已经 4 年没上线了(2022-2026)，也许我这辈子也等不到她再次上线。”
+                                </p>
+                                
+                                <div style="margin-top: 15px; font-size: 0.9rem; color: #666; font-family: 'Share Tech Mono', monospace;">
+                                    * 信号中断，等待重新连接...
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================= 节点卡片 2：逝呆呆呀呀呀 ================= -->
+                <div class="hall-node">
+                    <div class="hall-card">
+                        <div style="display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
+                            <img src="txpic/bcls.jpg" alt="Avatar" style="width: 100px; height: 100px; border-radius: 8px; border: 2px solid #39FF14; object-fit: cover;">
+                            
+                            <div style="flex: 1; min-width: 250px;">
+                                <h3 style="margin: 0 0 10px 0; font-size: 1.6rem; color: #fff; border-bottom: 1px dashed var(--phasma-dim); padding-bottom: 10px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                    🤔逝呆呆呀呀呀 
+                                    <span style="font-size: 0.9rem; color: #39FF14; font-weight: normal;">@编程老师</span>
+                                    
+                                    <span style="font-size: 0.75rem; color: #39FF14; display: flex; align-items: center; gap: 4px; background: rgba(57, 255, 20, 0.1); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(57, 255, 20, 0.3); margin-left: 10px;">
+                                        <span style="width: 8px; height: 8px; background: #39FF14; border-radius: 50%; animation: blink 1.5s infinite; box-shadow: 0 0 8px #39FF14;"></span> 
+                                        信号稳定 / 在线
+                                    </span>
+                                </h3>
+
+                                <p style="color: #ccc; font-size: 1.1rem; line-height: 1.6; margin: 0;">
+                                    “2020-2024年我的编程老师！虽然是报课学的，但是我学会了图形化和 Python，也奠定了我的计算机基础。对我而言这算得上一个很好的朋友！尽管后面停课，但我们仍然保持着联系。”
+                                </p>
+                                
+                                <div style="margin-top: 15px; font-size: 0.9rem; color: #0aff2f; font-family: 'Share Tech Mono', monospace;">
+                                    * 双向同步完成，数据流运转良好。
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================= 节点卡片 3：T_PLAN ================= -->
+                <div class="hall-node">
+                    <div class="hall-card">
+                        <div style="display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
+                            <img src="txpic/tplan.jpg" alt="Avatar" style="width: 100px; height: 100px; border-radius: 8px; border: 2px solid #666; object-fit: cover; filter: grayscale(30%);">
+                            
+                            <div style="flex: 1; min-width: 250px;">
+                                <h3 style="margin: 0 0 10px 0; font-size: 1.6rem; color: #fff; border-bottom: 1px dashed var(--phasma-dim); padding-bottom: 10px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                    T_PLAN 
+                                    <span style="font-size: 0.9rem; color: #999; font-weight: normal;">@网友 & 编程老师</span>
+                                    
+                                    <span style="font-size: 0.75rem; color: #888; display: flex; align-items: center; gap: 4px; margin-left: 10px; background: rgba(255,255,255,0.05); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1);">
+                                        <span style="width: 8px; height: 8px; background: #666; border-radius: 50%;"></span> 
+                                        信号已断开
+                                    </span>
+                                </h3>
+
+                                <p style="color: #ccc; font-size: 1.1rem; line-height: 1.6; margin: 0;">
+                                    “不可否认的，他曾是我的偶像！初中的时候就已经开发出了人生中第一款游戏。2023-2025年，哪怕自己顶着高考的压力，仍然给了我很多开发游戏上的指导。后来因为他要步入自己的生活，我们无奈断绝了联系。”
+                                </p>
+                                
+                                <div style="margin-top: 15px; font-size: 0.9rem; color: #666; font-family: 'Share Tech Mono', monospace;">
+                                    * 节点已离线，数据封存于 2025...
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+				
+                <!-- ================= 节点卡片 4：RSTminecraft ================= -->
+                <div class="hall-node">
+                    <div class="hall-card">
+                        <div style="display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
+                            <img src="txpic/rst.jpg" alt="Avatar" style="width: 100px; height: 100px; border-radius: 8px; border: 2px solid #39FF14; object-fit: cover;">
+                            
+                            <div style="flex: 1; min-width: 250px;">
+                                <h3 style="margin: 0 0 10px 0; font-size: 1.6rem; color: #fff; border-bottom: 1px dashed var(--phasma-dim); padding-bottom: 10px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                    RSTminecraft 
+                                    <span style="font-size: 0.9rem; color: #999; font-weight: normal;">@网友 & 技术大佬</span>
+                                    
+                                    <span style="font-size: 0.75rem; color: #39FF14; display: flex; align-items: center; gap: 4px; background: rgba(57, 255, 20, 0.1); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(57, 255, 20, 0.3); margin-left: 10px;">
+                                        <span style="width: 8px; height: 8px; background: #39FF14; border-radius: 50%; animation: blink 1.5s infinite; box-shadow: 0 0 8px #39FF14;"></span> 
+                                        信号稳定 / 在线
+                                    </span>
+                                </h3>
+
+                                <p style="color: #ccc; font-size: 1.1rem; line-height: 1.6; margin: 0;">
+                                    “玩MC3c3u服务器意外认识的好朋友，会红石/生电还会写java模组！对我有一些帮助，但大部分时候还是在一起玩。”
+                                </p>
+                                
+                                <div style="margin-top: 15px; font-size: 0.9rem; color: #0aff2f; font-family: 'Share Tech Mono', monospace;">
+                                    * 双向同步完成，数据流运转良好。
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+					
+                <!-- ================= 节点卡片 5：四叶茶 ================= -->
+                <div class="hall-node">
+                    <div class="hall-card">
+                        <div style="display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
+                            <img src="txpic/syc.jpg" alt="Avatar" style="width: 100px; height: 100px; border-radius: 8px; border: 2px solid #39FF14; object-fit: cover;">
+                            
+                            <div style="flex: 1; min-width: 250px;">
+                                <h3 style="margin: 0 0 10px 0; font-size: 1.6rem; color: #fff; border-bottom: 1px dashed var(--phasma-dim); padding-bottom: 10px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                    四叶茶=UwU= 
+                                    <span style="font-size: 0.9rem; color: #999; font-weight: normal;">@网友 & 画师</span>
+                                    
+                                    <span style="font-size: 0.75rem; color: #39FF14; display: flex; align-items: center; gap: 4px; background: rgba(57, 255, 20, 0.1); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(57, 255, 20, 0.3); margin-left: 10px;">
+                                        <span style="width: 8px; height: 8px; background: #39FF14; border-radius: 50%; animation: blink 1.5s infinite; box-shadow: 0 0 8px #39FF14;"></span> 
+                                        信号稳定 / 在线
+                                    </span>
+                                </h3>
+
+                                <p style="color: #ccc; font-size: 1.1rem; line-height: 1.6; margin: 0;">
+                                    “😡😡😡哪来的雷霆67四叶茶整天一副挨打样。”
+                                </p>
+                                
+                                <div style="margin-top: 15px; font-size: 0.9rem; color: #0aff2f; font-family: 'Share Tech Mono', monospace;">
+                                    * 双向同步完成，数据流运转良好。
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+				
+                <!-- ================= 节点卡片：最刻骨铭心的赛博踩坑 ================= -->
+                <div class="hall-node">
+                    <div class="hall-card" style="border-left: 4px solid #ff3333; border-color: rgba(255, 51, 51, 0.4); background: rgba(20, 0, 0, 0.6);">
+                        <div style="display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
+                            <!-- 头像：打个纯红黑色的马赛克占位 -->
+                            <img src="https://placehold.co/120x120/2a0000/ff3333?text=Banned" alt="Avatar" style="width: 100px; height: 100px; border-radius: 8px; border: 2px solid #ff3333; object-fit: cover; filter: grayscale(50%); box-shadow: 0 0 15px rgba(255,51,51,0.3);">
+                            
+                            <div style="flex: 1; min-width: 250px;">
+                                <h3 style="margin: 0 0 10px 0; font-size: 1.6rem; color: #fff; border-bottom: 1px dashed rgba(255,51,51,0.3); padding-bottom: 10px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                    ???（已屏蔽） 
+                                    <span style="font-size: 0.9rem; color: #ff3333; font-weight: normal;">@最痛的一课</span>
+                                    
+                                    <!-- 警报状态 -->
+                                    <span style="font-size: 0.75rem; color: #ff3333; display: flex; align-items: center; gap: 4px; background: rgba(255, 51, 51, 0.15); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(255, 51, 51, 0.4); margin-left: 10px;">
+                                        <span style="width: 8px; height: 8px; background: #ff3333; border-radius: 50%; animation: blink 1.5s infinite; box-shadow: 0 0 8px #ff3333;"></span> 
+                                        极度危险 / 永久封禁
+                                    </span>
+                                </h3>
+
+                                <div style="color: #bbb; font-size: 1.05rem; line-height: 1.7; margin: 0;">
+                                    <p style="margin-top: 0; color: #ff3333; font-weight: bold; font-size: 1.15rem;">“这绝对能算得上我人生中最精彩的一笔（反向）。”</p>
+                                    
+                                    <p>这是一个很多才多艺的人。一开始认识是一起玩游戏，后来关系逐渐变得非常好，她认我为弟弟，我认她为姐姐。</p>
+                                    
+                                    <p>在 2026 年 9 月底，她态度骤变执意要绝交。通过她闺蜜转达的言论全篇是“我是个很好的人，她累了”这样的反将式发言，成功让那段时间的我陷入深深的内耗，以为绝交全是我的错。</p>
+                                    
+                                    <p>当时我只有她这一个真心朋友，于是我连续两个月尝试和好（期间我曾<strong>连续十天熬穿帮她打她的游戏账号</strong>，最后她以讨厌别人随意登号为由全盘否认）。后来她违规开私人俱乐部，我甚至<strong>熬了三通宵替她写网站</strong>，但她仅凭私人恩怨就将我清退，并白嫖了所有成果。</p>
+                                    
+                                    <p>我愤怒地打消了和好的念头。但到了 10 月底，我频繁梦见她。我是无神论者，我意识到自己内心其实还在渴望挽回这段友谊（因为朋友再多，也未必能交心）。</p>
+                                    
+                                    <p>然而通过小道消息，我震惊地得知，她竟然在四处向别人主动询问要不要我的<strong>身份证号</strong>等隐私信息（这是关系最好时我出于信任给她的）。<span style="color: #ff3333; font-weight: bold;">请各位先不要指责我为何敢把信息给未见面的网友，A给了B信息，绝不代表B可以随意泄露给C D E！</span></p>
+                                    
+                                    <p>我愤怒地找她要说法，她的做法是直接拉黑。我让拿到信息的第三方去问她，她的回复极其逆天：<strong>“哎你先别管他，你把他的信息怎么样了？”</strong></p>
+                                    
+                                    <p>大悟彻悟！她完全是出于好玩或报复的心理才这样做，毫无底线。后续我试图普法，她以“雷别人讲法”为由推辞。通过小道消息了解，此人甚至存在<strong>不顾他人感受 / 炫富 / 卖惨</strong>等各种极品行为。（<span style="color: #0aff2f; font-weight: bold;">【% 注：据说连最初为她做担保的那个内网节点，最近也频繁报错，甚至触发了底层防火墙的熔断机制，看来这种病毒连自家局域网都兼容不了。%】</span>）至于后续是起诉还是写瓜条，目前待定。</p>
+                                    
+                                    <p style="margin-top: 15px; color: #ff3333; font-weight: bold;">附加行为：极度扭曲的控制欲</p>
+                                    
+                                    <p>她有一个关系极好的妹妹，妹妹也曾认我当哥哥。但在我和她绝交后，她竟然自作主张地管理起妹妹的社交圈。当我询问能不能继续和妹妹联系时，她回复“你想屁吃”。发现我们偷偷联系后，她甚至拿妹妹的号直接拉黑我。我的观点很明确：<strong>妹妹是一个完全独立的人，她凭什么去决定妹妹该交什么朋友？</strong>更何况，她自己还在教妹妹说脏话。</p>
+                                    
+                                    <p>【%现在，由于那次警告，我甚至彻底失去了主动发声的渠道。我不敢去试探那条红线，因为我知道，只要有任何一点风吹草动被她察觉，面临的可能就是永久且彻底的物理隔离。这种只能眼睁睁看着、连发个消息都要担惊受怕的社交状态，极其窒息。%】</p>
+
+                                    <p style="margin-top: 15px; color: #0aff2f; font-family: 'Share Tech Mono', monospace; font-size: 0.95rem;">
+                                        [ 系统分析：关于目标的局限性 ]
+                                    </p>
+                                    <p>
+                                        结合她拉黑我时的操作，我推测这个人极度短视：<strong>她只看到了某一个特定平台上的联系，就直接拉黑我的账号；【%但她完全没有意识到，或者说根本不在乎，这种物理级别的封锁根本挡不住所有潜在的渠道。</strong>她以为切断了某一条线，就能把整个网络孤立。%】（<span style="color: #0aff2f; font-weight: bold;">【% 实际上，她连自己身边的局域网都没有彻底清扫干净，某些处于灰域状态的后门协议依然在静默运行。%】</span>）
+                                    </p>
+                                    <p style="color: #aaa; font-style: italic;">
+                                        【%简而言之：她只看得见眼前的假想敌，却看不见周围漏成筛子的系统。这种为了满足一时控制欲，而忽略全局逻辑的行为，既可笑，又可悲。毕竟，互联网的底层逻辑，从来就不是靠按下一个“拉黑”键就能解决的。%】
+                                    </p>
+
+                                    <p style="border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 10px; margin-top: 15px;">在此留两点总结：<br>
+                                    1. 感谢她陪我度过了一个暑假，也感谢她辅助 2026 年的暑假成为我人生中最快乐的一个暑假。她让我知道了真心朋友应该是什么样，也让我深刻地反思了自己身上招人烦的缺点。<br>
+                                    2. <strong style="color:#fff;">既然已经绝交，为什么还要出于好玩的念头，对我进行毫无底线的报复行为？</strong></p>
+                                </div>
+                                
+                                <div style="margin-top: 15px; font-size: 0.9rem; color: #ff3333; font-family: 'Share Tech Mono', monospace; border-top: 1px dashed rgba(255,51,51,0.2); padding-top: 10px;">
+                                    * 警告：该节点存在极高隐私泄露与法律风险，数据已强制隔离。
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div> <!-- 结束 hall-container -->
+        </div> <!-- 结束 blog-container -->
+    </div> <!-- 结束 page-halloffame -->
+
+    <!-- ==================== 🎁 展品 (Exhibit) ==================== -->
+    <div id="page-exhibit" class="page-section">
+        <div class="blog-container">
+            <!-- 页面标题 -->
+            <div class="filter-bar" style="justify-content: center; border-color: var(--phasma-cyan); margin-bottom: 40px;">
+                <h2 style="margin: 0; color: var(--phasma-cyan); font-family: 'Share Tech Mono', monospace; letter-spacing: 2px;">
+                    🎁 EXHIBITION_HALL // 挚友的馈赠
+                </h2>
+            </div>
+
+            <div class="modules-grid" style="grid-template-columns: 1fr 1fr; gap: 20px;">
+                
+                <!-- ================= 展品卡片 1 ================= -->
+                <div class="exhibit-card">
+                    <img src="exhibit/sycs.jpg" alt="陈羯喵形象" class="exhibit-img" onerror="this.src='https://placehold.co/600x400/03050A/00E5FF?text=Image+Not+Found'">
+                    
+                    <div class="exhibit-meta">
+                        <span>📅 2026-11-14</span>
+                        <span>🎨 赠与人：@四叶茶=UwU=</span>
+                    </div>
+                    
+                    <div class="exhibit-message">
+                        “陈羯喵Client这个名字创立三年，始终没有具体的形象。感谢此入赠图，为‘陈羯喵’在赛博宇宙中赋予了一个确切的灵魂锚点。”
+                    </div>
+                </div>
+                
+                <!-- ================= 展品卡片 2 ================= -->
+                <div class="exhibit-card">
+                    <img src="exhibit/hhto.png" alt="涵涵" class="exhibit-img" onerror="this.src='https://placehold.co/600x400/03050A/FFD700?text=Image+Not+Found'">
+                    
+                    <div class="exhibit-meta">
+                        <span>📅 2026-08</span>
+                        <span>🎨 赠与人：@涵涵</span>
+                    </div>
+                    
+                    <div class="exhibit-message">
+                        “😋我看谁敢说我妹妹不好看！至于画面里被叉掉的部分？这不重要。至于为啥这么糊……不是你傻啊我上网来不是来开人户的。”
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
 
     <!-- ==================== 底部社交超大按钮 ==================== -->
     <div class="bottom-social-panel">
@@ -782,7 +1218,6 @@
         // ==========================================
         function loadLatestBlog() {
             setTimeout(() => {
-                // 抓取最新文章使用 post-latest 这个唯一的 ID
                 const latestPost = document.getElementById('post-latest');
                 if (latestPost) {
                     const title = latestPost.querySelector('.post-title').innerText;
