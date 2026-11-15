@@ -7,15 +7,8 @@
     
     <style>
         @font-face { font-family: 'Share Tech Mono'; src: url('fonts/ShareTechMono.ttf') format('truetype'); }
-        
         body { font-family: 'Segoe Script', 'Snell Roundhand', 'KaiTi', '楷体', cursive, sans-serif; }
-
-        .sys-logo, .nav-link, .status-text, .audio-toggle, .module-text h3, 
-        .log-header, .post-meta, .filter-btn, .sponsor-title, .sponsor-footer,
-        #clock, .profile-alias, .data-list span, .timeline-date, .archive-btn, .social-name,
-        .comment-toggle-btn, .close-comment-btn {
-            font-family: 'Share Tech Mono', 'Courier New', Courier, monospace !important;
-        }
+        .sys-logo, .nav-link, .status-text, .audio-toggle, .module-text h3, .log-header, .post-meta, .filter-btn, .sponsor-title, .sponsor-footer, #clock, .profile-alias, .data-list span, .timeline-date, .archive-btn, .social-name, .comment-toggle-btn, .close-comment-btn { font-family: 'Share Tech Mono', 'Courier New', Courier, monospace !important; }
 
         :root {
             --bg-deep: #03050a; --pineapple-yellow: #FFD700; --phasma-cyan: #00E5FF;
@@ -23,18 +16,8 @@
             --phasma-border: rgba(0, 229, 255, 0.4); --nv-green: #39FF14; --panel-bg: rgba(5, 10, 20, 0.85);
         }
         
-        body {
-            margin: 0; overflow: hidden;
-            background-image: url('bg/Stars-bg.jpg'); background-size: cover; background-position: center;
-            background-color: var(--bg-deep); color: var(--phasma-bright); user-select: none;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        #bg-video {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            object-fit: cover; z-index: -2;
-        }
-
+        body { margin: 0; overflow: hidden; background-image: url('bg/Stars-bg.jpg'); background-size: cover; background-position: center; background-color: var(--bg-deep); color: var(--phasma-bright); user-select: none; -webkit-overflow-scrolling: touch; }
+        #bg-video { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
         a { text-decoration: none; color: inherit; }
         
         #signal-bg { position: fixed; inset: 0; z-index: 0; background: radial-gradient(circle at 30% 20%, rgba(0, 229, 255, 0.05), transparent 50%), radial-gradient(circle at 70% 80%, rgba(255, 215, 0, 0.03), transparent 60%), rgba(3, 5, 10, 0.65); animation: signal-pulse 15s infinite alternate ease-in-out; }
@@ -64,456 +47,138 @@
         .page-section { display: none; height: 100vh; overflow-y: auto; position: relative; z-index: 20; box-sizing: border-box; padding-top: 110px; padding-bottom: 150px; }
         .page-section.active { display: block; }
 
-        /* --- 底部社交超大按钮 --- */
+        /* 底部社交 */
         .bottom-social-panel { position: fixed; bottom: 0; left: 0; width: 100%; padding: 0 20px 20px; box-sizing: border-box; z-index: 80; display: flex; justify-content: center; transition: bottom 0.3s; }
         .social-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; width: 100%; max-width: 800px; }
-        .social-btn { display: flex; align-items: center; justify-content: center; gap: 15px; background: var(--panel-bg); border: 1px solid var(--phasma-border); padding: 15px 20px; border-radius: 6px; color: #ccc; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); position: relative; overflow: hidden; clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px); box-shadow: 0 5px 15px rgba(0,0,0,0.5); backdrop-filter: blur(10px); }
-        .social-btn::before { content: ''; position: absolute; inset: 0; background: linear-gradient(45deg, transparent, rgba(255,255,255,0.05), transparent); z-index: 0; transition: 0.5s; }
-        .social-btn:hover::before { transform: translateX(100%); }
-        .social-icon-img { width: 32px; height: 32px; object-fit: contain; z-index: 1; transition: 0.3s; filter: drop-shadow(0 0 5px rgba(0,0,0,0.5)); }
-        .social-name { font-size: 1.1rem; font-weight: bold; letter-spacing: 1px; z-index: 1; }
-        .social-btn.bili:hover { border-color: #FB7299; color: #FB7299; box-shadow: 0 0 20px rgba(251, 114, 153, 0.3); transform: translateY(-5px); }
-        .social-btn.bili:hover .social-icon-img { filter: drop-shadow(0 0 10px #FB7299); }
-        .social-btn.xhs:hover { border-color: #FF2442; color: #FF2442; box-shadow: 0 0 20px rgba(255, 36, 66, 0.3); transform: translateY(-5px); }
-        .social-btn.xhs:hover .social-icon-img { filter: drop-shadow(0 0 10px #FF2442); }
-        .social-btn.netease:hover { border-color: #C20C0C; color: #C20C0C; box-shadow: 0 0 20px rgba(194, 12, 12, 0.3); transform: translateY(-5px); }
-        .social-btn.netease:hover .social-icon-img { filter: drop-shadow(0 0 10px #C20C0C); }
+        .social-btn { display: flex; align-items: center; justify-content: center; gap: 15px; background: var(--panel-bg); border: 1px solid var(--phasma-border); padding: 15px 20px; border-radius: 6px; color: #ccc; transition: all 0.3s; position: relative; overflow: hidden; clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px); backdrop-filter: blur(10px); }
+        .social-icon-img { width: 32px; height: 32px; object-fit: contain; z-index: 1; }
+        .social-name { font-size: 1.1rem; font-weight: bold; z-index: 1; }
+        .social-btn.bili:hover { border-color: #FB7299; color: #FB7299; transform: translateY(-5px); }
+        .social-btn.xhs:hover { border-color: #FF2442; color: #FF2442; transform: translateY(-5px); }
+        .social-btn.netease:hover { border-color: #C20C0C; color: #C20C0C; transform: translateY(-5px); }
 
-        /* --- 主页样式 --- */
+        /* 主页样式 */
         .main-container { max-width: 1200px; margin: 0 auto; width: 94%; display: flex; flex-direction: column; gap: 30px; }
         .log-wrapper { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 20px; min-height: 200px; }
-        .log-box { background: var(--panel-bg); border: 1px solid var(--phasma-border); border-radius: 4px; padding: 20px 30px; position: relative; overflow: hidden; backdrop-filter: blur(10px); box-shadow: inset 0 0 20px rgba(0,0,0,0.8), 0 10px 30px rgba(0,0,0,0.5); display: flex; flex-direction: column; }
-        .log-header { font-size: 1rem; color: var(--pineapple-yellow); border-bottom: 1px solid var(--phasma-dim); padding-bottom: 12px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; letter-spacing: 2px; flex-shrink: 0; }
-        .log-content { font-size: 1.6rem; line-height: 1.4; color: #ddd; flex: 1; overflow-y: auto; text-shadow: 0 0 2px rgba(0,0,0,0.8); }
-        .log-content::-webkit-scrollbar { width: 4px; }
-        .log-content::-webkit-scrollbar-thumb { background: var(--phasma-dim); border-radius: 2px; }
-        .cursor { display: inline-block; width: 8px; height: 16px; background: var(--pineapple-yellow); animation: blink 1s infinite; vertical-align: middle; margin-left: 4px; }
-        .blog-preview { text-decoration: none; display: flex; flex-direction: column; height: 100%; transition: 0.3s; padding: 5px; cursor: pointer; }
-        .blog-preview:hover { background: rgba(255, 215, 0, 0.05); border-radius: 4px; }
-        .blog-preview-title { font-size: 2.2rem; color: #fff; margin-bottom: 8px; text-shadow: 0 0 8px rgba(255,215,0,0.3); transition: 0.3s; line-height: 1.2;}
-        .blog-preview:hover .blog-preview-title { color: var(--pineapple-yellow); }
+        .log-box { background: var(--panel-bg); border: 1px solid var(--phasma-border); border-radius: 4px; padding: 20px 30px; position: relative; overflow: hidden; backdrop-filter: blur(10px); display: flex; flex-direction: column; }
+        .log-header { font-size: 1rem; color: var(--pineapple-yellow); border-bottom: 1px solid var(--phasma-dim); padding-bottom: 12px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .log-content { font-size: 1.6rem; line-height: 1.4; color: #ddd; flex: 1; overflow-y: auto; }
+        .blog-preview { text-decoration: none; display: flex; flex-direction: column; height: 100%; transition: 0.3s; cursor: pointer; }
+        .blog-preview-title { font-size: 2.2rem; color: #fff; margin-bottom: 8px; line-height: 1.2; }
         .blog-preview-date { font-size: 0.9rem; color: var(--phasma-cyan); margin-bottom: 10px; }
-        .blog-preview-excerpt { font-size: 1.4rem; color: #aaa; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; flex: 1; }
-        .blog-preview-read { font-size: 0.9rem; color: var(--pineapple-yellow); margin-top: 10px; display: flex; align-items: center; gap: 5px; opacity: 0.8; transition: 0.3s; }
-        .blog-preview:hover .blog-preview-read { opacity: 1; }
-        .blog-preview-read::after { content: '->'; transition: 0.3s; }
-        .blog-preview:hover .blog-preview-read::after { transform: translateX(5px); }
+        .blog-preview-excerpt { font-size: 1.4rem; color: #aaa; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; flex: 1; }
 
         .modules-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
-        .module-btn { background: rgba(3, 10, 20, 0.6); border: 1px solid var(--phasma-dim); backdrop-filter: blur(5px); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); position: relative; padding: 20px 10px; gap: 15px; clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px); }
-        .module-btn::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, transparent, rgba(255, 215, 0, 0.05)); z-index: 0; }
-        .module-btn:hover { background: rgba(255, 215, 0, 0.1); border-color: var(--pineapple-yellow); transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.6); }
-        .module-btn img { width: 80px; height: 80px; object-fit: contain; z-index: 2; transition: transform 0.3s ease; filter: drop-shadow(0 0 10px rgba(0,0,0,0.5)); }
-        .module-btn:hover img { transform: scale(1.1); }
-        .module-btn img.rounded { border-radius: 12px; }
-        .module-btn .emoji-icon { font-size: 4rem; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; z-index: 2; transition: transform 0.3s ease; filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.3)); }
-        .module-btn:hover .emoji-icon { transform: scale(1.1); }
-        .module-text { z-index: 2; display: flex; flex-direction: column; text-align: center; }
-        .module-text h3 { margin: 0; font-size: 1.3rem; color: #fff; transition: 0.3s; letter-spacing: 1px; }
-        .module-text span { font-size: 1.1rem; color: #999; margin-top: 6px; transition: 0.3s; }
-        .module-btn:hover .module-text h3 { color: var(--pineapple-yellow); text-shadow: 0 0 10px var(--pineapple-yellow); }
-        .module-btn:hover .module-text span { color: #fff; }
-        .module-btn.disabled { cursor: not-allowed; opacity: 0.6; filter: grayscale(0.8); }
-        .module-btn.disabled:hover { background: rgba(3, 10, 20, 0.6); border-color: var(--phasma-dim); transform: none; box-shadow: none; }
-        .module-btn.disabled:hover img, .module-btn.disabled:hover .emoji-icon { transform: none; }
-        .module-btn.disabled:hover .module-text h3 { color: #fff; text-shadow: none; }
-        .module-btn.disabled .module-text span { color: #ff3333; font-weight: bold; text-shadow: 0 0 5px rgba(255, 51, 51, 0.5); }
+        .module-btn { background: rgba(3, 10, 20, 0.6); border: 1px solid var(--phasma-dim); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; position: relative; padding: 20px 10px; gap: 15px; clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px); }
+        .module-btn:hover { background: rgba(255, 215, 0, 0.1); border-color: var(--pineapple-yellow); transform: translateY(-5px); }
+        .module-btn img { width: 80px; height: 80px; object-fit: contain; }
+        .module-btn .emoji-icon { font-size: 4rem; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; }
+        .module-text h3 { margin: 0; font-size: 1.3rem; color: #fff; }
+        .module-text span { font-size: 1.1rem; color: #999; margin-top: 6px; }
+        .module-btn.disabled { opacity: 0.6; filter: grayscale(0.8); cursor: not-allowed; }
+        .module-btn.disabled .module-text span { color: #ff3333; }
 
-        /* --- 博客页样式 --- */
+        /* 博客页样式 */
         .blog-container { max-width: 900px; margin: 0 auto; padding: 0 20px; }
         .filter-bar { display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 30px; background: var(--panel-bg); padding: 15px 20px; border-radius: 4px; border: 1px solid var(--phasma-border); backdrop-filter: blur(10px); }
-        .filter-btn { background: transparent; border: 1px solid var(--phasma-dim); color: #999; padding: 6px 15px; border-radius: 3px; cursor: pointer; font-size: 1rem; transition: 0.3s; letter-spacing: 1px; }
-        .filter-btn:hover { border-color: var(--phasma-cyan); color: var(--phasma-cyan); }
-        .filter-btn.active { background: rgba(255, 215, 0, 0.15); border-color: var(--pineapple-yellow); color: var(--pineapple-yellow); text-shadow: 0 0 8px rgba(255,215,0,0.5); font-weight: bold; }
-        .post { background: var(--panel-bg); border: 1px solid var(--phasma-border); padding: 30px 40px; margin-bottom: 30px; border-radius: 4px; backdrop-filter: blur(10px); box-shadow: 0 10px 30px rgba(0,0,0,0.6); position: relative; transition: all 0.3s; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%); animation: fade-in 0.5s ease; }
+        .filter-btn { background: transparent; border: 1px solid var(--phasma-dim); color: #999; padding: 6px 15px; border-radius: 3px; cursor: pointer; transition: 0.3s; }
+        .filter-btn.active { background: rgba(255, 215, 0, 0.15); border-color: var(--pineapple-yellow); color: var(--pineapple-yellow); font-weight: bold; }
+        .post { background: var(--panel-bg); border: 1px solid var(--phasma-border); padding: 30px 40px; margin-bottom: 30px; border-radius: 4px; backdrop-filter: blur(10px); transition: 0.3s; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%); animation: fade-in 0.5s ease; }
         @keyframes fade-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .post:hover { border-color: var(--pineapple-yellow); box-shadow: 0 15px 40px rgba(255, 215, 0, 0.1); }
-        .post::before { content: ''; position: absolute; top: 0; left: 0; width: 40px; height: 3px; background: var(--pineapple-yellow); box-shadow: 0 0 10px var(--pineapple-yellow); }
-        .post-meta { display: flex; justify-content: space-between; align-items: center; color: var(--phasma-cyan); font-size: 0.9rem; margin-bottom: 15px; letter-spacing: 1px; }
-        .post-date { color: var(--phasma-cyan); }
-        .post-tag { background: rgba(0, 229, 255, 0.1); padding: 2px 8px; border-radius: 3px; border: 1px solid var(--phasma-dim); }
-        .post h2 { margin: 0 0 20px 0; font-size: 2.5rem; color: #fff; text-shadow: 0 0 10px rgba(255,215,0,0.3); line-height: 1.2; }
+        .post:hover { border-color: var(--pineapple-yellow); }
+        .post-meta { display: flex; justify-content: space-between; color: var(--phasma-cyan); font-size: 0.9rem; margin-bottom: 15px; }
+        .post h2 { margin: 0 0 20px 0; font-size: 2.5rem; color: #fff; }
         .post-content { color: #ccc; line-height: 1.5; font-size: 1.6rem; }
-        .post-content p { margin-bottom: 15px; }
 
-        /* --- 赞助页样式 --- */
-        .sponsor-container { max-width: 800px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: center; align-items: center; min-height: 50vh; }
-        .sponsor-terminal { background: var(--panel-bg); border: 1px solid var(--pineapple-yellow); padding: 40px; border-radius: 8px; text-align: center; position: relative; box-shadow: 0 0 50px rgba(255, 215, 0, 0.1); backdrop-filter: blur(15px); clip-path: polygon(30px 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%, 0 30px); max-width: 500px; width: 100%; }
-        .sponsor-terminal::before { content: ''; position: absolute; top: 0; left: 0; width: 60px; height: 4px; background: var(--pineapple-yellow); box-shadow: 0 0 15px var(--pineapple-yellow); }
-        .sponsor-title { font-size: 2rem; color: var(--pineapple-yellow); margin-bottom: 10px; font-weight: bold; letter-spacing: 3px; text-shadow: 0 0 10px rgba(255,215,0,0.5); }
-        .sponsor-desc { font-size: 1.5rem; color: #aaa; margin-bottom: 30px; line-height: 1.5; }
-        .sponsor-img-box { position: relative; display: inline-block; padding: 15px; background: rgba(255,255,255,0.9); border-radius: 8px; box-shadow: 0 0 20px rgba(0, 229, 255, 0.3); }
-        .sponsor-img { width: 250px; max-width: 100%; display: block; }
-        .sponsor-footer { margin-top: 25px; font-size: 1rem; color: #666; letter-spacing: 1px; }
-
-        /* --- 个人档案页样式 --- */
+        /* 个人档案页样式 */
         .profile-container { max-width: 900px; margin: 0 auto; padding: 0 20px; display: grid; grid-template-columns: 1fr 1.5fr; gap: 30px; }
-        
-        .profile-sidebar { background: var(--panel-bg); border: 1px solid var(--phasma-border); padding: 30px 20px; border-radius: 4px; backdrop-filter: blur(10px); text-align: center; clip-path: polygon(20px 0, 100% 0, 100% 100%, 0 100%, 0 20px); display: flex; flex-direction: column;}
-        .profile-avatar { width: 120px; height: 120px; object-fit: contain; border-radius: 12px; border: 2px solid var(--pineapple-yellow); margin: 0 auto 15px; box-shadow: 0 0 20px rgba(255,215,0,0.3); }
-        .profile-name { font-size: 2.5rem; color: #fff; margin-bottom: 5px; font-weight: bold; line-height: 1.2; }
+        .profile-sidebar { background: var(--panel-bg); border: 1px solid var(--phasma-border); padding: 30px 20px; text-align: center; clip-path: polygon(20px 0, 100% 0, 100% 100%, 0 100%, 0 20px); display: flex; flex-direction: column;}
+        .profile-avatar { width: 120px; height: 120px; object-fit: contain; border-radius: 12px; border: 2px solid var(--pineapple-yellow); margin: 0 auto 15px; }
+        .profile-name { font-size: 2.5rem; color: #fff; margin-bottom: 5px; }
         .profile-alias { font-size: 1rem; color: var(--phasma-cyan); margin-bottom: 20px; }
-        
-        .archive-btn {
-            display: block; width: 100%; background: rgba(255, 215, 0, 0.1); border: 1px solid var(--pineapple-yellow);
-            color: var(--pineapple-yellow); padding: 10px; margin-bottom: 20px; border-radius: 4px; cursor: pointer;
-            font-size: 1rem; font-weight: bold; transition: 0.3s; text-align: center;
-        }
-        .archive-btn:hover { background: var(--pineapple-yellow); color: #000; box-shadow: 0 0 15px var(--pineapple-yellow); }
-
+        .archive-btn { display: block; width: 100%; background: rgba(255, 215, 0, 0.1); border: 1px solid var(--pineapple-yellow); color: var(--pineapple-yellow); padding: 10px; margin-bottom: 20px; cursor: pointer; }
         .profile-info { text-align: left; font-size: 1.1rem; color: #aaa; line-height: 1.8; border-top: 1px dashed var(--phasma-dim); padding-top: 15px; flex: 1; word-break: break-all;}
         .profile-info span { color: var(--pineapple-yellow); }
-
         .profile-main { display: flex; flex-direction: column; gap: 20px; }
-        .profile-card { background: var(--panel-bg); border: 1px solid var(--phasma-border); padding: 25px 30px; border-radius: 4px; backdrop-filter: blur(10px); clip-path: polygon(0 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%); }
-        .profile-card h3 { margin: 0 0 15px 0; font-size: 1.6rem; color: var(--pineapple-yellow); border-bottom: 1px solid var(--phasma-dim); padding-bottom: 10px; letter-spacing: 1px; display: flex; align-items: center; gap: 10px; }
+        .profile-card { background: var(--panel-bg); border: 1px solid var(--phasma-border); padding: 25px 30px; }
+        .profile-card h3 { margin: 0 0 15px 0; font-size: 1.6rem; color: var(--pineapple-yellow); border-bottom: 1px solid var(--phasma-dim); padding-bottom: 10px; }
         .profile-card p { color: #ccc; line-height: 1.5; font-size: 1.5rem; margin-bottom: 10px; }
-        
         .data-list { list-style: none; padding: 0; margin: 0; font-size: 1.4rem; }
-        .data-list li { margin-bottom: 10px; color: #ccc; display: flex; justify-content: space-between; border-bottom: 1px dashed rgba(255,255,255,0.05); padding-bottom: 5px; }
+        .data-list li { margin-bottom: 10px; color: #ccc; display: flex; justify-content: space-between; }
         .data-list span { color: var(--phasma-cyan); font-size: 1rem; }
 
-        /* --- 头像档案馆 (模态框 & 时间轴) --- */
-        #archive-modal { position: fixed; inset: 0; z-index: 10000; background: rgba(0, 0, 0, 0.85); display: none; justify-content: center; align-items: center; backdrop-filter: blur(10px); padding: 20px; box-sizing: border-box; }
-        #archive-modal.active { display: flex; }
-        .archive-box { background: var(--panel-bg); border: 1px solid var(--phasma-cyan); width: 100%; max-width: 800px; max-height: 85vh; border-radius: 8px; overflow-y: auto; padding: 30px 40px; position: relative; box-shadow: 0 0 50px rgba(0, 229, 255, 0.2); clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px); animation: modal-in 0.3s ease; }
-        @keyframes modal-in { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-        .archive-box::-webkit-scrollbar { width: 6px; }
-        .archive-box::-webkit-scrollbar-thumb { background: var(--phasma-cyan); border-radius: 3px; }
-        .archive-title { font-size: 1.8rem; color: var(--phasma-cyan); border-bottom: 1px solid var(--phasma-dim); padding-bottom: 15px; margin-bottom: 25px; text-shadow: 0 0 10px rgba(0,229,255,0.5); display: flex; justify-content: space-between; align-items: center;}
-        .close-btn { cursor: pointer; color: #ff3333; font-size: 1.2rem; transition: 0.3s; }
-        .close-btn:hover { text-shadow: 0 0 10px #ff3333; }
-        .timeline { position: relative; margin-top: 10px; padding-left: 20px; border-left: 2px dashed var(--phasma-border); }
-        .timeline-item { position: relative; margin-bottom: 25px; display: flex; gap: 20px; align-items: flex-start; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.05); }
-        .timeline-item::before { content: ''; position: absolute; left: -27px; top: 25px; width: 10px; height: 10px; background: var(--pineapple-yellow); border-radius: 50%; box-shadow: 0 0 10px var(--pineapple-yellow); border: 2px solid var(--bg-deep); }
-        .timeline-img { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; border: 1px solid var(--phasma-cyan); background: rgba(0,0,0,0.5); flex-shrink: 0; transition: 0.3s; }
-        .timeline-img:hover { transform: scale(1.1); box-shadow: 0 0 15px var(--phasma-cyan); }
-        .timeline-content { flex: 1; }
-        .timeline-date { color: var(--pineapple-yellow); font-size: 0.9rem; margin-bottom: 5px; font-weight: bold; }
-        .timeline-text { color: #ddd; font-size: 1.3rem; line-height: 1.3; }
-        .timeline-text .retire { color: #ff3333; font-size: 1rem; display: block; margin-top: 5px; }
+        /* 名人堂样式 */
+        .hall-container { display: flex; flex-direction: column; align-items: center; position: relative; padding: 20px 0; }
+        .hall-container::before { content: ''; position: absolute; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, transparent, var(--phasma-cyan) 10%, var(--phasma-cyan) 90%, transparent); z-index: 1; }
+        .hall-node { position: relative; width: 100%; max-width: 800px; margin-bottom: 40px; z-index: 2; }
+        .hall-node::before { content: ''; position: absolute; left: -11px; top: 40px; width: 20px; height: 20px; background: var(--bg-deep); border: 2px solid var(--pineapple-yellow); border-radius: 50%; z-index: 3; }
+        .hall-card { background: var(--panel-bg); border: 1px solid var(--phasma-border); padding: 25px 30px; margin-left: 30px; transition: 0.3s; clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px); }
+        .hall-card:hover { border-color: var(--pineapple-yellow); transform: translateX(5px); }
 
-        /* --- 常驻留言板按钮 & 抽屉面板 --- */
+        /* 展品页样式 */
+        .exhibit-card { background: var(--panel-bg); border: 1px solid var(--phasma-border); border-radius: 8px; padding: 20px; display: flex; flex-direction: column; gap: 15px; }
+        .exhibit-img { width: 100%; max-height: 400px; object-fit: contain; border-radius: 4px; }
+        .exhibit-meta { display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--phasma-cyan); border-bottom: 1px dashed var(--phasma-dim); padding-bottom: 10px; }
+        .exhibit-message { color: var(--pineapple-yellow); font-size: 1.2rem; font-style: italic; }
+
+        /* 赞助页 & 其他 */
+        .sponsor-container { max-width: 800px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: center; align-items: center; min-height: 50vh; }
+        .sponsor-terminal { background: var(--panel-bg); border: 1px solid var(--pineapple-yellow); padding: 40px; text-align: center; max-width: 500px; width: 100%; }
+        .sponsor-title { font-size: 2rem; color: var(--pineapple-yellow); margin-bottom: 10px; }
+        .sponsor-img { width: 250px; max-width: 100%; display: block; margin: 0 auto; }
         
-        /* 悬浮按钮 */
-        .comment-toggle-btn {
-            position: fixed; bottom: 100px; right: 20px; z-index: 1000;
-            background: var(--panel-bg); border: 1px solid var(--phasma-cyan); color: var(--phasma-cyan);
-            padding: 12px 20px; border-radius: 30px; font-size: 1.1rem; font-weight: bold;
-            cursor: pointer; backdrop-filter: blur(10px); box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
-            display: flex; align-items: center; gap: 8px; transition: all 0.3s;
-        }
-        .comment-toggle-btn:hover { background: var(--phasma-cyan); color: #000; box-shadow: 0 0 25px var(--phasma-cyan); transform: scale(1.05); }
-        
-        /* 抽屉面板 */
-        .global-comment-section {
-            position: fixed; bottom: -100%; left: 0; width: 100%; height: 75vh;
-            z-index: 2000; transition: bottom 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-            display: flex; justify-content: center; pointer-events: none;
-        }
-        .global-comment-section.active { bottom: 0; pointer-events: auto; }
-        
-        .comment-box {
-            background: rgba(5, 10, 20, 0.95); border: 1px solid var(--phasma-border); border-bottom: none;
-            border-radius: 12px 12px 0 0; padding: 20px 30px 30px; backdrop-filter: blur(20px);
-            box-shadow: 0 -10px 50px rgba(0, 0, 0, 0.9);
-            width: 100%; max-width: 900px; display: flex; flex-direction: column; height: 100%;
-            clip-path: polygon(20px 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%, 0 20px);
-        }
-
-        .comment-box-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid var(--phasma-dim); padding-bottom: 10px; }
-        .comment-box-title { color: var(--pineapple-yellow); font-size: 1.4rem; font-weight: bold; display: flex; gap: 10px; align-items: center; }
-        .close-comment-btn { background: transparent; border: 1px solid #ff3333; color: #ff3333; padding: 5px 15px; border-radius: 4px; cursor: pointer; transition: 0.3s; font-size: 1rem; }
-        .close-comment-btn:hover { background: #ff3333; color: #000; box-shadow: 0 0 15px #ff3333; }
-
-        .comment-tip {
-            background: rgba(0, 229, 255, 0.1); border: 1px dashed var(--phasma-cyan);
-            color: var(--phasma-cyan); padding: 10px 15px; border-radius: 6px;
-            font-size: 0.95rem; margin-bottom: 15px; text-align: left; line-height: 1.5;
-        }
-
-        .twikoo-wrapper { flex: 1; overflow-y: auto; padding-right: 10px; }
-        .twikoo-wrapper::-webkit-scrollbar { width: 6px; }
-        .twikoo-wrapper::-webkit-scrollbar-thumb { background: var(--phasma-dim); border-radius: 3px; }
-
-        /* --- 新增：名人堂专属节点连线样式 --- */
-        .hall-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            position: relative;
-            padding: 20px 0;
-        }
-
-        /* 那条贯穿上下的数据线 */
-        .hall-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: linear-gradient(to bottom, transparent, var(--phasma-cyan) 10%, var(--phasma-cyan) 90%, transparent);
-            box-shadow: 0 0 10px var(--phasma-cyan);
-            z-index: 1;
-        }
-
-        .hall-node {
-            position: relative;
-            width: 100%;
-            max-width: 800px;
-            margin-bottom: 40px;
-            z-index: 2;
-        }
-
-        /* 节点上的发光小圆点 */
-        .hall-node::before {
-            content: '';
-            position: absolute;
-            left: -11px;
-            top: 40px;
-            width: 20px;
-            height: 20px;
-            background: var(--bg-deep);
-            border: 2px solid var(--pineapple-yellow);
-            border-radius: 50%;
-            box-shadow: 0 0 15px var(--pineapple-yellow);
-            z-index: 3;
-        }
-
-        /* 小圆点外的一圈光环动画 */
-        .hall-node::after {
-            content: '';
-            position: absolute;
-            left: -13px;
-            top: 38px;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            border: 1px solid var(--pineapple-yellow);
-            animation: pulse-ring 2s infinite;
-            z-index: 3;
-        }
-
-        @keyframes pulse-ring {
-            0% { transform: scale(0.8); opacity: 1; }
-            100% { transform: scale(2); opacity: 0; }
-        }
-
-        .hall-card {
-            background: var(--panel-bg);
-            border: 1px solid var(--phasma-border);
-            padding: 25px 30px;
-            border-radius: 6px;
-            margin-left: 30px;
-            backdrop-filter: blur(10px);
-            transition: 0.3s;
-            clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
-        }
-        
-        .hall-card:hover {
-            border-color: var(--pineapple-yellow);
-            box-shadow: 0 0 25px rgba(255, 215, 0, 0.15);
-            transform: translateX(5px);
-        }
-
-        /* --- 新增：展品 (Exhibit) 样式 --- */
-        .exhibit-card {
-            background: var(--panel-bg);
-            border: 1px solid var(--phasma-border);
-            border-radius: 8px;
-            padding: 20px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            position: relative;
-            transition: 0.3s;
-        }
-
-        .exhibit-card:hover {
-            border-color: var(--pineapple-yellow);
-            box-shadow: 0 15px 40px rgba(255, 215, 0, 0.15);
-        }
-
-        .exhibit-img {
-            width: 100%;
-            max-height: 400px;
-            object-fit: contain;
-            border-radius: 4px;
-            border: 1px solid var(--phasma-dim);
-            background: rgba(0,0,0,0.5);
-        }
-
-        .exhibit-meta {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.9rem;
-            color: var(--phasma-cyan);
-            border-bottom: 1px dashed var(--phasma-dim);
-            padding-bottom: 10px;
-        }
-        
-        .exhibit-message {
-            color: var(--pineapple-yellow);
-            font-size: 1.2rem;
-            font-style: italic;
-            text-shadow: 0 0 5px rgba(255, 215, 0, 0.3);
-        }
-
-        /* 隐藏的音频标签 */
+        .comment-toggle-btn { position: fixed; bottom: 100px; right: 20px; z-index: 1000; background: var(--panel-bg); border: 1px solid var(--phasma-cyan); color: var(--phasma-cyan); padding: 12px 20px; border-radius: 30px; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+        .global-comment-section { position: fixed; bottom: -100%; left: 0; width: 100%; height: 75vh; z-index: 2000; transition: bottom 0.4s; display: flex; justify-content: center; }
+        .global-comment-section.active { bottom: 0; }
+        .comment-box { background: rgba(5, 10, 20, 0.95); border: 1px solid var(--phasma-border); border-radius: 12px 12px 0 0; padding: 20px 30px 30px; width: 100%; max-width: 900px; display: flex; flex-direction: column; height: 100%; }
+        .comment-box-header { display: flex; justify-content: space-between; margin-bottom: 15px; }
+        .close-comment-btn { background: transparent; border: 1px solid #ff3333; color: #ff3333; padding: 5px 15px; cursor: pointer; }
+        .twikoo-wrapper { flex: 1; overflow-y: auto; }
         #bgm-audio { display: none; }
-
-        /* 手机端专属：悬浮音乐按钮 */
-        .mobile-music-btn {
-            display: none;
-            position: fixed; bottom: 160px; right: 20px; z-index: 999;
-            width: 45px; height: 45px; border-radius: 50%;
-            background: var(--panel-bg); border: 1px solid var(--phasma-cyan); color: var(--phasma-cyan);
-            font-size: 1.2rem; cursor: pointer; backdrop-filter: blur(10px);
-            box-shadow: 0 0 15px rgba(0, 229, 255, 0.3); justify-content: center; align-items: center;
-        }
-        .mobile-music-btn.off { border-color: #ff3333; color: #ff3333; box-shadow: 0 0 15px rgba(255, 51, 51, 0.3); }
+        .mobile-music-btn { display: none; position: fixed; bottom: 160px; right: 20px; z-index: 999; width: 45px; height: 45px; border-radius: 50%; background: var(--panel-bg); border: 1px solid var(--phasma-cyan); color: var(--phasma-cyan); justify-content: center; align-items: center; }
 
         @media screen and (max-width: 768px) {
-            .hud-header { height: auto; padding: 15px 20px; flex-direction: column; align-items: stretch; gap: 15px; }
-            .hud-left { flex-direction: column; width: 100%; gap: 15px; align-items: stretch; }
-            .sys-logo { border-right: none; padding-right: 0; font-size: 1.5rem; justify-content: space-between; border-bottom: 1px solid var(--phasma-dim); padding-bottom: 10px; }
-            .sys-nav { overflow-x: auto; white-space: nowrap; padding-bottom: 5px; gap: 8px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
-            .sys-nav::-webkit-scrollbar { display: none; }
-            .nav-link { flex-shrink: 0; font-size: 1rem; padding: 8px 15px; border: 1px solid var(--phasma-dim); background: rgba(0,0,0,0.5); }
-            .nav-link::after { display: none; }
+            .hud-header { height: auto; padding: 15px 20px; flex-direction: column; gap: 15px; }
+            .hud-left { flex-direction: column; gap: 15px; }
+            .sys-logo { border-right: none; padding-right: 0; justify-content: space-between; border-bottom: 1px solid var(--phasma-dim); padding-bottom: 10px; }
+            .sys-nav { overflow-x: auto; white-space: nowrap; }
             .hud-right { display: none; } 
             .mobile-music-btn { display: flex; } 
-            
             .page-section { padding-top: 160px; padding-bottom: 120px; }
-            
-            .log-wrapper { grid-template-columns: 1fr; gap: 15px; }
-            .log-box { min-height: 160px; padding: 15px 20px; }
-            .modules-grid { grid-template-columns: 1fr; gap: 15px; }
+            .log-wrapper { grid-template-columns: 1fr; }
+            .modules-grid { grid-template-columns: 1fr; }
             .module-btn { flex-direction: row; justify-content: flex-start; padding: 15px 20px; height: 80px; }
             .module-btn img, .module-btn .emoji-icon { width: 50px; height: 50px; font-size: 2.5rem; }
             .module-text { text-align: left; }
-            .module-text h3 { font-size: 1.2rem; }
-            .blog-container { margin-top: 0; padding: 0 15px; }
-            .post { padding: 20px; margin-bottom: 20px; }
-            .post h2 { font-size: 2rem; }
-            .post-meta { flex-direction: column; align-items: flex-start; gap: 8px; }
-            .filter-bar { gap: 10px; padding: 10px; margin-bottom: 20px; }
-            .filter-btn { font-size: 0.9rem; padding: 6px 12px; }
-            .sponsor-terminal { padding: 25px 20px; }
-            .sponsor-title { font-size: 1.5rem; }
-            .sponsor-desc { font-size: 1.2rem; margin-bottom: 20px; }
-            .sponsor-img { width: 200px; }
-            .profile-container { grid-template-columns: 1fr; gap: 20px; padding: 0 15px; }
-            .profile-sidebar { padding: 20px; }
-            .profile-card { padding: 20px; }
-            .log-content, .post-content, .profile-card p { font-size: 1.4rem; }
-            .data-list { font-size: 1.2rem; }
-            .data-list span { font-size: 0.9rem; }
-            .archive-box { padding: 20px; }
-            .timeline-item { flex-direction: column; gap: 10px; }
-            .timeline-img { width: 100%; height: 150px; object-fit: contain; }
-            .timeline-text { font-size: 1.1rem; }
-            
-            /* 手机端社交按钮缩小并靠边 */
-            .bottom-social-panel { padding: 0 10px 15px; bottom: 0; }
+            .profile-container { grid-template-columns: 1fr; }
+            .bottom-social-panel { padding: 0 10px 15px; }
             .social-grid { gap: 10px; }
-            .social-btn { flex-direction: column; gap: 5px; padding: 10px 5px; }
-            .social-icon-img { width: 24px; height: 24px; }
-            .social-name { font-size: 0.75rem; }
-
-            /* 手机端留言板调整 */
-            .comment-toggle-btn { bottom: 90px; right: 15px; padding: 10px 15px; font-size: 0.9rem; border-radius: 20px; }
+            .social-btn { flex-direction: column; padding: 10px 5px; }
+            .comment-toggle-btn { bottom: 90px; right: 15px; }
             .global-comment-section { height: 85vh; }
-            .comment-box { padding: 15px; }
-            .comment-box-title { font-size: 1.2rem; }
-
             /* 手机端名人堂调整 */
             .hall-container::before { left: 20px; }
             .hall-card { margin-left: 45px; padding: 20px; }
             .hall-node::before { left: 9px; top: 30px; }
-            .hall-node::after { left: 7px; top: 28px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- 视频背景 -->
     <video id="bg-video" autoplay muted loop playsinline preload="none">
         <source src="bg/bg.mp4" type="video/mp4">
     </video>
-
     <div id="signal-bg"></div>
     <div class="scanlines"></div>
+    <audio id="bgm-audio" loop><source src="bgm/bgm.mp3" type="audio/mpeg"></audio>
 
-    <audio id="bgm-audio" loop>
-        <source src="bgm/bgm.mp3" type="audio/mpeg">
-    </audio>
-
-    <!-- 悬浮按钮区 -->
     <div class="mobile-music-btn" id="mobile-audio-btn">🎵</div>
     <div class="comment-toggle-btn" onclick="toggleCommentPanel()">💬 打开评论区</div>
-
-    <!-- 头像档案馆模态框 -->
-    <div id="archive-modal" onclick="closeArchive(event)">
-        <div class="archive-box">
-            <div class="archive-title">
-                <span>🧬 AVATAR_ARCHIVE // 头像进化史</span>
-                <span class="close-btn" onclick="closeArchive(event)">[ X 关闭 ]</span>
-            </div>
-            <div class="timeline">
-                <div class="timeline-item">
-                    <img src="headpic/2019.png" alt="2019" class="timeline-img" onerror="this.style.display='none'">
-                    <div class="timeline-content">
-                        <div class="timeline-date">2019 / 史前时代</div>
-                        <div class="timeline-text">我印象里我从未使用过此图片作为logo，何时绘制的此图已无从考证。</div>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <img src="headpic/2020.png" alt="2020" class="timeline-img" onerror="this.style.display='none'">
-                    <div class="timeline-content">
-                        <div class="timeline-date">2019 - 2023 / 陈陈喵时代</div>
-                        <div class="timeline-text">陈陈喵创立时的头像。当时还没创立任何一个社交平台的账号，但是先接触了编程猫，为了给自己的作品搞点什么开场工作室声明就随便绘制了这个图片。<span class="retire">> 退役原因：自然退役</span></div>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <img src="headpic/2021.png" alt="2021" class="timeline-img" onerror="this.style.display='none'">
-                    <div class="timeline-content">
-                        <div class="timeline-date">2022 / 废弃的试验品</div>
-                        <div class="timeline-text">陈陈喵替换为陈羯喵的一年！与下图同一时间绘制，最后遭废弃。<span class="retire">> 退役原因：直接废弃</span></div>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <img src="headpic/2023-1.jpg" alt="2023-1" class="timeline-img" onerror="this.style.display='none'">
-                    <div class="timeline-content">
-                        <div class="timeline-date">2023 / 社交元年</div>
-                        <div class="timeline-text">我创立自己的社交帐号的一年！此图只存在了三个月便被替代。<span class="retire">> 退役原因：自然退役</span></div>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <img src="headpic/2023-2.png" alt="2023-2" class="timeline-img" onerror="this.style.display='none'">
-                    <div class="timeline-content">
-                        <div class="timeline-date">2023 - 2026 / 最钟爱但被迫退役</div>
-                        <div class="timeline-text">我使用时间最久的头像！虽然比较难看但是这是我之前最钟爱的头像之一。<span class="retire">> 退役原因：偶然发现旋转90°看起来就像一个小人跪地上放屁</span></div>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <img src="headpic/2026.jpg" alt="2026" class="timeline-img" onerror="this.style.display='none'">
-                    <div class="timeline-content">
-                        <div class="timeline-date">2026 - 至今 / 现在的我</div>
-                        <div class="timeline-text">目前我最喜爱的头像，为此我花了三天时间来建模，未来很长一段时间内没有更换的打算。<span class="retire" style="color: var(--nv-green);">> 状态：现役服役中</span></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <div class="hud-header">
         <div class="hud-left">
             <div class="sys-logo" onclick="switchPage('home')">
-                <img src="logo/菠萝Stars.png" alt="Logo" onerror="this.style.display='none'"> 
-                🍍Stars_Station <span>v2.5</span>
+                <img src="logo/菠萝Stars.png" alt="Logo" onerror="this.style.display='none'"> 🍍Stars_Station <span>v4.0</span>
             </div>
             <nav class="sys-nav">
                 <a onclick="switchPage('home')" id="nav-home" class="nav-link active">首页</a>
@@ -531,26 +196,21 @@
         </div>
     </div>
 
-    <!-- ==================== 常驻留言板（抽屉形式） ==================== -->
+    <!-- 留言板抽屉 -->
     <div class="global-comment-section" id="comment-drawer">
         <div class="comment-box">
             <div class="comment-box-header">
                 <div class="comment-box-title">💬 终端通讯区 / 留言板</div>
                 <button class="close-comment-btn" onclick="toggleCommentPanel()">[ X 收起 ]</button>
             </div>
-            <div class="comment-tip">
-                [ 系统提示 ] 1.如果评论功能完全不显示，大概率是网络问题，多等等即可。<br>
-                2.实在想发评论可以挂个梯子，挂梯子是绝对能发的<br>
-                3.如果提示邮箱为必填项，请直接填入 123@123.com 即可发布！<br>
-                4.这边更推荐加入交流群:QQ 780488417
+            <div style="color: var(--phasma-cyan); margin-bottom: 15px; font-size: 0.95rem;">
+                [ 提示 ] 需挂梯子才能发评论，推荐填入 123@123.com，建议加群: 780488417
             </div>
-            <div class="twikoo-wrapper">
-                <div id="tcomment-global" class="twikoo-container"></div>
-            </div>
+            <div class="twikoo-wrapper"><div id="tcomment-global" class="twikoo-container"></div></div>
         </div>
     </div>
 
-    <!-- ==================== 主页区域 ==================== -->
+    <!-- 主页 -->
     <div id="page-home" class="page-section active">
         <div class="main-container">
             <div class="log-wrapper">
@@ -558,96 +218,49 @@
                     <div class="log-header"><span>SYSTEM_LOG</span><span id="clock">00:00:00</span></div>
                     <div class="log-content" id="typewriter"></div>
                 </div>
-                <div class="log-box" style="border-color: var(--pineapple-yellow); box-shadow: inset 0 0 20px rgba(0,0,0,0.8), 0 0 20px rgba(255,215,0,0.1);">
-                    <div class="log-header" style="color: #fff; border-bottom-color: var(--pineapple-yellow);"><span>LATEST_BLOG</span><span style="font-size:0.8em; color:var(--pineapple-yellow);">📝</span></div>
+                <div class="log-box" style="border-color: var(--pineapple-yellow);">
+                    <div class="log-header"><span>LATEST_BLOG</span><span>📝</span></div>
                     <div class="log-content" id="latest-blog-container"></div>
                 </div>
             </div>
-
             <div class="modules-grid">
-                <a onclick="switchPage('stars')" class="module-btn">
-                    <img src="logo/菠萝Stars.png" alt="🍍Stars">
-                    <div class="module-text"><h3>🍍Stars</h3><span>频道与神话宇宙</span></div>
-                </a>
-                
-                <a onclick="switchPage('client')" class="module-btn">
-                    <img src="logo/CJM.jpg" alt="Client" class="rounded">
-                    <div class="module-text"><h3>陈羯喵Client</h3><span>个人档案与日常</span></div>
-                </a>
-                
-                <a onclick="switchPage('blog')" class="module-btn">
-                    <div class="emoji-icon">📝</div>
-                    <div class="module-text"><h3>日志笔记</h3><span>站长随笔与记录</span></div>
-                </a>
-								
-				<a onclick="switchPage('halloffame')" class="module-btn">
-					<div class="emoji-icon">🌟</div>
-					<div class="module-text"><h3>名人堂</h3><span>星海引路人</span></div>
-				</a>
-				
-				<a onclick="switchPage('exhibit')" class="module-btn">
-					<div class="emoji-icon">🎁</div>
-					<div class="module-text"><h3>展品</h3><span>挚友の馈赠</span></div>
-				</a>
-				
-                <a href="javascript:void(0);" class="module-btn disabled">
-                    <div class="emoji-icon">🌍</div>
-                    <div class="module-text"><h3>MC服务器</h3><span>[ 暂未开放 ]</span></div>
-                </a>
+                <a onclick="switchPage('stars')" class="module-btn"><img src="logo/菠萝Stars.png" alt="🍍Stars"><div class="module-text"><h3>🍍Stars</h3><span>频道与神话宇宙</span></div></a>
+                <a onclick="switchPage('client')" class="module-btn"><img src="logo/CJM.jpg" alt="Client" class="rounded" style="border-radius:12px;"><div class="module-text"><h3>陈羯喵Client</h3><span>个人档案与日常</span></div></a>
+                <a onclick="switchPage('blog')" class="module-btn"><div class="emoji-icon">📝</div><div class="module-text"><h3>日志笔记</h3><span>站长随笔与记录</span></div></a>
+                <a onclick="switchPage('halloffame')" class="module-btn"><div class="emoji-icon">🌟</div><div class="module-text"><h3>名人堂</h3><span>星海引路人</span></div></a>
+                <a onclick="switchPage('exhibit')" class="module-btn"><div class="emoji-icon">🎁</div><div class="module-text"><h3>展品</h3><span>挚友の馈赠</span></div></a>
+                <a href="javascript:void(0);" class="module-btn disabled"><div class="emoji-icon">🌍</div><div class="module-text"><h3>MC服务器</h3><span>[ 暂未开放 ]</span></div></a>
             </div>
         </div>
     </div>
 
-    <!-- ==================== 🍍Stars 频道页 ==================== -->
+    <!-- 🍍Stars -->
     <div id="page-stars" class="page-section">
         <div class="profile-container">
             <div class="profile-sidebar">
                 <img src="logo/菠萝Stars.png" alt="Stars Avatar" class="profile-avatar" onerror="this.src='https://placehold.co/120x120/03050A/FFD700?text=🍍'">
                 <div class="profile-name">🍍Stars</div>
                 <div class="profile-alias">[ 创作者联盟 & 工作室 ]</div>
-                
                 <div class="profile-info">
                     <div><span>></span> 核心版图: 迷你世界 / 科技搞机 / 视听创作</div>
                     <div><span>></span> 运行模式: 独立分账号矩阵</div>
                     <div><span>></span> 状态: 持续招募与产出中</div>
                 </div>
             </div>
-
-            <div class="profile-main">
-                <div class="profile-card">
-                    <h3><span>🌌</span> 菠萝星宇宙的扩张</h3>
-                    <p>“菠萝”最开始只是我的外号。有天上课无聊，我瞎编出了一个“菠萝星”的宇宙：菠萝神和黑菠萝神相爱相杀。</p>
-                    <p>而现在，这个脑洞不再只属于我一个人。它已经演变成了一个真实的创作者联盟——这里是 <strong>🍍StarsStudioInMiniWorld</strong>，每个人都是一颗独立的星球，自己剪辑，自己配音，共同构建这片赛博星空。</p>
-                </div>
-
-                <div class="profile-card">
-                    <h3><span>🎮</span> 🍍StarsGames 工作室</h3>
-                    <p>我们在迷你世界建立了真正的根据地！目标是打造极具观赏性的视觉盛宴与无缝混剪。我们采用“独立分账号”模式，拒绝流水线作业，招募有配音能力与剪辑审美的独立创作者。在这里，每个人都是自己的导演。</p>
-                </div>
-
-                <div class="profile-card">
-                    <h3><span>🛠</span> 科技与硬核搞机频道</h3>
-                    <p>丢掉感性，这里的我是硬核的。我会在这里记录折腾硬件的过程、写代码的日常、以及那些充满“赛博垃圾佬”精神的DIY企划（比如《14岁，压岁钱开MC服务器》）。</p>
-                </div>
-
-                <div class="profile-card">
-                    <h3><span>🎵</span> 梦核作曲与视觉基地</h3>
-                    <p>除了打游戏和搞机，这里也是我们的音乐与视觉自留地。发布用 Am7-Fmaj7 写的梦核音乐、3D建模展示，以及像这个网站一样充满极客审美的视觉作品。</p>
-                </div>
+            <div class="profile-main" id="stars-intro-container">
+                <!-- JS 自动填充 -->
             </div>
         </div>
     </div>
 
-    <!-- ==================== 陈羯喵Client 个人档案页 ==================== -->
+    <!-- 个人档案 -->
     <div id="page-client" class="page-section">
         <div class="profile-container">
             <div class="profile-sidebar">
                 <img src="headpic/2026.jpg" alt="Avatar" class="profile-avatar" onerror="this.src='logo/CJM.jpg'">
                 <div class="profile-name">陈羯喵Client</div>
                 <div class="profile-alias">[ 🍍Stars大菠萝神 ]</div>
-                
                 <button class="archive-btn" onclick="openArchive()">[ 查阅头像进化史 ]</button>
-
                 <div class="profile-info">
                     <div><span>></span> 真名: 姓陈</div>
                     <div><span>></span> 星座♑: 摩羯座 (羯)</div>
@@ -660,37 +273,19 @@
                     <div><span>></span> 状态: 上课睡觉ing...</div>
                 </div>
             </div>
-
-            <div class="profile-main">
-                <div class="profile-card">
-                    <h3><span>🐱</span> 关于“陈羯喵”</h3>
-                    <p>最早我其实叫“陈陈喵”，但那是2022年的事情了，当时就是随便给自己起个网名因为我姓陈然后自认为喜欢猫，虽然后面发现我好像最喜欢的并不是猫。</p>
-                    <p>后来觉得名字好蠢（2023），结合我摩羯座，就把“羯”字融进去了，因为“陈摩喵”不顺口。所以有了现在的名字。尤其是当我发现这个名字全网不重名。</p>
-                </div>
-
-                <div class="profile-card">
-                    <h3><span>🎮</span> 个人终端区</h3>
-                    <p>如果你更喜欢看游戏日常和整活，那这里就是你的地盘。除了搞机和作曲，我大部分时间都在这里当个人：在迷你世界里愉快的炸图😋😋😋恐鬼症最高难度，启动！😡😡😡致命公司日食Art😍😍😍CsGO咋这么好玩，发把刀呗大哥😋😋😋</p>
-                </div>
-
+            <div class="profile-main" id="client-intro-container">
+                <!-- JS 自动填充简介 -->
                 <div class="profile-card">
                     <h3><span>🛠</span> 技能与愿望清单</h3>
-                    <ul class="data-list">
-                        <li>CS2 最高段位 <span>[ 金C+ (目前渡劫中) ]</span></li>
-                        <li>迷你号 <span>[ 1458017078 ]</span></li>
-                        <li>核心技能 <span>[ 3D建模 / 剪辑 / 开服 / 写代码&编程 / 计算机硬件 / 开发游戏]</span></li>
-                        <li>现役主力机 <span>[ AMD R5 5600 + RTX 3060 Ti ]</span></li>
-                        <li>梦中情卡 <span>[ RTX 5070 ]</span></li>
-                        <li>梦中情机 <span>[ 大疆 Pocket 4 ]</span></li>
-                        <li>玄学追求 <span>[ CS2 伽马多普勒蝴蝶刀 ]</span></li>
-                        <li>最想要的 <span>[ 把chatGPT最强的型号当聊天AI使😋 ]</span></li>
+                    <ul class="data-list" id="skills-container">
+                        <!-- JS 自动填充技能 -->
                     </ul>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- ==================== 博客区域 ==================== -->
+    <!-- 日志 -->
     <div id="page-blog" class="page-section">
         <div class="blog-container">
             <div class="filter-bar" id="filter-bar">
@@ -699,648 +294,289 @@
                 <button class="filter-btn" data-filter="搞机">[ 搞机 ]</button>
                 <button class="filter-btn" data-filter="系统">[ 系统 ]</button>
                 <button class="filter-btn" data-filter="原创音乐">[ 原创音乐 ]</button>
-				<button class="filter-btn" data-filter="🍍StarsStudio">[ 🍍StarsGames工作室 ]</button>
+                <button class="filter-btn" data-filter="🍍StarsStudio">[ 🍍StarsGames工作室 ]</button>
             </div>
-			
-			<div class="post" id="post-latest"  data-category="系统">
-                <div class="post-meta">
-                    <span class="post-date">2026-11-15 / LOG_012</span>
-                    <span class="post-tag">系统 / 初始化</span>
-                </div>
-                <h2 class="post-title">网站大更新！</h2>
-                <div class="post-content">
-                    <p>🍍Stars空间站新增加了名人堂和展品，展品就是在网上收到的他人的礼物！名人堂那当然是对我人生中有重大意义的那些人，至于为什么有些谜语？这你就别管了</p>
-                </div>
-            </div>
-			
-			<div class="post"  data-category="🍍StarsStudio">
-                <div class="post-meta">
-                    <span class="post-date">2026-11-07 / LOG_011</span>
-                    <span class="post-tag">🍍StarsGames工作室</span>
-                </div>
-                <h2 class="post-title">🍍Stars工作室inMiniWorld正式创立！</h2>
-                <div class="post-content">
-                    <p>🍍Stars终于有了实质性的物理坐标！我们的目标，是打造迷你世界最具硬核观赏性的剪辑团队。招人条件为可以自主配音及熟练使用剪辑软件，没有班味，没有流水线，只有对画面和节奏的纯粹追求。只要你懂剪辑、会配音，欢迎接入🍍Stars</p>
-                </div>
-            </div>
-			
-            <div class="post" data-category="系统">
-                <div class="post-meta">
-                    <span class="post-date">2026-10-30 / LOG_010</span>
-                    <span class="post-tag">系统 / 初始化</span>
-                </div>
-                <h2 class="post-title">夜巡日志正在开发中</h2>
-                <div class="post-content">
-                    <p>现在已经完工了主界面and基础移动，我后面到底上传哪个平台呢🤔</p>
-                </div>
-            </div>
-			
-            <div class="post"  data-category="日常">
-                <div class="post-meta">
-                    <span class="post-date">2026-10-25 / LOG_009</span>
-                    <span class="post-tag">日常 / 碎碎念</span>
-                </div>
-                <h2 class="post-title">现在的不正规陪玩俱乐部的高层真是一个比一个烂</h2>
-                <div class="post-content">
-                    <p>AF俱乐部离恨天组那个云初管理是个人物，就凭我说话她看了不高兴也能作为清退的理由？我从来没跟她发生过矛盾诶，还说看不惯我好久了，不是我说白了我他妈违规了吗，本来就是个雇佣童工的灰色产业还这样高高在上真他妈把自己当个人物了，说看不惯我可能是之前有一次她艾特全体说自己没钱了让谁漏下ID你觉得有人会漏不，本身免打扰不会屏蔽艾特全体，我说本来艾特全体就烦还踏马来一句不知道开免打扰吗，都怕有什么重要通知谁他妈敢给艾特全体关掉通知啊，更何况电脑版微信不能调哪些可以通知，自己妈死了就出来神权真是个东西，艾特全体是让你随意的烦人用的吗，本来就是个没营业执照还全是童工的违法团我只能说AF离恨天组云初管理我操你妈</p>
-                </div>
-            </div>
-
-            <div class="post"  data-category="系统">
-                <div class="post-meta">
-                    <span class="post-date">2026-10-25 / LOG_008</span>
-                    <span class="post-tag">系统 / 初始化</span>
-                </div>
-                <h2 class="post-title">独立恐怖游戏《夜巡日志》正在开发中</h2>
-                <div class="post-content">
-                    <p>到时候网站会加一个夜巡日志的wiki板块，我只能说敬请期待</p>
-                </div>
-            </div>
-
-            <div class="post"  data-category="日常">
-                <div class="post-meta">
-                    <span class="post-date">2026-10-24 / LOG_007</span>
-                    <span class="post-tag">日常 / 碎碎念</span>
-                </div>
-                <h2 class="post-title">校领导是真tm神</h2>
-                <div class="post-content">
-                    <p>我两个月前发了个痛斥学校的视频，这实在是太逆天了，昨天我才突然接到政教处主任的传唤叫我去政教处，那个视频在抖音已经删掉了但是管我B站和小红书什么事😋😋😋</p>
-                </div>
-            </div>
-
-            <div class="post"  data-category="日常">
-                <div class="post-meta">
-                    <span class="post-date">2026-10-19 / LOG_006</span>
-                    <span class="post-tag">日常 / 碎碎念</span>
-                </div>
-                <h2 class="post-title">评论功能终于修好了！</h2>
-                <div class="post-content">
-                    <p>你知道吗，我修复无法发评论修复了114514年,如果你还是没法发评论，那边玩去这不是我的问题了，老老实实挂梯子吧</p>
-                </div>
-            </div>
-            
-            <div class="post" data-category="日常">
-                <div class="post-meta">
-                    <span class="post-date">2026-10-19 / LOG_005</span>
-                    <span class="post-tag">日常 / 碎碎念</span>
-                </div>
-                <h2 class="post-title">网站正式开放！</h2>
-                <div class="post-content">
-                    <p>经过几个小时的努力我终于tm把这个网站完工了，10/19就是这个网站的纪念日好吧</p>
-                </div>
-            </div>
-
-            <div class="post" data-category="日常">
-                <div class="post-meta">
-                    <span class="post-date">2026-10-18 / LOG_001</span>
-                    <span class="post-tag">日常 / 碎碎念</span>
-                </div>
-                <h2>空间站建立的第一天</h2>
-                <div class="post-content">
-                    <p>这里是陈羯喵，欢迎来到我的空间站。</p>
-                    <p>折腾了很久的 HTML 和 CSS，终于把这个站搭起来了。今天先放了一个开机动画，后面打算把搞机的设备评测、MC服务器的搭建过程，还有我写的梦核音乐都慢慢搬上来。</p>
-                    <p>黑菠萝神今天又在催我更新了，但我决定先摸个鱼知道吧。不是我说白了csgo直接启动</p>
-                </div>
-            </div>
-
-            <div class="post" data-category="搞机">
-                <div class="post-meta">
-                    <span class="post-date">2026-10-18 / LOG_002</span>
-                    <span class="post-tag">搞机 / 硬件</span>
-                </div>
-                <h2>14岁，压岁钱开MC服务器（预告）</h2>
-                <div class="post-content">
-                    <p>过年准备和黑菠萝神一起拍一期大制作！我们要用压岁钱买设备开一台MC服务器。</p>
-                    <p>目前设备没买，等搭好了，白名单会直接发在群里。敬请期待！</p>
-                </div>
-            </div>
-
-            <div class="post" data-category="原创音乐">
-                <div class="post-meta">
-                    <span class="post-date">2026-10-18 / LOG_003</span>
-                    <span class="post-tag">编曲 / 音乐</span>
-                </div>
-                <h2>用 Am7-Fmaj7-Cmaj7-Em7 写了一首新曲子</h2>
-                <div class="post-content">
-                    <p>今天摸索了一下七和弦。</p>
-                    <p>以后要是网站换背景音乐了，估计就会用这首。</p>
-                </div>
-            </div>
-
-            <div class="post" data-category="系统">
-                <div class="post-meta">
-                    <span class="post-date">2026-10-18 / LOG_000</span>
-                    <span class="post-tag">系统 / 初始化</span>
-                </div>
-                <h2>终端正在初始化...</h2>
-                <div class="post-content">
-                    <p>这是一条测试日志。如果你看到了这条信息，说明网络连接正常，数据流运转良好。</p>
-                    <p>接下来这里会更新更多关于硬件折腾、游戏日常和 3D 建模的内容。</p>
-                    <p>感谢你的接入。</p>
-                </div>
-            </div>
+            <div id="blog-posts-container"></div>
         </div>
     </div>
 
-    <!-- ==================== 赞助区域 ==================== -->
+    <!-- 赞助 -->
     <div id="page-sponsor" class="page-section">
         <div class="sponsor-container">
             <div class="sponsor-terminal">
                 <div class="sponsor-title">Buy_US_A_Coffee</div>
-                <div class="sponsor-desc">请菠萝喝杯咖啡来让菠萝叫你大哥(╹ڡ╹ )</div>
-                
-                <div class="sponsor-img-box">
-                    <img src="pic/ewm.png" alt="收款码" class="sponsor-img" onerror="this.src='https://placehold.co/250x250/03050A/FFD700?text=ewm.png+NOT+FOUND'">
+                <div style="color:#aaa; font-size:1.5rem; margin-bottom:30px;">请菠萝喝杯咖啡来让菠萝叫你大哥(╹ڡ╹ )</div>
+                <div style="background:rgba(255,255,255,0.9); padding:15px; display:inline-block; border-radius:8px;">
+                    <img src="pic/ewm.png" alt="收款码" class="sponsor-img" onerror="this.src='https://placehold.co/250x250/03050A/FFD700?text=ewm.png'">
                 </div>
-                
-                <div class="sponsor-footer">[ SYSTEM THANKS FOR YOUR SUPPORT ]</div>
             </div>
         </div>
     </div>
 	
-    <!-- ==================== 🏛️ 名人堂 (Hall of Fame) ==================== -->
+    <!-- 名人堂 -->
     <div id="page-halloffame" class="page-section">
         <div class="blog-container"> 
-            <!-- 页面标题 -->
             <div class="filter-bar" style="justify-content: center; border-color: var(--pineapple-yellow); margin-bottom: 20px;">
-                <h2 style="margin: 0; color: var(--pineapple-yellow); font-family: 'Share Tech Mono', monospace; letter-spacing: 2px;">
-                    🌟 HALL_OF_FAME // 星海引路人
-                </h2>
+                <h2 style="margin: 0; color: var(--pineapple-yellow); font-family: 'Share Tech Mono', monospace; letter-spacing: 2px;">🌟 HALL_OF_FAME // 星海引路人</h2>
             </div>
-
-            <!-- 暗语解密声明 -->
-            <div style="max-width: 800px; margin: 0 auto 40px auto; padding: 12px 20px; background: rgba(255, 51, 51, 0.1); border: 1px dashed #ff3333; border-radius: 6px; text-align: center; box-shadow: inset 0 0 10px rgba(255,51,51,0.2);">
-                <p style="margin: 0; color: #ff3333; font-family: 'Share Tech Mono', monospace; font-size: 0.95rem; letter-spacing: 1px;">
-                    ⚠️ [ DECRYPTION_WARNING ] // 终端安全提示
-                </p>
-                <p style="margin: 5px 0 0 0; color: #ccc; font-size: 1rem; line-height: 1.5;">
-                    整个“名人堂”档案中，带有 <strong style="color: #fff;">【%】</strong> 或 <strong style="color: #fff;">【/%】</strong> 符号包裹的句子均为<b>最高级别暗语</b>。<br>
-                    其字面意思与真实含义存在物理隔离，仅限特定权限终端解析，请勿按字面逻辑推理。
-                </p>
+            <div style="max-width: 800px; margin: 0 auto 40px auto; padding: 12px 20px; background: rgba(255, 51, 51, 0.1); border: 1px dashed #ff3333; border-radius: 6px; text-align: center; margin-bottom: 30px;">
+                <p style="margin: 0; color: #ff3333; font-family: 'Share Tech Mono', monospace; font-size: 0.95rem;">⚠️ [ DECRYPTION_WARNING ] // 终端安全提示</p>
+                <p style="margin: 5px 0 0 0; color: #ccc; font-size: 1rem;">带有 <strong>【%】</strong> 符号包裹的句子均为最高级别暗语。仅限特定权限终端解析。</p>
             </div>
+            <div class="hall-container" id="hall-of-fame-container"></div>
+        </div>
+    </div>
 
-            <!-- 核心连线容器 -->
-            <div class="hall-container">
-                
-                <!-- ================= 节点卡片 1：桃桃a ================= -->
-                <div class="hall-node">
-                    <div class="hall-card">
-                        <div style="display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
-                            <img src="https://placehold.co/120x120/1a1a1a/666666?text=Offline" alt="Avatar" style="width: 100px; height: 100px; border-radius: 8px; border: 2px solid #666; object-fit: cover; filter: grayscale(100%);">
-                            
-                            <div style="flex: 1; min-width: 250px;">
-                                <h3 style="margin: 0 0 10px 0; font-size: 1.6rem; color: #fff; border-bottom: 1px dashed var(--phasma-dim); padding-bottom: 10px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-                                    迷你世界桃桃a 
-                                    <span style="font-size: 0.9rem; color: #39FF14; font-weight: normal;">@迷你世界好友</span>
-                                    <span style="font-size: 0.75rem; color: #888; display: flex; align-items: center; gap: 4px; margin-left: 10px; background: rgba(255,255,255,0.05); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1);">
-                                        <span style="width: 8px; height: 8px; background: #666; border-radius: 50%;"></span> 离线 N 年
-                                    </span>
-                                </h3>
-
-                                <p style="color: #ccc; font-size: 1.1rem; line-height: 1.6; margin: 0;">
-                                    “我真正意义上的在互联网上认识的第一个网友！虽然仅限于迷你世界内，但是不可否认的是 2021-2022 年我们玩的都很开心。当然，她换了很多号，最后一个号也已经 4 年没上线了(2022-2026)，也许我这辈子也等不到她再次上线。”
-                                </p>
-                                
-                                <div style="margin-top: 15px; font-size: 0.9rem; color: #666; font-family: 'Share Tech Mono', monospace;">
-                                    * 信号中断，等待重新连接...
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ================= 节点卡片 2：逝呆呆呀呀呀 ================= -->
-                <div class="hall-node">
-                    <div class="hall-card">
-                        <div style="display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
-                            <img src="txpic/bcls.jpg" alt="Avatar" style="width: 100px; height: 100px; border-radius: 8px; border: 2px solid #39FF14; object-fit: cover;">
-                            
-                            <div style="flex: 1; min-width: 250px;">
-                                <h3 style="margin: 0 0 10px 0; font-size: 1.6rem; color: #fff; border-bottom: 1px dashed var(--phasma-dim); padding-bottom: 10px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-                                    🤔逝呆呆呀呀呀 
-                                    <span style="font-size: 0.9rem; color: #39FF14; font-weight: normal;">@编程老师</span>
-                                    
-                                    <span style="font-size: 0.75rem; color: #39FF14; display: flex; align-items: center; gap: 4px; background: rgba(57, 255, 20, 0.1); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(57, 255, 20, 0.3); margin-left: 10px;">
-                                        <span style="width: 8px; height: 8px; background: #39FF14; border-radius: 50%; animation: blink 1.5s infinite; box-shadow: 0 0 8px #39FF14;"></span> 
-                                        信号稳定 / 在线
-                                    </span>
-                                </h3>
-
-                                <p style="color: #ccc; font-size: 1.1rem; line-height: 1.6; margin: 0;">
-                                    “2020-2024年我的编程老师！虽然是报课学的，但是我学会了图形化和 Python，也奠定了我的计算机基础。对我而言这算得上一个很好的朋友！尽管后面停课，但我们仍然保持着联系。”
-                                </p>
-                                
-                                <div style="margin-top: 15px; font-size: 0.9rem; color: #0aff2f; font-family: 'Share Tech Mono', monospace;">
-                                    * 双向同步完成，数据流运转良好。
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ================= 节点卡片 3：T_PLAN ================= -->
-                <div class="hall-node">
-                    <div class="hall-card">
-                        <div style="display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
-                            <img src="txpic/tplan.jpg" alt="Avatar" style="width: 100px; height: 100px; border-radius: 8px; border: 2px solid #666; object-fit: cover; filter: grayscale(30%);">
-                            
-                            <div style="flex: 1; min-width: 250px;">
-                                <h3 style="margin: 0 0 10px 0; font-size: 1.6rem; color: #fff; border-bottom: 1px dashed var(--phasma-dim); padding-bottom: 10px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-                                    T_PLAN 
-                                    <span style="font-size: 0.9rem; color: #999; font-weight: normal;">@网友 & 编程老师</span>
-                                    
-                                    <span style="font-size: 0.75rem; color: #888; display: flex; align-items: center; gap: 4px; margin-left: 10px; background: rgba(255,255,255,0.05); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1);">
-                                        <span style="width: 8px; height: 8px; background: #666; border-radius: 50%;"></span> 
-                                        信号已断开
-                                    </span>
-                                </h3>
-
-                                <p style="color: #ccc; font-size: 1.1rem; line-height: 1.6; margin: 0;">
-                                    “不可否认的，他曾是我的偶像！初中的时候就已经开发出了人生中第一款游戏。2023-2025年，哪怕自己顶着高考的压力，仍然给了我很多开发游戏上的指导。后来因为他要步入自己的生活，我们无奈断绝了联系。”
-                                </p>
-                                
-                                <div style="margin-top: 15px; font-size: 0.9rem; color: #666; font-family: 'Share Tech Mono', monospace;">
-                                    * 节点已离线，数据封存于 2025...
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-				
-                <!-- ================= 节点卡片 4：RSTminecraft ================= -->
-                <div class="hall-node">
-                    <div class="hall-card">
-                        <div style="display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
-                            <img src="txpic/rst.jpg" alt="Avatar" style="width: 100px; height: 100px; border-radius: 8px; border: 2px solid #39FF14; object-fit: cover;">
-                            
-                            <div style="flex: 1; min-width: 250px;">
-                                <h3 style="margin: 0 0 10px 0; font-size: 1.6rem; color: #fff; border-bottom: 1px dashed var(--phasma-dim); padding-bottom: 10px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-                                    RSTminecraft 
-                                    <span style="font-size: 0.9rem; color: #999; font-weight: normal;">@网友 & 技术大佬</span>
-                                    
-                                    <span style="font-size: 0.75rem; color: #39FF14; display: flex; align-items: center; gap: 4px; background: rgba(57, 255, 20, 0.1); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(57, 255, 20, 0.3); margin-left: 10px;">
-                                        <span style="width: 8px; height: 8px; background: #39FF14; border-radius: 50%; animation: blink 1.5s infinite; box-shadow: 0 0 8px #39FF14;"></span> 
-                                        信号稳定 / 在线
-                                    </span>
-                                </h3>
-
-                                <p style="color: #ccc; font-size: 1.1rem; line-height: 1.6; margin: 0;">
-                                    “玩MC3c3u服务器意外认识的好朋友，会红石/生电还会写java模组！对我有一些帮助，但大部分时候还是在一起玩。”
-                                </p>
-                                
-                                <div style="margin-top: 15px; font-size: 0.9rem; color: #0aff2f; font-family: 'Share Tech Mono', monospace;">
-                                    * 双向同步完成，数据流运转良好。
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-					
-                <!-- ================= 节点卡片 5：四叶茶 ================= -->
-                <div class="hall-node">
-                    <div class="hall-card">
-                        <div style="display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
-                            <img src="txpic/syc.jpg" alt="Avatar" style="width: 100px; height: 100px; border-radius: 8px; border: 2px solid #39FF14; object-fit: cover;">
-                            
-                            <div style="flex: 1; min-width: 250px;">
-                                <h3 style="margin: 0 0 10px 0; font-size: 1.6rem; color: #fff; border-bottom: 1px dashed var(--phasma-dim); padding-bottom: 10px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-                                    四叶茶=UwU= 
-                                    <span style="font-size: 0.9rem; color: #999; font-weight: normal;">@网友 & 画师</span>
-                                    
-                                    <span style="font-size: 0.75rem; color: #39FF14; display: flex; align-items: center; gap: 4px; background: rgba(57, 255, 20, 0.1); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(57, 255, 20, 0.3); margin-left: 10px;">
-                                        <span style="width: 8px; height: 8px; background: #39FF14; border-radius: 50%; animation: blink 1.5s infinite; box-shadow: 0 0 8px #39FF14;"></span> 
-                                        信号稳定 / 在线
-                                    </span>
-                                </h3>
-
-                                <p style="color: #ccc; font-size: 1.1rem; line-height: 1.6; margin: 0;">
-                                    “😡😡😡哪来的雷霆67四叶茶整天一副挨打样。”
-                                </p>
-                                
-                                <div style="margin-top: 15px; font-size: 0.9rem; color: #0aff2f; font-family: 'Share Tech Mono', monospace;">
-                                    * 双向同步完成，数据流运转良好。
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-				
-                <!-- ================= 节点卡片：最刻骨铭心的赛博踩坑 ================= -->
-                <div class="hall-node">
-                    <div class="hall-card" style="border-left: 4px solid #ff3333; border-color: rgba(255, 51, 51, 0.4); background: rgba(20, 0, 0, 0.6);">
-                        <div style="display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
-                            <!-- 头像：打个纯红黑色的马赛克占位 -->
-                            <img src="https://placehold.co/120x120/2a0000/ff3333?text=Banned" alt="Avatar" style="width: 100px; height: 100px; border-radius: 8px; border: 2px solid #ff3333; object-fit: cover; filter: grayscale(50%); box-shadow: 0 0 15px rgba(255,51,51,0.3);">
-                            
-                            <div style="flex: 1; min-width: 250px;">
-                                <h3 style="margin: 0 0 10px 0; font-size: 1.6rem; color: #fff; border-bottom: 1px dashed rgba(255,51,51,0.3); padding-bottom: 10px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-                                    ???（已屏蔽） 
-                                    <span style="font-size: 0.9rem; color: #ff3333; font-weight: normal;">@最痛的一课</span>
-                                    
-                                    <!-- 警报状态 -->
-                                    <span style="font-size: 0.75rem; color: #ff3333; display: flex; align-items: center; gap: 4px; background: rgba(255, 51, 51, 0.15); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(255, 51, 51, 0.4); margin-left: 10px;">
-                                        <span style="width: 8px; height: 8px; background: #ff3333; border-radius: 50%; animation: blink 1.5s infinite; box-shadow: 0 0 8px #ff3333;"></span> 
-                                        极度危险 / 永久封禁
-                                    </span>
-                                </h3>
-
-                                <div style="color: #bbb; font-size: 1.05rem; line-height: 1.7; margin: 0;">
-                                    <p style="margin-top: 0; color: #ff3333; font-weight: bold; font-size: 1.15rem;">“这绝对能算得上我人生中最精彩的一笔（反向）。”</p>
-                                    
-                                    <p>这是一个很多才多艺的人。一开始认识是一起玩游戏，后来关系逐渐变得非常好，她认我为弟弟，我认她为姐姐。</p>
-                                    
-                                    <p>在 2026 年 9 月底，她态度骤变执意要绝交。通过她闺蜜转达的言论全篇是“我是个很好的人，她累了”这样的反将式发言，成功让那段时间的我陷入深深的内耗，以为绝交全是我的错。</p>
-                                    
-                                    <p>当时我只有她这一个真心朋友，于是我连续两个月尝试和好（期间我曾<strong>连续十天熬穿帮她打她的游戏账号</strong>，最后她以讨厌别人随意登号为由全盘否认）。后来她违规开私人俱乐部，我甚至<strong>熬了三通宵替她写网站</strong>，但她仅凭私人恩怨就将我清退，并白嫖了所有成果。</p>
-                                    
-                                    <p>我愤怒地打消了和好的念头。但到了 10 月底，我频繁梦见她。我是无神论者，我意识到自己内心其实还在渴望挽回这段友谊（因为朋友再多，也未必能交心）。</p>
-                                    
-                                    <p>然而通过小道消息，我震惊地得知，她竟然在四处向别人主动询问要不要我的<strong>身份证号</strong>等隐私信息（这是关系最好时我出于信任给她的）。<span style="color: #ff3333; font-weight: bold;">请各位先不要指责我为何敢把信息给未见面的网友，A给了B信息，绝不代表B可以随意泄露给C D E！</span></p>
-                                    
-                                    <p>我愤怒地找她要说法，她的做法是直接拉黑。我让拿到信息的第三方去问她，她的回复极其逆天：<strong>“哎你先别管他，你把他的信息怎么样了？”</strong></p>
-                                    
-                                    <p>大悟彻悟！她完全是出于好玩或报复的心理才这样做，毫无底线。后续我试图普法，她以“雷别人讲法”为由推辞。通过小道消息了解，此人甚至存在<strong>不顾他人感受 / 炫富 / 卖惨</strong>等各种极品行为。（<span style="color: #0aff2f; font-weight: bold;">【% 注：据说连最初为她做担保的那个内网节点，最近也频繁报错，甚至触发了底层防火墙的熔断机制，看来这种病毒连自家局域网都兼容不了。%】</span>）至于后续是起诉还是写瓜条，目前待定。</p>
-                                    
-                                    <p style="margin-top: 15px; color: #ff3333; font-weight: bold;">附加行为：极度扭曲的控制欲</p>
-                                    
-                                    <p>她有一个关系极好的妹妹，妹妹也曾认我当哥哥。但在我和她绝交后，她竟然自作主张地管理起妹妹的社交圈。当我询问能不能继续和妹妹联系时，她回复“你想屁吃”。发现我们偷偷联系后，她甚至拿妹妹的号直接拉黑我。我的观点很明确：<strong>妹妹是一个完全独立的人，她凭什么去决定妹妹该交什么朋友？</strong>更何况，她自己还在教妹妹说脏话。</p>
-                                    
-                                    <p>【%现在，由于那次警告，我甚至彻底失去了主动发声的渠道。我不敢去试探那条红线，因为我知道，只要有任何一点风吹草动被她察觉，面临的可能就是永久且彻底的物理隔离。这种只能眼睁睁看着、连发个消息都要担惊受怕的社交状态，极其窒息。%】</p>
-
-                                    <p style="margin-top: 15px; color: #0aff2f; font-family: 'Share Tech Mono', monospace; font-size: 0.95rem;">
-                                        [ 系统分析：关于目标的局限性 ]
-                                    </p>
-                                    <p>
-                                        结合她拉黑我时的操作，我推测这个人极度短视：<strong>她只看到了某一个特定平台上的联系，就直接拉黑我的账号；【%但她完全没有意识到，或者说根本不在乎，这种物理级别的封锁根本挡不住所有潜在的渠道。</strong>她以为切断了某一条线，就能把整个网络孤立。%】（<span style="color: #0aff2f; font-weight: bold;">【% 实际上，她连自己身边的局域网都没有彻底清扫干净，某些处于灰域状态的后门协议依然在静默运行。%】</span>）
-                                    </p>
-                                    <p style="color: #aaa; font-style: italic;">
-                                        【%简而言之：她只看得见眼前的假想敌，却看不见周围漏成筛子的系统。这种为了满足一时控制欲，而忽略全局逻辑的行为，既可笑，又可悲。毕竟，互联网的底层逻辑，从来就不是靠按下一个“拉黑”键就能解决的。%】
-                                    </p>
-
-                                    <p style="border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 10px; margin-top: 15px;">在此留两点总结：<br>
-                                    1. 感谢她陪我度过了一个暑假，也感谢她辅助 2026 年的暑假成为我人生中最快乐的一个暑假。她让我知道了真心朋友应该是什么样，也让我深刻地反思了自己身上招人烦的缺点。<br>
-                                    2. <strong style="color:#fff;">既然已经绝交，为什么还要出于好玩的念头，对我进行毫无底线的报复行为？</strong></p>
-                                </div>
-                                
-                                <div style="margin-top: 15px; font-size: 0.9rem; color: #ff3333; font-family: 'Share Tech Mono', monospace; border-top: 1px dashed rgba(255,51,51,0.2); padding-top: 10px;">
-                                    * 警告：该节点存在极高隐私泄露与法律风险，数据已强制隔离。
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div> <!-- 结束 hall-container -->
-        </div> <!-- 结束 blog-container -->
-    </div> <!-- 结束 page-halloffame -->
-
-    <!-- ==================== 🎁 展品 (Exhibit) ==================== -->
+    <!-- 展品 -->
     <div id="page-exhibit" class="page-section">
         <div class="blog-container">
-            <!-- 页面标题 -->
             <div class="filter-bar" style="justify-content: center; border-color: var(--phasma-cyan); margin-bottom: 40px;">
-                <h2 style="margin: 0; color: var(--phasma-cyan); font-family: 'Share Tech Mono', monospace; letter-spacing: 2px;">
-                    🎁 EXHIBITION_HALL // 挚友的馈赠
-                </h2>
+                <h2 style="margin: 0; color: var(--phasma-cyan); font-family: 'Share Tech Mono', monospace; letter-spacing: 2px;">🎁 EXHIBITION_HALL // 挚友的馈赠</h2>
             </div>
-
-            <div class="modules-grid" style="grid-template-columns: 1fr 1fr; gap: 20px;">
-                
-                <!-- ================= 展品卡片 1 ================= -->
-                <div class="exhibit-card">
-                    <img src="exhibit/sycs.jpg" alt="陈羯喵形象" class="exhibit-img" onerror="this.src='https://placehold.co/600x400/03050A/00E5FF?text=Image+Not+Found'">
-                    
-                    <div class="exhibit-meta">
-                        <span>📅 2026-11-14</span>
-                        <span>🎨 赠与人：@四叶茶=UwU=</span>
-                    </div>
-                    
-                    <div class="exhibit-message">
-                        “陈羯喵Client这个名字创立三年，始终没有具体的形象。感谢此入赠图，为‘陈羯喵’在赛博宇宙中赋予了一个确切的灵魂锚点。”
-                    </div>
-                </div>
-                
-                <!-- ================= 展品卡片 2 ================= -->
-                <div class="exhibit-card">
-                    <img src="exhibit/hhto.png" alt="涵涵" class="exhibit-img" onerror="this.src='https://placehold.co/600x400/03050A/FFD700?text=Image+Not+Found'">
-                    
-                    <div class="exhibit-meta">
-                        <span>📅 2026-08</span>
-                        <span>🎨 赠与人：@涵涵</span>
-                    </div>
-                    
-                    <div class="exhibit-message">
-                        “😋我看谁敢说我妹妹不好看！至于画面里被叉掉的部分？这不重要。至于为啥这么糊……不是你傻啊我上网来不是来开人户的。”
-                    </div>
-                </div>
-
+            <div class="modules-grid" id="exhibit-container" style="grid-template-columns: 1fr 1fr; gap: 20px;">
+                <!-- JS 自动填充展品 -->
             </div>
         </div>
     </div>
 
-    <!-- ==================== 底部社交超大按钮 ==================== -->
+    <!-- 头像档案馆模态框 -->
+    <div id="archive-modal" onclick="closeArchive(event)" style="position: fixed; inset: 0; z-index: 10000; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; backdrop-filter: blur(10px); padding: 20px;">
+        <div style="background: var(--panel-bg); border: 1px solid var(--phasma-cyan); width: 100%; max-width: 800px; max-height: 85vh; border-radius: 8px; overflow-y: auto; padding: 30px 40px; position: relative;">
+            <div style="font-size: 1.8rem; color: var(--phasma-cyan); display: flex; justify-content: space-between; margin-bottom: 25px;">
+                <span>🧬 AVATAR_ARCHIVE // 头像进化史</span>
+                <span class="close-btn" style="cursor:pointer; color:#ff3333;" onclick="closeArchive(event)">[ X 关闭 ]</span>
+            </div>
+            <div style="color:#ccc; font-size:1.2rem; line-height:1.6;" id="archive-container">
+                <!-- JS 自动填充 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部社交 -->
     <div class="bottom-social-panel">
         <div class="social-grid">
-            <a href="https://space.bilibili.com/3493294059292826" target="_blank" class="social-btn bili">
-                <img src="https://s1.hdslb.com/bfs/static/jinkela/long/images/favicon.ico" alt="Bilibili" class="social-icon-img">
-                <span class="social-name">BILIBILI</span>
-            </a>
-            <a href="https://www.xiaohongshu.com/user/profile/68a6f9c80000000019020886?m_source=pwa" target="_blank" class="social-btn xhs">
-                <img src="https://www.xiaohongshu.com/bfs/static/jinkela/long/images/favicon.ico" alt="小红书" class="social-icon-img">
-                <span class="social-name">小红书</span>
-            </a>
-            <a href="https://music.163.com/#/artist?id=129286029" target="_blank" class="social-btn netease">
-                <img src="https://www.163.com/favicon.ico" alt="网易云音乐" class="social-icon-img">
-                <span class="social-name">网易云音乐</span>
-            </a>
+            <a href="https://space.bilibili.com/3493294059292826" target="_blank" class="social-btn bili"><img src="https://s1.hdslb.com/bfs/static/jinkela/long/images/favicon.ico" class="social-icon-img"><span class="social-name">BILIBILI</span></a>
+            <a href="https://www.xiaohongshu.com/user/profile/68a6f9c80000000019020886" target="_blank" class="social-btn xhs"><img src="https://www.xiaohongshu.com/bfs/static/jinkela/long/images/favicon.ico" class="social-icon-img"><span class="social-name">小红书</span></a>
+            <a href="https://music.163.com/#/artist?id=129286029" target="_blank" class="social-btn netease"><img src="https://www.163.com/favicon.ico" class="social-icon-img"><span class="social-name">网易云音乐</span></a>
         </div>
     </div>
 
-    <!-- 引入 Twikoo 脚本 -->
+    <!-- 引入数据文件和脚本 -->
+    <script src="data/posts.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/twikoo@1.6.44/dist/twikoo.min.js"></script>
+    
     <script>
         // ==========================================
-        // 模块 1：留言板抽屉开关
+        // 核心渲染引擎：把数据变成网页
         // ==========================================
-        function toggleCommentPanel() {
-            const drawer = document.getElementById('comment-drawer');
-            drawer.classList.toggle('active');
+        document.addEventListener('DOMContentLoaded', () => {
+            renderBlogPosts();   // 日志
+            renderHallOfFame();  // 名人堂
+            renderExhibits();    // 展品
+            renderStarsIntro();  // Stars简介
+            renderClientIntro(); // Client简介+技能
+            renderAvatarArchive(); // 头像档案馆
+            loadLatestBlog();    // 首页最新
+            initFilter();        // 日志过滤器
+        });
+
+        // 1. 渲染日志
+        function renderBlogPosts() {
+            let html = '';
+            blogData.forEach(post => {
+                const idAttr = post.id ? `id="${post.id}"` : '';
+                html += `
+                    <div class="post" ${idAttr} data-category="${post.category}">
+                        <div class="post-meta">
+                            <span class="post-date">${post.date} / ${post.logId}</span>
+                            <span class="post-tag">${post.tag}</span>
+                        </div>
+                        <h2 class="post-title">${post.title}</h2>
+                        <div class="post-content"><p>${post.content}</p></div>
+                    </div>
+                `;
+            });
+            document.getElementById('blog-posts-container').innerHTML = html;
         }
 
-        // ==========================================
-        // 模块 2：头像档案馆逻辑
-        // ==========================================
-        function openArchive() { document.getElementById('archive-modal').classList.add('active'); }
-        function closeArchive(event) {
-            if (event.target.id === 'archive-modal' || event.target.classList.contains('close-btn')) {
-                document.getElementById('archive-modal').classList.remove('active');
+        // 2. 渲染名人堂
+        function renderHallOfFame() {
+            let html = '';
+            hallOfFameData.forEach(node => {
+                let cardStyle = "", statusHtml = "";
+                let isRichText = node.desc.trim().startsWith("<p>");
+                
+                if (node.status === "banned") {
+                    cardStyle = "border-left: 4px solid #ff3333; border-color: rgba(255, 51, 51, 0.4); background: rgba(20, 0, 0, 0.6);";
+                    statusHtml = `<span style="font-size: 0.75rem; color: #ff3333; display: flex; align-items: center; gap: 4px; background: rgba(255, 51, 51, 0.15); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(255, 51, 51, 0.4); margin-left: 10px;"><span style="width: 8px; height: 8px; background: #ff3333; border-radius: 50%; animation: blink 1.5s infinite; box-shadow: 0 0 8px #ff3333;"></span> 极度危险 / 永久封禁</span>`;
+                } else {
+                    const isOnline = node.status === "online";
+                    const statusColor = isOnline ? "#39FF14" : "#666";
+                    const statusText = isOnline ? "信号稳定 / 在线" : "信号已断开";
+                    const blinkAnim = isOnline ? "animation: blink 1.5s infinite; box-shadow: 0 0 8px #39FF14;" : "";
+                    statusHtml = `<span style="font-size: 0.75rem; color: ${statusColor}; display: flex; align-items: center; gap: 4px; background: rgba(255,255,255,0.05); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); margin-left: 10px;"><span style="width: 8px; height: 8px; background: ${statusColor}; border-radius: 50%; ${blinkAnim}"></span> ${statusText}</span>`;
+                }
+
+                const descHtml = isRichText ? node.desc : `<p style="color: #ccc; font-size: 1.1rem; line-height: 1.6; margin: 0;">${node.desc}</p>`;
+
+                html += `
+                    <div class="hall-node">
+                        <div class="hall-card" style="${cardStyle}">
+                            <div style="display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
+                                <img src="${node.avatar}" style="width: 100px; height: 100px; border-radius: 8px; border: 2px solid ${node.status === 'banned' ? '#ff3333' : (node.status === 'online' ? '#39FF14' : '#666')}; object-fit: cover; ${node.status === 'offline' ? 'filter: grayscale(100%);' : ''}">
+                                <div style="flex: 1; min-width: 250px;">
+                                    <h3 style="margin: 0 0 10px 0; font-size: 1.6rem; color: #fff; border-bottom: 1px dashed var(--phasma-dim); padding-bottom: 10px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                        ${node.name} <span style="font-size: 0.9rem; color: ${node.status === 'banned' ? '#ff3333' : '#999'}; font-weight: normal;">${node.role}</span>${statusHtml}
+                                    </h3>
+                                    <div style="color: #ccc; font-size: 1.1rem; line-height: 1.6;">${descHtml}</div>
+                                    <div style="margin-top: 15px; font-size: 0.9rem; color: ${node.status === 'banned' ? '#ff3333' : (node.status === 'online' ? '#0aff2f' : '#666')}; font-family: 'Share Tech Mono', monospace;">${node.footer}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            document.getElementById('hall-of-fame-container').innerHTML = html;
+        }
+
+        // 3. 渲染展品
+        function renderExhibits() {
+            let html = '';
+            exhibitData.forEach(item => {
+                html += `
+                    <div class="exhibit-card">
+                        <img src="${item.img}" class="exhibit-img" onerror="this.src='${item.fallback}'">
+                        <div class="exhibit-meta">
+                            <span>📅 ${item.date}</span>
+                            <span>🎨 赠与人：${item.author}</span>
+                        </div>
+                        <div class="exhibit-message">${item.message}</div>
+                    </div>
+                `;
+            });
+            document.getElementById('exhibit-container').innerHTML = html;
+        }
+
+        // 4. 渲染Stars介绍
+        function renderStarsIntro() {
+            let html = '';
+            starsIntroData.forEach(item => {
+                html += `<div class="profile-card"><h3><span>${item.icon}</span> ${item.title}</h3><p>${item.content}</p></div>`;
+            });
+            document.getElementById('stars-intro-container').innerHTML = html;
+        }
+
+        // 5. 渲染Client介绍和技能
+        function renderClientIntro() {
+            let html = '';
+            clientIntroData.forEach(item => {
+                html += `<div class="profile-card"><h3><span>${item.icon}</span> ${item.title}</h3><p>${item.content}</p></div>`;
+            });
+            document.getElementById('client-intro-container').insertAdjacentHTML('afterbegin', html);
+
+            let skillsHtml = '';
+            skillsData.forEach(skill => {
+                skillsHtml += `<li>${skill.label} <span>[ ${skill.value} ]</span></li>`;
+            });
+            document.getElementById('skills-container').innerHTML = skillsHtml;
+        }
+
+        // 6. 渲染头像档案馆
+        function renderAvatarArchive() {
+            let html = '';
+            avatarArchiveData.forEach(item => {
+                const extraHtml = item.extra ? `<span style="color: ${item.color}; display: block; margin-top: 5px;">> ${item.extra}</span>` : '';
+                html += `<p>${item.date}：${item.text}${extraHtml}</p>`;
+            });
+            document.getElementById('archive-container').innerHTML = html;
+        }
+
+        // 7. 首页最新博客
+        function loadLatestBlog() {
+            if (blogData.length > 0) {
+                const latest = blogData[0]; 
+                let excerpt = latest.content;
+                if (excerpt.length > 60) excerpt = excerpt.substring(0, 60) + "...";
+                document.getElementById('latest-blog-container').innerHTML = `
+                    <a onclick="switchPage('blog')" class="blog-preview">
+                        <div class="blog-preview-date">${latest.date} / ${latest.logId}</div>
+                        <div class="blog-preview-title">${latest.title}</div>
+                        <div class="blog-preview-excerpt">${excerpt}</div>
+                    </a>
+                `;
             }
         }
 
         // ==========================================
-        // 模块 3：时钟与打字机
-        // ==========================================
-        const logText = "系统日志 #2026-11\n\n> 建站成功！\n> 黑菠萝星一边玩去\n> 音频模块加载完毕\n\n> 终端已准备就绪。";
-        const typeBox = document.getElementById('typewriter');
-        let typeIdx = 0;
-        let typingTimer = null;
-
-        function typeWriter() {
-            clearTimeout(typingTimer);
-            if(typeIdx < logText.length) {
-                typeBox.innerHTML = logText.substring(0, typeIdx+1).replace(/\n/g, '<br>') + '<span class="cursor"></span>';
-                typeIdx++;
-                typingTimer = setTimeout(typeWriter, 40);
-            }
-        }
-        setTimeout(typeWriter, 1000);
-
-        // ==========================================
-        // 模块 4：页面无刷新切换 (SPA)
+        // 其他基础逻辑 (保留你原本的功能)
         // ==========================================
         function switchPage(pageId) {
             document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
             document.getElementById('page-' + pageId).classList.add('active');
-            
             document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
             const navBtn = document.getElementById('nav-' + pageId);
             if(navBtn) navBtn.classList.add('active');
+        }
 
-            if (pageId === 'home') {
-                typeIdx = 0;
-                typeBox.innerHTML = '';
-                setTimeout(typeWriter, 300); 
+        function initFilter() {
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    const filterValue = btn.getAttribute('data-filter');
+                    document.querySelectorAll('.post').forEach(post => {
+                        if (filterValue === 'all' || post.getAttribute('data-category') === filterValue) {
+                            post.style.display = 'block';
+                        } else {
+                            post.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        }
+
+        function toggleCommentPanel() { document.getElementById('comment-drawer').classList.toggle('active'); }
+        function openArchive() { document.getElementById('archive-modal').style.display = 'flex'; }
+        function closeArchive(event) { if (event.target.id === 'archive-modal' || event.target.classList.contains('close-btn')) { document.getElementById('archive-modal').style.display = 'none'; } }
+
+        const logText = "系统日志 #2026-11\n\n> 建站成功！\n> 黑菠萝星一边玩去\n> 音频模块加载完毕\n\n> 终端已准备就绪。";
+        const typeBox = document.getElementById('typewriter');
+        let typeIdx = 0; let typingTimer = null;
+        function typeWriter() {
+            clearTimeout(typingTimer);
+            if(typeIdx < logText.length) {
+                typeBox.innerHTML = logText.substring(0, typeIdx+1).replace(/\n/g, '<br>') + '<span class="cursor"></span>';
+                typeIdx++; typingTimer = setTimeout(typeWriter, 40);
             }
         }
+        setTimeout(typeWriter, 1000);
 
-        // ==========================================
-        // 模块 5：自动抓取最新博客到主页
-        // ==========================================
-        function loadLatestBlog() {
-            setTimeout(() => {
-                const latestPost = document.getElementById('post-latest');
-                if (latestPost) {
-                    const title = latestPost.querySelector('.post-title').innerText;
-                    const date = latestPost.querySelector('.post-date').innerText;
-                    const firstParagraph = latestPost.querySelector('.post-content p');
-                    
-                    let excerpt = firstParagraph ? firstParagraph.innerText : "点击查看全文...";
-                    if (excerpt.length > 60) excerpt = excerpt.substring(0, 60) + "...";
-
-                    document.getElementById('latest-blog-container').innerHTML = `
-                        <a onclick="switchPage('blog')" class="blog-preview">
-                            <div class="blog-preview-date">${date}</div>
-                            <div class="blog-preview-title">${title}</div>
-                            <div class="blog-preview-excerpt">${excerpt}</div>
-                            <div class="blog-preview-read">阅读全文</div>
-                        </a>
-                    `;
-                }
-            }, 100);
-        }
-
-        // ==========================================
-        // 模块 6：音乐无缝控制
-        // ==========================================
         const bgmAudio = document.getElementById('bgm-audio');
         const audioBtn = document.getElementById('audio-btn');
         const mobileAudioBtn = document.getElementById('mobile-audio-btn');
         let isMusicPlaying = sessionStorage.getItem('musicPlayingState') === 'true';
-
         function updateAudioUI(playing) {
             isMusicPlaying = playing;
-            if (playing) {
-                audioBtn.innerHTML = '[ AUDIO: ON ]';
-                audioBtn.classList.remove('off');
-                mobileAudioBtn.innerHTML = '🎵';
-                mobileAudioBtn.classList.remove('off');
-            } else {
-                audioBtn.innerHTML = '[ AUDIO: OFF ]';
-                audioBtn.classList.add('off');
-                mobileAudioBtn.innerHTML = '🔇';
-                mobileAudioBtn.classList.add('off');
-            }
+            if (playing) { audioBtn.innerHTML = '[ AUDIO: ON ]'; audioBtn.classList.remove('off'); mobileAudioBtn.innerHTML = '🎵'; mobileAudioBtn.classList.remove('off'); }
+            else { audioBtn.innerHTML = '[ AUDIO: OFF ]'; audioBtn.classList.add('off'); mobileAudioBtn.innerHTML = '🔇'; mobileAudioBtn.classList.add('off'); }
         }
-
-        if (isMusicPlaying) {
-            bgmAudio.play().catch(e => console.log("需要用户交互才能播放: ", e));
-        }
+        if (isMusicPlaying) bgmAudio.play().catch(e => console.log("等待交互"));
         updateAudioUI(isMusicPlaying);
-
         function toggleAudio() {
-            if (bgmAudio.paused) {
-                bgmAudio.play();
-                sessionStorage.setItem('musicPlayingState', 'true');
-                updateAudioUI(true);
-            } else {
-                bgmAudio.pause();
-                sessionStorage.setItem('musicPlayingState', 'false');
-                updateAudioUI(false);
-            }
+            if (bgmAudio.paused) { bgmAudio.play(); sessionStorage.setItem('musicPlayingState', 'true'); updateAudioUI(true); }
+            else { bgmAudio.pause(); sessionStorage.setItem('musicPlayingState', 'false'); updateAudioUI(false); }
         }
-
         audioBtn.addEventListener('click', toggleAudio);
         mobileAudioBtn.addEventListener('click', toggleAudio);
+        document.body.addEventListener('touchstart', function unlockAudio() { if (isMusicPlaying && bgmAudio.paused) bgmAudio.play().catch(() => {}); document.body.removeEventListener('touchstart', unlockAudio); }, { once: true });
 
-        document.body.addEventListener('touchstart', function unlockAudio() {
-            if (isMusicPlaying && bgmAudio.paused) {
-                bgmAudio.play().catch(() => {});
-            }
-            document.body.removeEventListener('touchstart', unlockAudio);
-        }, { once: true });
-
-        function updateClock() { 
-            const clockEl = document.getElementById('clock');
-            if(clockEl) clockEl.innerText = new Date().toLocaleTimeString('en-US', { hour12: false }); 
-        }
+        function updateClock() { const clockEl = document.getElementById('clock'); if(clockEl) clockEl.innerText = new Date().toLocaleTimeString('en-US', { hour12: false }); }
         setInterval(updateClock, 1000); updateClock();
 
-        // ==========================================
-        // 模块 7：博客分类过滤
-        // ==========================================
-        const filterBtns = document.querySelectorAll('.filter-btn');
-        const posts = document.querySelectorAll('.post');
-
-        filterBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                filterBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-
-                const filterValue = btn.getAttribute('data-filter');
-
-                posts.forEach(post => {
-                    const postCategory = post.getAttribute('data-category');
-                    if (filterValue === 'all' || postCategory === filterValue) {
-                        post.style.display = 'block';
-                        post.style.animation = 'none';
-                        post.offsetHeight; 
-                        post.style.animation = 'fade-in 0.5s ease';
-                    } else {
-                        post.style.display = 'none';
-                    }
-                });
-            });
-        });
-
-        // ==========================================
-        // 模块 8：Twikoo 初始化
-        // ==========================================
-        const envId = "https://cjm-mu.vercel.app"; 
-        
         window.onload = () => {
-            loadLatestBlog(); 
-            
-            // 延迟加载，确保页面渲染完毕
             setTimeout(() => {
-                twikoo.init({
-                    envId: envId,
-                    el: '#tcomment-global',
-                    path: '/' 
-                }).then(() => {
-                    console.log('✅ 常驻留言板加载成功');
-                }).catch(e => {
-                    console.error('❌ 常驻留言板加载失败: ', e);
-                });
+                twikoo.init({ envId: "https://cjm-mu.vercel.app", el: '#tcomment-global', path: '/' }).catch(e => console.error('Twikoo 加载失败: ', e));
             }, 500);
         };
     </script>
